@@ -1,0 +1,26 @@
+/*
+BwAAAGxpYl82XzMACAAAAE1pc3NNYWluAQQcDQAAAEAcDQAAQEEcDQAAQEIcDQAAwEPMzAAAAAAAAAAA
+*/
+
+cbuffer cbRayTracingParams:register(b0)
+{
+  struct
+  {
+    float4x4 viewProj;
+    float4x4 viewInverse;
+    float4x4 projInverse;
+    float4 lightdirection;
+    float4 padding0;
+    float4 padding1;
+    float4 padding2;
+  }
+  rayTracingParams;
+};
+struct SHitPayload
+{
+  float3 hitValue;
+};
+[shader("miss")]void MissMain(inout SHitPayload payload)
+{
+  payload.hitValue=float3(0.24,0.76,0.96);
+}

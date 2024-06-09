@@ -1,0 +1,108 @@
+/*
+BgAAAHBzXzZfMAAAEwAAAEdhdXNzQmx1ckJpbGluZWFyUFMAAwIQAAAAQEAQAAAAgEABAQAAAABAARAAAAAAQAAAAAAAAAAA
+*/
+
+cbuffer PER_BATCH:register(b0, space2)
+{
+  float4 clampTC;
+  float4 psWeights[16];
+};
+SamplerState GaussB_Sampler:register(s1, space0);
+Texture2D<float4>GaussB_Source:register(t0, space0);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+struct vtxOutGauss
+{
+  float4 HPosition:SV_POSITION;
+  float4 tc0:TEXCOORD0;
+  float4 tc1:TEXCOORD1;
+  float4 tc2:TEXCOORD2;
+  float4 tc3:TEXCOORD3;
+  float4 tc4:TEXCOORD4;
+};
+pixout GaussBlurBilinearPS(vtxOutGauss IN)
+{
+  pixout OUT;
+  half4 sum=0;
+  IN.tc0.xyzw=clamp(IN.tc0.xyzw,clampTC.xzxz,clampTC.ywyw);
+  IN.tc1.xyzw=clamp(IN.tc1.xyzw,clampTC.xzxz,clampTC.ywyw);
+  IN.tc2.xyzw=clamp(IN.tc2.xyzw,clampTC.xzxz,clampTC.ywyw);
+  IN.tc3.xyzw=clamp(IN.tc3.xyzw,clampTC.xzxz,clampTC.ywyw);
+  half4 col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc0.xy);
+  sum+=col*(half)psWeights[0].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc0.zw);
+  sum+=col*(half)psWeights[1].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc1.xy);
+  sum+=col*(half)psWeights[2].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc1.zw);
+  sum+=col*(half)psWeights[3].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc2.xy);
+  sum+=col*(half)psWeights[4].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc2.zw);
+  sum+=col*(half)psWeights[5].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc3.xy);
+  sum+=col*(half)psWeights[6].x;
+  col=GetTexture2D(GaussB_Source,GaussB_Sampler,IN.tc3.zw);
+  sum+=col*(half)psWeights[7].x;
+  OUT.Color=sum;
+  return OUT;
+}

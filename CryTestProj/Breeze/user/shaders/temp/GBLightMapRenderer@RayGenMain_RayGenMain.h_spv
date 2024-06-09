@@ -1,0 +1,134 @@
+; SPIR-V
+; Version: 1.5
+; Generator: Google spiregg; 0
+; Bound: 78
+; Schema: 0
+               OpCapability RayTracingKHR
+               OpCapability RayQueryKHR
+               OpCapability StorageImageReadWithoutFormat
+               OpExtension "SPV_KHR_ray_tracing"
+               OpExtension "SPV_KHR_ray_query"
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint RayGenerationNV %RayGenMain "RayGenMain" %3 %gBufferWorldPos %cbRayTracingParams %topLevelAS %outputLightMap %payload
+               OpSource HLSL 630
+               OpName %SHitPayload "SHitPayload"
+               OpMemberName %SHitPayload 0 "bHit"
+               OpName %type_2d_image "type.2d.image"
+               OpName %gBufferWorldPos "gBufferWorldPos"
+               OpName %type_cbRayTracingParams "type.cbRayTracingParams"
+               OpMemberName %type_cbRayTracingParams 0 "rayTracingParams"
+               OpMemberName %_struct_12 0 "lightdirection"
+               OpName %cbRayTracingParams "cbRayTracingParams"
+               OpName %accelerationStructureNV "accelerationStructureNV"
+               OpName %topLevelAS "topLevelAS"
+               OpName %type_2d_image_0 "type.2d.image"
+               OpName %outputLightMap "outputLightMap"
+               OpName %payload "payload"
+               OpName %RayGenMain "RayGenMain"
+               OpDecorate %3 BuiltIn LaunchIdNV
+               OpDecorate %payload Location 0
+               OpDecorate %cbRayTracingParams DescriptorSet 0
+               OpDecorate %cbRayTracingParams Binding 0
+               OpDecorate %topLevelAS DescriptorSet 0
+               OpDecorate %topLevelAS Binding 1
+               OpDecorate %outputLightMap DescriptorSet 0
+               OpDecorate %outputLightMap Binding 3
+               OpDecorate %gBufferWorldPos DescriptorSet 0
+               OpDecorate %gBufferWorldPos Binding 2
+               OpMemberDecorate %_struct_12 0 Offset 0
+               OpMemberDecorate %type_cbRayTracingParams 0 Offset 0
+               OpDecorate %type_cbRayTracingParams Block
+       %uint = OpTypeInt 32 0
+     %uint_0 = OpConstant %uint 0
+      %float = OpTypeFloat 32
+    %float_0 = OpConstant %float 0
+    %v3float = OpTypeVector %float 3
+         %20 = OpConstantComposite %v3float %float_0 %float_0 %float_0
+    %float_1 = OpConstant %float 1
+%float_0_00999999978 = OpConstant %float 0.00999999978
+    %v4float = OpTypeVector %float 4
+         %24 = OpConstantComposite %v4float %float_0 %float_0 %float_1 %float_0
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+%float_10000 = OpConstant %float 10000
+       %bool = OpTypeBool
+%SHitPayload = OpTypeStruct %bool
+         %29 = OpConstantNull %SHitPayload
+     %uint_1 = OpConstant %uint 1
+     %uint_2 = OpConstant %uint 2
+         %32 = OpConstantComposite %v4float %float_0 %float_0 %float_0 %float_0
+         %33 = OpConstantComposite %v4float %float_1 %float_0 %float_0 %float_0
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+ %_struct_12 = OpTypeStruct %v4float
+%type_cbRayTracingParams = OpTypeStruct %_struct_12
+%_ptr_Uniform_type_cbRayTracingParams = OpTypePointer Uniform %type_cbRayTracingParams
+%accelerationStructureNV = OpTypeAccelerationStructureKHR
+%_ptr_UniformConstant_accelerationStructureNV = OpTypePointer UniformConstant %accelerationStructureNV
+%type_2d_image_0 = OpTypeImage %float 2D 2 0 0 2 Rgba32f
+%_ptr_UniformConstant_type_2d_image_0 = OpTypePointer UniformConstant %type_2d_image_0
+     %v3uint = OpTypeVector %uint 3
+%_ptr_Input_v3uint = OpTypePointer Input %v3uint
+%_ptr_RayPayloadNV_SHitPayload = OpTypePointer RayPayloadNV %SHitPayload
+       %void = OpTypeVoid
+         %42 = OpTypeFunction %void
+     %v2uint = OpTypeVector %uint 2
+     %v3bool = OpTypeVector %bool 3
+%_ptr_Uniform__struct_12 = OpTypePointer Uniform %_struct_12
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%gBufferWorldPos = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%cbRayTracingParams = OpVariable %_ptr_Uniform_type_cbRayTracingParams Uniform
+ %topLevelAS = OpVariable %_ptr_UniformConstant_accelerationStructureNV UniformConstant
+%outputLightMap = OpVariable %_ptr_UniformConstant_type_2d_image_0 UniformConstant
+          %3 = OpVariable %_ptr_Input_v3uint Input
+    %payload = OpVariable %_ptr_RayPayloadNV_SHitPayload RayPayloadNV
+ %RayGenMain = OpFunction %void None %42
+         %47 = OpLabel
+               OpSelectionMerge %48 None
+               OpSwitch %uint_0 %49
+         %49 = OpLabel
+         %50 = OpLoad %v3uint %3
+         %51 = OpVectorShuffle %v2uint %50 %50 0 1
+         %52 = OpLoad %type_2d_image %gBufferWorldPos
+         %53 = OpImageFetch %v4float %52 %51 Lod %uint_0
+         %54 = OpVectorShuffle %v3float %53 %53 0 1 2
+         %55 = OpExtInst %v3float %1 FAbs %54
+         %56 = OpFOrdNotEqual %v3bool %55 %20
+         %57 = OpAll %bool %56
+         %58 = OpSelect %float %57 %float_1 %float_0
+         %59 = OpFOrdLessThan %bool %58 %float_0_00999999978
+               OpSelectionMerge %60 None
+               OpBranchConditional %59 %61 %60
+         %61 = OpLabel
+         %62 = OpLoad %type_2d_image_0 %outputLightMap
+               OpImageWrite %62 %51 %24 None
+               OpBranch %48
+         %60 = OpLabel
+         %63 = OpAccessChain %_ptr_Uniform__struct_12 %cbRayTracingParams %int_0
+         %64 = OpAccessChain %_ptr_Uniform_v4float %63 %int_0
+         %65 = OpLoad %v4float %64
+         %66 = OpCompositeExtract %float %65 0
+         %67 = OpCompositeExtract %float %65 1
+         %68 = OpCompositeExtract %float %65 2
+         %69 = OpCompositeConstruct %v3float %66 %67 %68
+               OpStore %payload %29
+         %70 = OpLoad %accelerationStructureNV %topLevelAS
+               OpTraceRayKHR %70 %uint_1 %uint_1 %uint_0 %uint_2 %uint_1 %54 %float_0_00999999978 %69 %float_10000 %payload
+         %71 = OpLoad %SHitPayload %payload
+         %72 = OpCompositeExtract %bool %71 0
+               OpSelectionMerge %73 None
+               OpBranchConditional %72 %74 %75
+         %74 = OpLabel
+         %76 = OpLoad %type_2d_image_0 %outputLightMap
+               OpImageWrite %76 %51 %32 None
+               OpBranch %73
+         %75 = OpLabel
+         %77 = OpLoad %type_2d_image_0 %outputLightMap
+               OpImageWrite %77 %51 %33 None
+               OpBranch %73
+         %73 = OpLabel
+               OpBranch %48
+         %48 = OpLabel
+               OpReturn
+               OpFunctionEnd

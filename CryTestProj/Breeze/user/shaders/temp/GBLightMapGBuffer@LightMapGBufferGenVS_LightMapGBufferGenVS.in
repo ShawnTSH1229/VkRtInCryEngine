@@ -1,0 +1,35 @@
+/*
+BgAAAHZzXzZfMAAAFAAAAExpZ2h0TWFwR0J1ZmZlckdlblZTAQEfAAAAAEAAAAAAAAAAAA==
+*/
+
+struct SGeometryApp2VS
+{
+  float3 posistion:POSITION3;
+  float3 normal:NORMAL;
+  float2 lightmapuv:LIGHTMAPUV;
+};
+struct SGeometryVS2PS
+{
+  float4 position:SV_POSITION;
+  float4 worldPosition:TEXCOORD0;
+  float4 shadingNormal:TEXCOORD1;
+};
+cbuffer CBGeomTrans:register(b0, space0)
+{
+  struct
+  {
+    float4x4 worldTM;
+    float4x4 rotationTM;
+    float4 lightMapScaleAndBias;
+  }
+  cbGeomTrans;
+};
+SGeometryVS2PS LightMapGBufferGenVS(SGeometryApp2VS IN)
+{
+  SGeometryVS2PS vs2PS=(SGeometryVS2PS)0;
+  float2 lightMapCoord=IN.lightmapuv*cbGeomTrans.lightMapScaleAndBias.xy+cbGeomTrans.lightMapScaleAndBias.zw;
+  vs2PS.position=float4((lightMapCoord-float2(0.5,0.5))*float2(2.0,-2.0),0.0,1.0);
+  vs2PS.worldPosition=mul(cbGeomTrans.worldTM,float4(IN.posistion,1.0));
+  vs2PS.shadingNormal=float4(mul((float3x3)cbGeomTrans.rotationTM,IN.normal.xyz),1.0);
+  return vs2PS;
+}

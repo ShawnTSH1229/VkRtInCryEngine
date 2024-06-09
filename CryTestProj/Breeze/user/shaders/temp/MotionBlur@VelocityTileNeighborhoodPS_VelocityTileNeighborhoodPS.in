@@ -1,0 +1,105 @@
+/*
+BgAAAHBzXzZfMAAAGgAAAFZlbG9jaXR5VGlsZU5laWdoYm9yaG9vZFBTAAACAhAAAABAQBAAAACAQAEQAAAAAEDMzMwAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0, space1)
+{
+  float4 vMotionBlurParams;
+};
+SamplerState VTileN_Sampler:register(s1, space0);
+Texture2D<float4>VTileN_VelTile:register(t0, space0);
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+float2 DecodeMotionVector(float2 vMotionEncoded,bool bFastEncoded=false)
+{
+  if(bFastEncoded)
+  {
+    return(vMotionEncoded-127.0f/255.0f)*2.0f;
+  }
+  vMotionEncoded.xy=(vMotionEncoded.xy-127.f/255.f)*2.0f;
+  return(vMotionEncoded.xy*vMotionEncoded.xy)*select(vMotionEncoded.xy>0.F,float2(1,1),float2(-1,-1));
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+struct vtxOut
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+float4 VelocityTileNeighborhoodPS(vtxOut IN):SV_Target0
+{
+  float3 maxVel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(0,0)*vMotionBlurParams.xy).xyz;
+  float3 vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(0,-1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(-1,0)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(1,0)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(0,1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(-1,-1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b&&dot(DecodeMotionVector(vel.xy).xy,-float2(-1,-1))>0)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(1,-1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b&&dot(DecodeMotionVector(vel.xy).xy,-float2(1,-1))>0)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(-1,1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b&&dot(DecodeMotionVector(vel.xy).xy,-float2(-1,1))>0)maxVel=vel;
+  vel=GetTexture2D(VTileN_VelTile,VTileN_Sampler,IN.baseTC.xy+float2(1,1)*vMotionBlurParams.xy).xyz;
+  if(vel.b>maxVel.b&&dot(DecodeMotionVector(vel.xy).xy,-float2(1,1))>0)maxVel=vel;
+  return float4(maxVel,0);
+}

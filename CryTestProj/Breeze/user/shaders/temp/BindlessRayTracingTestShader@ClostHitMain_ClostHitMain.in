@@ -1,0 +1,92 @@
+/*
+BwAAAGxpYl82XzMADAAAAENsb3N0SGl0TWFpbgEEHA0AAABAHA0AAEBBHA0AAEBCHA0AAMBDzMwAAAAAAAAAAA==
+*/
+
+cbuffer cbRayTracingParams:register(b0)
+{
+  struct
+  {
+    float4x4 viewProj;
+    float4x4 viewInverse;
+    float4x4 projInverse;
+    float4 lightdirection;
+    float4 padding0;
+    float4 padding1;
+    float4 padding2;
+  }
+  rayTracingParams;
+};
+RaytracingAccelerationStructure topLevelAS:register(t1);
+StructuredBuffer<uint2>bindlessBufferIndex:register(t2);
+struct SObjVertex
+{
+  float3 m_pos;
+  float3 m_normal;
+};
+StructuredBuffer<SObjVertex>vertices[]:register(t2,space1);
+StructuredBuffer<uint3>indices[]:register(t3,space1);
+struct SHitPayload
+{
+  float3 hitValue;
+};
+struct SShadowHitPayload
+{
+  bool bHit;
+};
+struct SRayTracingIntersectionAttributes
+{
+  float x;
+  float y;
+};
+float3 computeSpecular(float3 viewDir,float3 lightDir,float3 normal)
+{
+  const float kPi=3.14159265;
+  const float kShininess=4.0;
+  const float kEnergyConservation=(2.0+kShininess)/(2.0*kPi);
+  float3 V=normalize(viewDir);
+  float3 R=reflect(-lightDir,normal);
+  float specular=kEnergyConservation*pow(max(dot(V,R),0.0),kShininess);
+  return specular*float3(0.5,0.5,0.5);
+}
+[shader("closesthit")]void ClostHitMain(inout SHitPayload payload,in SRayTracingIntersectionAttributes attributes)
+{
+  uint vbIndex=bindlessBufferIndex[InstanceIndex()].x;
+  uint ibIndex=bindlessBufferIndex[InstanceIndex()].y;
+  StructuredBuffer<SObjVertex>vertexBuffer=vertices[NonUniformResourceIndex(vbIndex)];
+  StructuredBuffer<uint3>indexBuffer=indices[NonUniformResourceIndex(ibIndex)];
+  uint3 primitiveIndices=indexBuffer[PrimitiveIndex()].xyz;
+  SObjVertex vertex0=vertexBuffer[primitiveIndices.x];
+  SObjVertex vertex1=vertexBuffer[primitiveIndices.y];
+  SObjVertex vertex2=vertexBuffer[primitiveIndices.z];
+  const float3 barycentrics=float3(1.0-attributes.x-attributes.y,attributes.x,attributes.y);
+  const float3 normal=vertex0.m_normal*barycentrics.x+vertex1.m_normal*barycentrics.y+vertex2.m_normal*barycentrics.z;
+  const float3 worldNrm=normalize(mul(float4(normal,1.0),ObjectToWorld3x4()).xyz);
+  float3 normalizeL=normalize(rayTracingParams.lightdirection.xyz);
+  float nol=max(dot(worldNrm,normalizeL),0.0);
+  const float3 diffuseColor=float3(0.5,0.5,0.5);
+  float diffuse=nol*diffuseColor;
+  float3 specular=float3(0.0,0.0,0.0);
+  float attenuation=1.0f;
+  if(dot(worldNrm,normalizeL)>0.0f)
+  {
+    RayDesc ray;
+    ray.Origin=WorldRayOrigin()+WorldRayDirection()*RayTCurrent();
+    ray.Direction=normalizeL;
+    ray.TMin=0.001f;
+    ray.TMax=10000.0;
+    SShadowHitPayload shadowHitPayload;
+    shadowHitPayload.bHit=true;
+    const uint instanceInclusionMask=0x01;
+    uint rayFlags=RAY_FLAG_FORCE_OPAQUE|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER|RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH;
+    TraceRay(topLevelAS,rayFlags,instanceInclusionMask,0,2,1,ray,shadowHitPayload);
+    if(shadowHitPayload.bHit)
+    {
+      attenuation=0.3f;
+    }
+    else
+    {
+      specular=computeSpecular(-WorldRayDirection(),normalizeL,worldNrm);
+    }
+    }
+  payload.hitValue=(specular+diffuse+float3(0.1,0.1,0.1))*attenuation;
+}

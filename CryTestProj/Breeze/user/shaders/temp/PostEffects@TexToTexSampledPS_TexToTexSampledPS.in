@@ -1,0 +1,135 @@
+/*
+BgAAAHBzXzZfMAAAEQAAAFRleFRvVGV4U2FtcGxlZFBTAAAAAgIQAAAAQEAQAAAAgEABEAAAAABAzMzMAAAAAAAAAAA=
+*/
+
+cbuffer PER_BATCH:register(b0, space1)
+{
+  float4 texToTexParams0;
+  float4 texToTexParams1;
+  float4 PS_ScreenSize;
+};
+SamplerState Tx2Tx_Sampler:register(s1, space0);
+Texture2D<float4>Tx2Tx_Source:register(t0, space0);
+Texture2DMS<float4>_tex6MS:register(t6);
+Texture2DMS<float4>_tex7MS:register(t7);
+Texture2DMS<float4>_tex5MS:register(t5);
+Texture2DMS<float4>_tex4MS:register(t4);
+Texture2DMS<float4>_tex0MS:register(t0, space0);
+Texture2DMS<float4>_tex1MS:register(t1);
+Texture2DMS<float4>_tex3MS:register(t3);
+Texture2DMS<float4>_tex2MS:register(t2);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+int GetMSAASampleNum()
+{
+  int nSamplesNum=0;
+  return nSamplesNum;
+}
+half4 GetTargetIndexMS(int nIndex,float2 baseTC,int NumSamples,int nCurrSample)
+{
+  int3 vPixCoord=int3(baseTC*PS_ScreenSize.xy,0);
+  return half4(0,0,0,0);
+}
+half4 EncodeRGBK(in half4 Color,const half fMultiplier,bool bUsePPP=false)
+{
+  const half4 cScale=half4(half3(1.h,1.h,1.h)/fMultiplier,1.h/255.0);
+  half fMax=saturate(dot(half4(Color.rgb,1.h),cScale));
+  Color.a=ceil(fMax*255.h)/255.h;
+  Color.xyz/=Color.a*fMultiplier;
+  if(bUsePPP)
+  {
+    Color.a=sqrt(Color.a);
+  }
+  return Color;
+}
+half4 DecodeRGBK(in half4 Color,const half fMultiplier,bool bUsePPP=false)
+{
+  if(bUsePPP)
+  {
+    Color.rgb*=(Color.a*Color.a)*fMultiplier;
+  }
+  else Color.rgb*=Color.a*fMultiplier;
+  return Color;
+}
+struct vtxOutTexToTex
+{
+  float4 HPosition:SV_POSITION;
+  float2 baseTC:TEXCOORD0;
+};
+pixout TexToTexSampledPS(vtxOutTexToTex IN)
+{
+  pixout OUT=(pixout)0;
+  float2 tc=IN.baseTC.xy;
+  half4 _c0=0;
+  half4 _c1=0;
+  half4 _c2=0;
+  half4 _c3=0;
+  half4 _c4=0;
+  _c0=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,tc);
+  _c1=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,tc+texToTexParams0.xy);
+  _c2=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,tc+texToTexParams0.zw);
+  _c3=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,tc+texToTexParams1.xy);
+  _c4=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,tc+texToTexParams1.zw);
+  bool bRgbkUsePPP=true;
+  OUT.Color=(_c0+_c1+_c2+_c3+_c4)*0.2h;
+  return OUT;
+}

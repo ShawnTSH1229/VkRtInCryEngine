@@ -1,0 +1,157 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 107
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %Debug_RenderTargetPS "Debug_RenderTargetPS" %in_var_TEXCOORD0 %out_var_SV_Target0
+               OpExecutionMode %Debug_RenderTargetPS OriginUpperLeft
+               OpSource HLSL 600
+               OpName %type_sampler "type.sampler"
+               OpName %smpBaseMap "smpBaseMap"
+               OpName %type_2d_image "type.2d.image"
+               OpName %texBaseMap "texBaseMap"
+               OpName %type_CBDebugRenderTarget "type.CBDebugRenderTarget"
+               OpMemberName %type_CBDebugRenderTarget 0 "cbDebugRenderTarget"
+               OpMemberName %_struct_10 0 "colorMultiplier"
+               OpMemberName %_struct_10 1 "showRTFlags"
+               OpMemberName %_struct_10 2 "transform"
+               OpName %CBDebugRenderTarget "CBDebugRenderTarget"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %out_var_SV_Target0 "out.var.SV_Target0"
+               OpName %Debug_RenderTargetPS "Debug_RenderTargetPS"
+               OpName %type_sampled_image "type.sampled.image"
+               OpDecorate %in_var_TEXCOORD0 Location 0
+               OpDecorate %out_var_SV_Target0 Location 0
+               OpDecorate %smpBaseMap DescriptorSet 0
+               OpDecorate %smpBaseMap Binding 1
+               OpDecorate %texBaseMap DescriptorSet 0
+               OpDecorate %texBaseMap Binding 0
+               OpDecorate %CBDebugRenderTarget DescriptorSet 1
+               OpDecorate %CBDebugRenderTarget Binding 0
+               OpMemberDecorate %_struct_10 0 Offset 0
+               OpMemberDecorate %_struct_10 1 Offset 16
+               OpMemberDecorate %_struct_10 2 Offset 32
+               OpMemberDecorate %type_CBDebugRenderTarget 0 Offset 0
+               OpDecorate %type_CBDebugRenderTarget Block
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+        %int = OpTypeInt 32 1
+      %int_1 = OpConstant %int 1
+      %int_0 = OpConstant %int 0
+      %int_2 = OpConstant %int 2
+  %float_0_5 = OpConstant %float 0.5
+   %float_32 = OpConstant %float 32
+       %bool = OpTypeBool
+      %int_3 = OpConstant %int 3
+    %float_0 = OpConstant %float 0
+    %v3float = OpTypeVector %float 3
+         %25 = OpConstantComposite %v3float %float_0 %float_0 %float_0
+    %float_2 = OpConstant %float 2
+    %float_1 = OpConstant %float 1
+         %28 = OpConstantComposite %v3float %float_1 %float_1 %float_1
+%float_0_125 = OpConstant %float 0.125
+%type_sampler = OpTypeSampler
+%_ptr_UniformConstant_type_sampler = OpTypePointer UniformConstant %type_sampler
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+ %_struct_10 = OpTypeStruct %v4float %v4float %v4float
+%type_CBDebugRenderTarget = OpTypeStruct %_struct_10
+%_ptr_Uniform_type_CBDebugRenderTarget = OpTypePointer Uniform %type_CBDebugRenderTarget
+    %v2float = OpTypeVector %float 2
+%_ptr_Input_v2float = OpTypePointer Input %v2float
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+       %void = OpTypeVoid
+         %37 = OpTypeFunction %void
+%_ptr_Function_float = OpTypePointer Function %float
+%_ptr_Function_v4float = OpTypePointer Function %v4float
+%_ptr_Uniform__struct_10 = OpTypePointer Uniform %_struct_10
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+%type_sampled_image = OpTypeSampledImage %type_2d_image
+     %v3bool = OpTypeVector %bool 3
+ %smpBaseMap = OpVariable %_ptr_UniformConstant_type_sampler UniformConstant
+ %texBaseMap = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%CBDebugRenderTarget = OpVariable %_ptr_Uniform_type_CBDebugRenderTarget Uniform
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v2float Input
+%out_var_SV_Target0 = OpVariable %_ptr_Output_v4float Output
+         %44 = OpConstantNull %v4float
+%Debug_RenderTargetPS = OpFunction %void None %37
+         %45 = OpLabel
+         %46 = OpVariable %_ptr_Function_v4float Function
+         %47 = OpLoad %v2float %in_var_TEXCOORD0
+         %48 = OpAccessChain %_ptr_Uniform__struct_10 %CBDebugRenderTarget %int_0
+         %49 = OpAccessChain %_ptr_Uniform_v4float %48 %int_1
+         %50 = OpAccessChain %_ptr_Uniform_float %49 %int_0
+         %51 = OpLoad %float %50
+         %52 = OpAccessChain %_ptr_Uniform__struct_10 %CBDebugRenderTarget %int_0
+         %53 = OpAccessChain %_ptr_Uniform_v4float %52 %int_1
+         %54 = OpAccessChain %_ptr_Uniform_float %53 %int_1
+         %55 = OpLoad %float %54
+         %56 = OpAccessChain %_ptr_Uniform__struct_10 %CBDebugRenderTarget %int_0
+         %57 = OpAccessChain %_ptr_Uniform_v4float %56 %int_1
+         %58 = OpAccessChain %_ptr_Uniform_float %57 %int_2
+         %59 = OpLoad %float %58
+         %60 = OpLoad %type_2d_image %texBaseMap
+         %61 = OpLoad %type_sampler %smpBaseMap
+         %62 = OpSampledImage %type_sampled_image %60 %61
+         %63 = OpImageSampleImplicitLod %v4float %62 %47 None
+         %64 = OpFOrdGreaterThan %bool %55 %float_0_5
+               OpSelectionMerge %65 None
+               OpBranchConditional %64 %66 %67
+         %67 = OpLabel
+         %68 = OpFOrdGreaterThan %bool %59 %float_0_5
+               OpSelectionMerge %69 None
+               OpBranchConditional %68 %70 %69
+         %70 = OpLabel
+         %71 = OpVectorShuffle %v3float %63 %63 0 1 2
+         %72 = OpExtInst %v3float %1 Floor %71
+         %73 = OpExtInst %v3float %1 Fract %71
+         %74 = OpFOrdEqual %v3bool %72 %25
+         %75 = OpVectorTimesScalar %v3float %73 %float_2
+         %76 = OpFAdd %v3float %28 %73
+         %77 = OpExtInst %v3float %1 Exp2 %72
+         %78 = OpFMul %v3float %76 %77
+         %79 = OpSelect %v3float %74 %75 %78
+         %80 = OpVectorShuffle %v3float %79 %44 0 1 2
+         %81 = OpVectorTimesScalar %v3float %80 %float_0_125
+         %82 = OpVectorShuffle %v4float %63 %81 4 5 6 3
+               OpBranch %69
+         %69 = OpLabel
+         %83 = OpPhi %v4float %63 %67 %82 %70
+               OpBranch %65
+         %66 = OpLabel
+               OpStore %46 %63
+               OpBranch %84
+         %84 = OpLabel
+         %85 = OpAccessChain %_ptr_Function_float %46 %int_3
+         %86 = OpLoad %float %85
+         %87 = OpFMul %float %86 %float_32
+         %88 = OpLoad %v4float %46
+         %89 = OpVectorShuffle %v3float %88 %88 0 1 2
+         %90 = OpVectorTimesScalar %v3float %89 %87
+         %91 = OpVectorShuffle %v4float %88 %90 4 5 6 3
+               OpStore %46 %91
+               OpBranch %92
+         %92 = OpLabel
+         %93 = OpLoad %v4float %46
+         %94 = OpCompositeExtract %float %93 0
+         %95 = OpCompositeExtract %float %93 1
+         %96 = OpCompositeExtract %float %93 2
+         %97 = OpCompositeConstruct %v3float %94 %95 %96
+         %98 = OpVectorShuffle %v4float %63 %97 4 5 6 3
+               OpBranch %65
+         %65 = OpLabel
+         %99 = OpPhi %v4float %98 %92 %83 %69
+        %100 = OpAccessChain %_ptr_Uniform__struct_10 %CBDebugRenderTarget %int_0
+        %101 = OpAccessChain %_ptr_Uniform_v4float %100 %int_0
+        %102 = OpLoad %v4float %101
+        %103 = OpFMul %v4float %99 %102
+        %104 = OpVectorShuffle %v4float %103 %103 3 3 3 3
+        %105 = OpCompositeConstruct %v4float %51 %51 %51 %51
+        %106 = OpExtInst %v4float %1 FMix %103 %104 %105
+               OpStore %out_var_SV_Target0 %106
+               OpReturn
+               OpFunctionEnd

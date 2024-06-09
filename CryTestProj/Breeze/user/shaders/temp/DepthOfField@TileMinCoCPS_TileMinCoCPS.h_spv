@@ -1,0 +1,144 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 107
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %TileMinCoCPS "TileMinCoCPS" %in_var_TEXCOORD0 %in_var_TEXCOORD1 %in_var_TEXCOORD2 %in_var_TEXCOORD3 %out_var_SV_Target0
+               OpExecutionMode %TileMinCoCPS OriginUpperLeft
+               OpSource HLSL 600
+               OpName %type_sampler "type.sampler"
+               OpName %TMCoC_SCoCSamp "TMCoC_SCoCSamp"
+               OpName %type_2d_image "type.2d.image"
+               OpName %TMCoC_SCoC "TMCoC_SCoC"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %in_var_TEXCOORD1 "in.var.TEXCOORD1"
+               OpName %in_var_TEXCOORD2 "in.var.TEXCOORD2"
+               OpName %in_var_TEXCOORD3 "in.var.TEXCOORD3"
+               OpName %out_var_SV_Target0 "out.var.SV_Target0"
+               OpName %TileMinCoCPS "TileMinCoCPS"
+               OpName %type_sampled_image "type.sampled.image"
+               OpDecorate %in_var_TEXCOORD0 Location 0
+               OpDecorate %in_var_TEXCOORD1 Location 1
+               OpDecorate %in_var_TEXCOORD2 Location 2
+               OpDecorate %in_var_TEXCOORD3 Location 3
+               OpDecorate %out_var_SV_Target0 Location 0
+               OpDecorate %TMCoC_SCoCSamp DescriptorSet 0
+               OpDecorate %TMCoC_SCoCSamp Binding 1
+               OpDecorate %TMCoC_SCoC DescriptorSet 0
+               OpDecorate %TMCoC_SCoC Binding 0
+      %float = OpTypeFloat 32
+    %v2float = OpTypeVector %float 2
+        %int = OpTypeInt 32 1
+      %int_1 = OpConstant %int 1
+      %int_0 = OpConstant %int 0
+%type_sampler = OpTypeSampler
+%_ptr_UniformConstant_type_sampler = OpTypePointer UniformConstant %type_sampler
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+    %v4float = OpTypeVector %float 4
+%_ptr_Input_v4float = OpTypePointer Input %v4float
+%_ptr_Output_v2float = OpTypePointer Output %v2float
+       %void = OpTypeVoid
+         %24 = OpTypeFunction %void
+%_ptr_Function_v2float = OpTypePointer Function %v2float
+%_ptr_Function_float = OpTypePointer Function %float
+%type_sampled_image = OpTypeSampledImage %type_2d_image
+%TMCoC_SCoCSamp = OpVariable %_ptr_UniformConstant_type_sampler UniformConstant
+ %TMCoC_SCoC = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD1 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD2 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD3 = OpVariable %_ptr_Input_v4float Input
+%out_var_SV_Target0 = OpVariable %_ptr_Output_v2float Output
+         %27 = OpConstantNull %v2float
+%TileMinCoCPS = OpFunction %void None %24
+         %28 = OpLabel
+         %29 = OpVariable %_ptr_Function_v2float Function
+         %30 = OpLoad %v4float %in_var_TEXCOORD0
+         %31 = OpLoad %v4float %in_var_TEXCOORD1
+         %32 = OpLoad %v4float %in_var_TEXCOORD2
+         %33 = OpLoad %v4float %in_var_TEXCOORD3
+               OpStore %29 %27
+         %34 = OpLoad %type_2d_image %TMCoC_SCoC
+         %35 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %36 = OpVectorShuffle %v2float %30 %30 0 1
+         %37 = OpSampledImage %type_sampled_image %34 %35
+         %38 = OpImageSampleImplicitLod %v4float %37 %36 None
+         %39 = OpVectorShuffle %v2float %38 %38 0 1
+         %40 = OpLoad %type_2d_image %TMCoC_SCoC
+         %41 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %42 = OpVectorShuffle %v2float %30 %30 2 3
+         %43 = OpSampledImage %type_sampled_image %40 %41
+         %44 = OpImageSampleImplicitLod %v4float %43 %42 None
+         %45 = OpVectorShuffle %v2float %44 %44 0 1
+         %46 = OpLoad %type_2d_image %TMCoC_SCoC
+         %47 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %48 = OpVectorShuffle %v2float %31 %31 0 1
+         %49 = OpSampledImage %type_sampled_image %46 %47
+         %50 = OpImageSampleImplicitLod %v4float %49 %48 None
+         %51 = OpVectorShuffle %v2float %50 %50 0 1
+         %52 = OpLoad %type_2d_image %TMCoC_SCoC
+         %53 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %54 = OpVectorShuffle %v2float %31 %31 2 3
+         %55 = OpSampledImage %type_sampled_image %52 %53
+         %56 = OpImageSampleImplicitLod %v4float %55 %54 None
+         %57 = OpVectorShuffle %v2float %56 %56 0 1
+         %58 = OpLoad %type_2d_image %TMCoC_SCoC
+         %59 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %60 = OpVectorShuffle %v2float %32 %32 0 1
+         %61 = OpSampledImage %type_sampled_image %58 %59
+         %62 = OpImageSampleImplicitLod %v4float %61 %60 None
+         %63 = OpVectorShuffle %v2float %62 %62 0 1
+         %64 = OpLoad %type_2d_image %TMCoC_SCoC
+         %65 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %66 = OpVectorShuffle %v2float %32 %32 2 3
+         %67 = OpSampledImage %type_sampled_image %64 %65
+         %68 = OpImageSampleImplicitLod %v4float %67 %66 None
+         %69 = OpVectorShuffle %v2float %68 %68 0 1
+         %70 = OpLoad %type_2d_image %TMCoC_SCoC
+         %71 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %72 = OpVectorShuffle %v2float %33 %33 0 1
+         %73 = OpSampledImage %type_sampled_image %70 %71
+         %74 = OpImageSampleImplicitLod %v4float %73 %72 None
+         %75 = OpVectorShuffle %v2float %74 %74 0 1
+         %76 = OpLoad %type_2d_image %TMCoC_SCoC
+         %77 = OpLoad %type_sampler %TMCoC_SCoCSamp
+         %78 = OpVectorShuffle %v2float %33 %33 2 3
+         %79 = OpSampledImage %type_sampled_image %76 %77
+         %80 = OpImageSampleImplicitLod %v4float %79 %78 None
+         %81 = OpVectorShuffle %v2float %80 %80 0 1
+         %82 = OpExtInst %v2float %1 NMax %51 %57
+         %83 = OpExtInst %v2float %1 NMax %45 %82
+         %84 = OpExtInst %v2float %1 NMax %39 %83
+         %85 = OpCompositeExtract %float %84 0
+         %86 = OpAccessChain %_ptr_Function_float %29 %int_0
+               OpStore %86 %85
+         %87 = OpExtInst %v2float %1 NMin %51 %57
+         %88 = OpExtInst %v2float %1 NMin %45 %87
+         %89 = OpExtInst %v2float %1 NMin %39 %88
+         %90 = OpCompositeExtract %float %89 1
+         %91 = OpAccessChain %_ptr_Function_float %29 %int_1
+               OpStore %91 %90
+         %92 = OpLoad %v2float %29
+         %93 = OpExtInst %v2float %1 NMax %75 %81
+         %94 = OpExtInst %v2float %1 NMax %69 %93
+         %95 = OpExtInst %v2float %1 NMax %63 %94
+         %96 = OpExtInst %v2float %1 NMax %92 %95
+         %97 = OpCompositeExtract %float %96 0
+         %98 = OpAccessChain %_ptr_Function_float %29 %int_0
+               OpStore %98 %97
+         %99 = OpLoad %v2float %29
+        %100 = OpExtInst %v2float %1 NMin %75 %81
+        %101 = OpExtInst %v2float %1 NMin %69 %100
+        %102 = OpExtInst %v2float %1 NMin %63 %101
+        %103 = OpExtInst %v2float %1 NMin %99 %102
+        %104 = OpCompositeExtract %float %103 1
+        %105 = OpAccessChain %_ptr_Function_float %29 %int_1
+               OpStore %105 %104
+        %106 = OpLoad %v2float %29
+               OpStore %out_var_SV_Target0 %106
+               OpReturn
+               OpFunctionEnd

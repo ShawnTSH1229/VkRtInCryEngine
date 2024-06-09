@@ -1,0 +1,155 @@
+/*
+BgAAAHBzXzZfMAAAEgAAAERvd25zYW1wbGVTdGFibGVQUwAAAgIQAAAAQEAQAAAAgEABEAAAAABAzMzMAAAAAAAAAAA=
+*/
+
+cbuffer PER_BATCH:register(b0, space1)
+{
+  float4 PS_ScreenSize;
+};
+SamplerState Tx2Tx_Sampler:register(s1, space0);
+Texture2D<float4>Tx2Tx_Source:register(t0, space0);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half3 GetLuminanceWeights()
+{
+  return half3(0.2126h,0.7152h,0.0722h);
+}
+half GetLuminance(half3 color)
+{
+  return dot(color,GetLuminanceWeights());
+}
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+struct vtxOutTexToTex
+{
+  float4 HPosition:SV_POSITION;
+  float2 baseTC:TEXCOORD0;
+};
+pixout DownsampleStablePS(vtxOutTexToTex IN)
+{
+  pixout OUT=(pixout)0;
+  const bool bKillFireflies=true;
+  const float2 TexSize=1/(PS_ScreenSize.xy*2);
+  half3 blockTL=0,blockTR=0,blockBR=0,blockBL=0;
+  half3 tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(-2,-2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTL+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(0,-2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTL+=tex;
+  blockTR+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(2,-2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTR+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(-2,0)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTL+=tex;
+  blockBL+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(0,0)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTL+=tex;
+  blockTR+=tex;
+  blockBR+=tex;
+  blockBL+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(2,0)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockTR+=tex;
+  blockBR+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(-2,2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockBL+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(0,2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockBL+=tex;
+  blockBR+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(2,2)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockBR+=tex;
+  half3 blockCC=0;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(-1,-1)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockCC+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(1,-1)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockCC+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(1,1)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockCC+=tex;
+  tex=GetTexture2D(Tx2Tx_Source,Tx2Tx_Sampler,IN.baseTC.xy+float2(-1,1)*TexSize).rgb;
+  if(bKillFireflies)tex/=1+GetLuminance(tex);
+  blockCC+=tex;
+  blockTL/=4;
+  blockTR/=4;
+  blockBR/=4;
+  blockBL/=4;
+  blockCC/=4;
+  if(bKillFireflies)
+  {
+    blockTL/=(1-GetLuminance(blockTL));
+    blockTR/=(1-GetLuminance(blockTR));
+    blockBR/=(1-GetLuminance(blockBR));
+    blockBL/=(1-GetLuminance(blockBL));
+    blockCC/=(1-GetLuminance(blockCC));
+  }
+  OUT.Color.rgb=0.5*blockCC+0.125*(blockTL+blockTR+blockBR+blockBL);
+  OUT.Color.rgb=all(isfinite(OUT.Color.rgb))?OUT.Color.rgb:float3(0,0,0);
+  return OUT;
+}

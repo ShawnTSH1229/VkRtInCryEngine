@@ -1,0 +1,198 @@
+/*
+BgAAAHZzXzZfMAAACQAAAFNreVBhc3NWUwAAAAMGEAAAAEBAEAAAAEBBEAAAAEBCEAAAAEBDEAAAAIBAEAAAAIBBAREAAAAARgEQAAAAAEAAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0)
+{
+  float4 vfHeightDensityRampParams;
+  float4 vfScatteringParams;
+  float4 vfGlobalEnvProbeParams0;
+  float4 vfScatteringBlendParams;
+  float4 vfScatteringColor;
+  float4 vfDistributionParams;
+  float4 vfSamplingParams;
+  float3 vfColGradDelta;
+  float4 irreg_kernel_2d[16/2];
+  float4 vfRampParams;
+  float4 vfColGradRadial;
+  float4 vfGlobalEnvProbeParams1;
+  float4 vfColGradParams;
+  float4 vfHeightDensityParams;
+  float3 vfColGradBase;
+  float4 vfDistanceParams;
+  float4 vfParams;
+  float4 vfScatteringSecondaryColor;
+  float4 vfSunDir;
+};
+cbuffer PER_MATERIAL:register(b1)
+{
+  float3 __0bendDetailFrequency__1bendDetailLeafAmplitude__2bendDetailBranchAmplitude__3:packoffset(c38);
+};
+cbuffer CBPerViewGlobal:register(b0, space1)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+cbuffer CBSky:register(b0)
+{
+  struct
+  {
+    float4x4 WorldMatrix;
+    float2 TextureSize;
+    float2 TexelSize;
+    float3 PartialMieInScatteringConst;
+    float3 PartialRayleighInScatteringConst;
+    float3 SunDirection;
+    float3 PhaseFunctionConstants;
+    float3 NightSkyColBase;
+    float3 NightSkyColDelta;
+    float2 NightSkyZenithColShift;
+    float4 NightMoonDirSize;
+    float3 NightMoonTexGenRight;
+    float3 NightMoonTexGenUp;
+    float3 NightMoonColor;
+    float4 NightMoonInnerCoronaColorScale;
+    float4 NightMoonOuterCoronaColorScale;
+    float4 StarSize;
+    float StarIntensity;
+    float4 SkyBoxParams;
+    float4 SkyBoxExposure;
+    float4 SkyBoxOpacity;
+  }
+  cbSky;
+};
+cbuffer CBPerPassForward:register(b5)
+{
+  struct
+  {
+    float4 vfParams;
+    float4 vfRampParams;
+    float4 vfSunDir;
+    float3 vfColGradBase;
+    float padding0;
+    float3 vfColGradDelta;
+    float padding1;
+    float4 vfColGradParams;
+    float4 vfColGradRadial;
+    float4 vfShadowDarkening;
+    float4 vfShadowDarkeningSunAmb;
+  }
+  cbFog;
+  struct
+  {
+    float4 vfSamplingParams;
+    float4 vfDistributionParams;
+    float4 vfScatteringParams;
+    float4 vfScatteringBlendParams;
+    float4 vfScatteringColor;
+    float4 vfScatteringSecondaryColor;
+    float4 vfHeightDensityParams;
+    float4 vfHeightDensityRampParams;
+    float4 vfDistanceParams;
+    float4 vfGlobalEnvProbeParams0;
+    float4 vfGlobalEnvProbeParams1;
+  }
+  cbVoxelFog;
+  struct
+  {
+    float4x4 TexGen0;
+    float4x4 TexGen1;
+    float4x4 TexGen2;
+    float4x4 TexGen3;
+    float4 vInvShadowMapSize;
+    float4 fDepthTestBias;
+    float4 fOneDivFarDist;
+    float4 fKernelRadius;
+    float4 CloudShadowParams;
+    float4 CloudShadowAnimParams;
+    float4 irreg_kernel_2d[8];
+  }
+  cbShadowSampling;
+  struct
+  {
+    float4 CloudShadingColorSun;
+    float4 CloudShadingColorSky;
+  }
+  cbClouds;
+  struct
+  {
+    float4 IntegrationMode;
+  }
+  cbSVOGI;
+};
+cbuffer CBPerInstance:register(b0)
+{};
+cbuffer CBPerDraw:register(b0)
+{
+  float3x4 CD_WorldMatrix;
+  float3x4 CD_PrevWorldMatrix;
+  float4 CD_CustomData;
+  float4 CD_CustomData1;
+  float4 CD_CustomData2;
+  float4 CD_LightMapScaleAndOffset;
+};
+struct vtxIn
+{
+  float4 Position:POSITION;
+  float2 baseTC:TEXCOORD0;
+  float4 Color:COLOR;
+};
+struct vtxOut
+{
+  float4 HPosition:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+vtxOut SkyPassVS(vtxIn IN)
+{
+  vtxOut OUT=(vtxOut)0;
+  OUT.HPosition=float4(float2(IN.Position.x,1-IN.Position.y)*2-1,0,1.0);
+  return OUT;
+}

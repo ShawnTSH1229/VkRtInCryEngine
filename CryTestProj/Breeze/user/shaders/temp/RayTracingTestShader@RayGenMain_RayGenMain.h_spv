@@ -1,0 +1,113 @@
+; SPIR-V
+; Version: 1.5
+; Generator: Google spiregg; 0
+; Bound: 55
+; Schema: 0
+               OpCapability RayTracingKHR
+               OpCapability RayQueryKHR
+               OpExtension "SPV_KHR_ray_tracing"
+               OpExtension "SPV_KHR_ray_query"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint RayGenerationNV %RayGenMain "RayGenMain" %2 %tlas %Rays %OcclusionOutput %Payload
+               OpSource HLSL 630
+               OpName %FDefaultPayload "FDefaultPayload"
+               OpMemberName %FDefaultPayload 0 "HitT"
+               OpMemberName %FDefaultPayload 1 "PrimitiveIndex"
+               OpMemberName %FDefaultPayload 2 "InstanceIndex"
+               OpMemberName %FDefaultPayload 3 "Barycentrics"
+               OpMemberName %FDefaultPayload 4 "InstanceID"
+               OpName %accelerationStructureNV "accelerationStructureNV"
+               OpName %tlas "tlas"
+               OpName %type_StructuredBuffer_FBasicRayData "type.StructuredBuffer.FBasicRayData"
+               OpName %FBasicRayData "FBasicRayData"
+               OpMemberName %FBasicRayData 0 "Origin"
+               OpMemberName %FBasicRayData 1 "Mask"
+               OpMemberName %FBasicRayData 2 "Direction"
+               OpMemberName %FBasicRayData 3 "TFar"
+               OpName %Rays "Rays"
+               OpName %type_RWStructuredBuffer_uint "type.RWStructuredBuffer.uint"
+               OpName %OcclusionOutput "OcclusionOutput"
+               OpName %Payload "Payload"
+               OpName %RayGenMain "RayGenMain"
+               OpDecorate %2 BuiltIn LaunchIdNV
+               OpDecorate %Payload Location 0
+               OpDecorate %tlas DescriptorSet 0
+               OpDecorate %tlas Binding 0
+               OpDecorate %Rays DescriptorSet 0
+               OpDecorate %Rays Binding 1
+               OpDecorate %OcclusionOutput DescriptorSet 0
+               OpDecorate %OcclusionOutput Binding 2
+               OpMemberDecorate %FBasicRayData 0 Offset 0
+               OpMemberDecorate %FBasicRayData 1 Offset 12
+               OpMemberDecorate %FBasicRayData 2 Offset 16
+               OpMemberDecorate %FBasicRayData 3 Offset 28
+               OpDecorate %_runtimearr_FBasicRayData ArrayStride 32
+               OpMemberDecorate %type_StructuredBuffer_FBasicRayData 0 Offset 0
+               OpMemberDecorate %type_StructuredBuffer_FBasicRayData 0 NonWritable
+               OpDecorate %type_StructuredBuffer_FBasicRayData Block
+               OpDecorate %_runtimearr_uint ArrayStride 4
+               OpMemberDecorate %type_RWStructuredBuffer_uint 0 Offset 0
+               OpDecorate %type_RWStructuredBuffer_uint Block
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+      %float = OpTypeFloat 32
+    %float_0 = OpConstant %float 0
+      %int_1 = OpConstant %int 1
+       %uint = OpTypeInt 32 0
+     %uint_1 = OpConstant %uint 1
+    %v2float = OpTypeVector %float 2
+%FDefaultPayload = OpTypeStruct %float %uint %uint %v2float %uint
+         %22 = OpConstantNull %FDefaultPayload
+     %uint_0 = OpConstant %uint 0
+     %uint_2 = OpConstant %uint 2
+%accelerationStructureNV = OpTypeAccelerationStructureKHR
+%_ptr_UniformConstant_accelerationStructureNV = OpTypePointer UniformConstant %accelerationStructureNV
+    %v3float = OpTypeVector %float 3
+%FBasicRayData = OpTypeStruct %v3float %uint %v3float %float
+%_runtimearr_FBasicRayData = OpTypeRuntimeArray %FBasicRayData
+%type_StructuredBuffer_FBasicRayData = OpTypeStruct %_runtimearr_FBasicRayData
+%_ptr_StorageBuffer_type_StructuredBuffer_FBasicRayData = OpTypePointer StorageBuffer %type_StructuredBuffer_FBasicRayData
+%_runtimearr_uint = OpTypeRuntimeArray %uint
+%type_RWStructuredBuffer_uint = OpTypeStruct %_runtimearr_uint
+%_ptr_StorageBuffer_type_RWStructuredBuffer_uint = OpTypePointer StorageBuffer %type_RWStructuredBuffer_uint
+     %v3uint = OpTypeVector %uint 3
+%_ptr_Input_v3uint = OpTypePointer Input %v3uint
+%_ptr_RayPayloadNV_FDefaultPayload = OpTypePointer RayPayloadNV %FDefaultPayload
+       %void = OpTypeVoid
+         %33 = OpTypeFunction %void
+%_ptr_StorageBuffer_FBasicRayData = OpTypePointer StorageBuffer %FBasicRayData
+       %bool = OpTypeBool
+%_ptr_StorageBuffer_uint = OpTypePointer StorageBuffer %uint
+       %tlas = OpVariable %_ptr_UniformConstant_accelerationStructureNV UniformConstant
+       %Rays = OpVariable %_ptr_StorageBuffer_type_StructuredBuffer_FBasicRayData StorageBuffer
+%OcclusionOutput = OpVariable %_ptr_StorageBuffer_type_RWStructuredBuffer_uint StorageBuffer
+          %2 = OpVariable %_ptr_Input_v3uint Input
+    %Payload = OpVariable %_ptr_RayPayloadNV_FDefaultPayload RayPayloadNV
+ %RayGenMain = OpFunction %void None %33
+         %37 = OpLabel
+         %38 = OpLoad %v3uint %2
+         %39 = OpCompositeExtract %uint %38 0
+         %40 = OpAccessChain %_ptr_StorageBuffer_FBasicRayData %Rays %int_0 %39
+         %41 = OpLoad %FBasicRayData %40
+         %42 = OpCompositeExtract %v3float %41 0
+         %43 = OpCompositeExtract %v3float %41 2
+         %44 = OpCompositeExtract %float %41 3
+               OpStore %Payload %22
+         %45 = OpLoad %accelerationStructureNV %tlas
+               OpTraceRayKHR %45 %uint_1 %uint_1 %uint_0 %uint_2 %uint_0 %42 %float_0 %43 %44 %Payload
+         %46 = OpLoad %FDefaultPayload %Payload
+         %47 = OpCompositeExtract %float %46 0
+         %48 = OpFOrdGreaterThan %bool %47 %float_0
+               OpSelectionMerge %49 None
+               OpBranchConditional %48 %50 %51
+         %50 = OpLabel
+               OpBranch %49
+         %51 = OpLabel
+               OpBranch %49
+         %49 = OpLabel
+         %52 = OpPhi %int %int_1 %50 %int_0 %51
+         %53 = OpBitcast %uint %52
+         %54 = OpAccessChain %_ptr_StorageBuffer_uint %OcclusionOutput %int_0 %39
+               OpStore %54 %53
+               OpReturn
+               OpFunctionEnd

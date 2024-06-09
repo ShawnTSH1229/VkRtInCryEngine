@@ -1,0 +1,44 @@
+/*
+BwAAAGxpYl82XzMACgAAAFJheUdlbk1haW4AAAEEHA0AAABAHA0AAEBBHA0AAEBCHA0AAMBDzMwAAAAAAAAAAA==
+*/
+
+Texture2D<float4>gBufferWorldPos;
+cbuffer cbRayTracingParams:register(b0)
+{
+  struct
+  {
+    float4 lightdirection;
+  }
+  rayTracingParams;
+};
+RaytracingAccelerationStructure topLevelAS:register(t1);
+RWTexture2D<float4>outputLightMap:register(u3);
+struct SHitPayload
+{
+  bool bHit;
+};
+[shader("raygeneration")]void RayGenMain()
+{
+  const uint2 rayIndex=DispatchRaysIndex().xy;
+  float3 worldPosition=gBufferWorldPos[rayIndex].xyz;
+  if(all(abs(worldPosition))<0.01)
+  {
+    outputLightMap[rayIndex]=float4(0.0,0.0,1.0,0.0);
+    return;
+  }
+  RayDesc ray;
+  ray.Origin=worldPosition;
+  ray.Direction=rayTracingParams.lightdirection;
+  ray.TMin=0.01f;
+  ray.TMax=10000.0;
+  SHitPayload payload=(SHitPayload)0;
+  TraceRay(topLevelAS,RAY_FLAG_FORCE_OPAQUE,0x01,0,2,1,ray,payload);
+  if(payload.bHit)
+  {
+    outputLightMap[rayIndex]=float4(0.0,0.0,0.0,0.0);
+  }
+  else
+  {
+    outputLightMap[rayIndex]=float4(1.0,0.0,0.0,0.0);
+  }
+  }

@@ -1,0 +1,76 @@
+; SPIR-V
+; Version: 1.5
+; Generator: Google spiregg; 0
+; Bound: 36
+; Schema: 0
+               OpCapability RayTracingKHR
+               OpExtension "SPV_KHR_ray_tracing"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint ClosestHitNV %ClostHitMain "ClostHitMain" %cbRayTracingParams %payload %attributes
+               OpSource HLSL 630
+               OpName %type_cbRayTracingParams "type.cbRayTracingParams"
+               OpMemberName %type_cbRayTracingParams 0 "rayTracingParams"
+               OpMemberName %_struct_11 0 "lightdirection"
+               OpName %cbRayTracingParams "cbRayTracingParams"
+               OpName %SHitPayload "SHitPayload"
+               OpMemberName %SHitPayload 0 "bHit"
+               OpName %payload "payload"
+               OpName %SRayTracingIntersectionAttributes "SRayTracingIntersectionAttributes"
+               OpMemberName %SRayTracingIntersectionAttributes 0 "x"
+               OpMemberName %SRayTracingIntersectionAttributes 1 "y"
+               OpName %attributes "attributes"
+               OpName %ClostHitMain "ClostHitMain"
+               OpName %param_var_payload "param.var.payload"
+               OpName %param_var_attributes "param.var.attributes"
+               OpName %src_ClostHitMain "src.ClostHitMain"
+               OpName %payload_0 "payload"
+               OpName %attributes_0 "attributes"
+               OpName %bb_entry "bb.entry"
+               OpDecorate %cbRayTracingParams DescriptorSet 0
+               OpDecorate %cbRayTracingParams Binding 0
+               OpMemberDecorate %_struct_11 0 Offset 0
+               OpMemberDecorate %type_cbRayTracingParams 0 Offset 0
+               OpDecorate %type_cbRayTracingParams Block
+       %bool = OpTypeBool
+       %true = OpConstantTrue %bool
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+ %_struct_11 = OpTypeStruct %v4float
+%type_cbRayTracingParams = OpTypeStruct %_struct_11
+%_ptr_Uniform_type_cbRayTracingParams = OpTypePointer Uniform %type_cbRayTracingParams
+%SHitPayload = OpTypeStruct %bool
+%_ptr_IncomingRayPayloadNV_SHitPayload = OpTypePointer IncomingRayPayloadNV %SHitPayload
+%SRayTracingIntersectionAttributes = OpTypeStruct %float %float
+%_ptr_HitAttributeNV_SRayTracingIntersectionAttributes = OpTypePointer HitAttributeNV %SRayTracingIntersectionAttributes
+       %void = OpTypeVoid
+         %19 = OpTypeFunction %void
+%_ptr_Function_SHitPayload = OpTypePointer Function %SHitPayload
+%_ptr_Function_SRayTracingIntersectionAttributes = OpTypePointer Function %SRayTracingIntersectionAttributes
+         %30 = OpTypeFunction %void %_ptr_Function_SHitPayload %_ptr_Function_SRayTracingIntersectionAttributes
+%_ptr_Function_bool = OpTypePointer Function %bool
+%cbRayTracingParams = OpVariable %_ptr_Uniform_type_cbRayTracingParams Uniform
+    %payload = OpVariable %_ptr_IncomingRayPayloadNV_SHitPayload IncomingRayPayloadNV
+ %attributes = OpVariable %_ptr_HitAttributeNV_SRayTracingIntersectionAttributes HitAttributeNV
+%ClostHitMain = OpFunction %void None %19
+         %20 = OpLabel
+%param_var_payload = OpVariable %_ptr_Function_SHitPayload Function
+%param_var_attributes = OpVariable %_ptr_Function_SRayTracingIntersectionAttributes Function
+         %25 = OpLoad %SHitPayload %payload
+               OpStore %param_var_payload %25
+         %26 = OpLoad %SRayTracingIntersectionAttributes %attributes
+               OpStore %param_var_attributes %26
+         %27 = OpFunctionCall %void %src_ClostHitMain %param_var_payload %param_var_attributes
+         %29 = OpLoad %SHitPayload %param_var_payload
+               OpStore %payload %29
+               OpReturn
+               OpFunctionEnd
+%src_ClostHitMain = OpFunction %void None %30
+  %payload_0 = OpFunctionParameter %_ptr_Function_SHitPayload
+%attributes_0 = OpFunctionParameter %_ptr_Function_SRayTracingIntersectionAttributes
+   %bb_entry = OpLabel
+         %35 = OpAccessChain %_ptr_Function_bool %payload_0 %int_0
+               OpStore %35 %true
+               OpReturn
+               OpFunctionEnd

@@ -1,0 +1,119 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 64
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %Common_SG_PS "Common_SG_PS" %in_var_TEXCOORD0 %in_var_TEXCOORD1 %in_var_TEXCOORD2 %out_var_SV_Target0 %out_var_SV_Target1 %gl_FragDepth
+               OpExecutionMode %Common_SG_PS OriginUpperLeft
+               OpExecutionMode %Common_SG_PS DepthReplacing
+               OpSource HLSL 600
+               OpName %type_PER_MATERIAL "type.PER_MATERIAL"
+               OpMemberName %type_PER_MATERIAL 0 "MatDifColor"
+               OpMemberName %type_PER_MATERIAL 1 "CM_DetailTilingAndAlphaRef"
+               OpMemberName %type_PER_MATERIAL 2 "__0bendDetailFrequency__1bendDetailLeafAmplitude__2bendDetailBranchAmplitude__3"
+               OpMemberName %type_PER_MATERIAL 3 "__0EmittanceMapGamma__1__2__3"
+               OpMemberName %type_PER_MATERIAL 4 "__0__1SSSIndex__2__3"
+               OpName %PER_MATERIAL "PER_MATERIAL"
+               OpName %type_sampler "type.sampler"
+               OpName %ssMaterialAnisoHigh "ssMaterialAnisoHigh"
+               OpName %type_2d_image "type.2d.image"
+               OpName %diffuseTex "diffuseTex"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %in_var_TEXCOORD1 "in.var.TEXCOORD1"
+               OpName %in_var_TEXCOORD2 "in.var.TEXCOORD2"
+               OpName %out_var_SV_Target0 "out.var.SV_Target0"
+               OpName %out_var_SV_Target1 "out.var.SV_Target1"
+               OpName %Common_SG_PS "Common_SG_PS"
+               OpName %type_sampled_image "type.sampled.image"
+               OpDecorate %gl_FragDepth BuiltIn FragDepth
+               OpDecorate %in_var_TEXCOORD0 Location 0
+               OpDecorate %in_var_TEXCOORD1 Location 1
+               OpDecorate %in_var_TEXCOORD2 Location 2
+               OpDecorate %out_var_SV_Target0 Location 0
+               OpDecorate %out_var_SV_Target1 Location 1
+               OpDecorate %PER_MATERIAL DescriptorSet 2
+               OpDecorate %PER_MATERIAL Binding 0
+               OpDecorate %ssMaterialAnisoHigh DescriptorSet 3
+               OpDecorate %ssMaterialAnisoHigh Binding 9
+               OpDecorate %diffuseTex DescriptorSet 2
+               OpDecorate %diffuseTex Binding 1
+               OpMemberDecorate %type_PER_MATERIAL 0 Offset 448
+               OpMemberDecorate %type_PER_MATERIAL 1 Offset 576
+               OpMemberDecorate %type_PER_MATERIAL 2 Offset 608
+               OpMemberDecorate %type_PER_MATERIAL 3 Offset 672
+               OpMemberDecorate %type_PER_MATERIAL 4 Offset 768
+               OpDecorate %type_PER_MATERIAL Block
+      %float = OpTypeFloat 32
+    %float_1 = OpConstant %float 1
+  %float_0_5 = OpConstant %float 0.5
+    %v4float = OpTypeVector %float 4
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+      %int_3 = OpConstant %int 3
+    %v3float = OpTypeVector %float 3
+         %24 = OpConstantComposite %v3float %float_0_5 %float_0_5 %float_0_5
+    %v2float = OpTypeVector %float 2
+%type_PER_MATERIAL = OpTypeStruct %v4float %v4float %v3float %float %v2float
+%_ptr_Uniform_type_PER_MATERIAL = OpTypePointer Uniform %type_PER_MATERIAL
+%type_sampler = OpTypeSampler
+%_ptr_UniformConstant_type_sampler = OpTypePointer UniformConstant %type_sampler
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+%_ptr_Input_v2float = OpTypePointer Input %v2float
+%_ptr_Input_float = OpTypePointer Input %float
+%_ptr_Input_v3float = OpTypePointer Input %v3float
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+%_ptr_Output_float = OpTypePointer Output %float
+       %void = OpTypeVoid
+         %35 = OpTypeFunction %void
+%_ptr_Function_v4float = OpTypePointer Function %v4float
+%_ptr_Function_float = OpTypePointer Function %float
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%type_sampled_image = OpTypeSampledImage %type_2d_image
+%PER_MATERIAL = OpVariable %_ptr_Uniform_type_PER_MATERIAL Uniform
+%ssMaterialAnisoHigh = OpVariable %_ptr_UniformConstant_type_sampler UniformConstant
+ %diffuseTex = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v2float Input
+%in_var_TEXCOORD1 = OpVariable %_ptr_Input_float Input
+%in_var_TEXCOORD2 = OpVariable %_ptr_Input_v3float Input
+%out_var_SV_Target0 = OpVariable %_ptr_Output_v4float Output
+%out_var_SV_Target1 = OpVariable %_ptr_Output_v4float Output
+%gl_FragDepth = OpVariable %_ptr_Output_float Output
+         %39 = OpConstantNull %v4float
+%Common_SG_PS = OpFunction %void None %35
+         %40 = OpLabel
+         %41 = OpVariable %_ptr_Function_v4float Function
+         %42 = OpVariable %_ptr_Function_v4float Function
+         %43 = OpLoad %v2float %in_var_TEXCOORD0
+         %44 = OpLoad %float %in_var_TEXCOORD1
+         %45 = OpLoad %v3float %in_var_TEXCOORD2
+         %46 = OpLoad %type_2d_image %diffuseTex
+         %47 = OpLoad %type_sampler %ssMaterialAnisoHigh
+         %48 = OpSampledImage %type_sampled_image %46 %47
+         %49 = OpImageSampleImplicitLod %v4float %48 %43 None
+         %50 = OpVectorShuffle %v3float %49 %49 0 1 2
+         %51 = OpAccessChain %_ptr_Uniform_v4float %PER_MATERIAL %int_0
+         %52 = OpLoad %v4float %51
+         %53 = OpVectorShuffle %v3float %52 %52 0 1 2
+         %54 = OpFMul %v3float %50 %53
+         %55 = OpVectorShuffle %v4float %39 %54 4 5 6 3
+               OpStore %42 %55
+         %56 = OpAccessChain %_ptr_Function_float %42 %int_3
+               OpStore %56 %float_1
+         %57 = OpExtInst %v3float %1 Normalize %45
+         %58 = OpVectorTimesScalar %v3float %57 %float_0_5
+         %59 = OpFAdd %v3float %58 %24
+         %60 = OpVectorShuffle %v4float %39 %59 4 5 6 3
+               OpStore %41 %60
+         %61 = OpAccessChain %_ptr_Function_float %41 %int_3
+               OpStore %61 %float_1
+         %62 = OpLoad %v4float %41
+         %63 = OpLoad %v4float %42
+               OpStore %out_var_SV_Target0 %63
+               OpStore %out_var_SV_Target1 %62
+               OpStore %gl_FragDepth %44
+               OpReturn
+               OpFunctionEnd

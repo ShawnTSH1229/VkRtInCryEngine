@@ -1,0 +1,84 @@
+; SPIR-V
+; Version: 1.5
+; Generator: Google spiregg; 0
+; Bound: 33
+; Schema: 0
+               OpCapability RayTracingKHR
+               OpExtension "SPV_KHR_ray_tracing"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint MissNV %MissMain "MissMain" %cbRayTracingParams %payload
+               OpSource HLSL 630
+               OpName %type_cbRayTracingParams "type.cbRayTracingParams"
+               OpMemberName %type_cbRayTracingParams 0 "rayTracingParams"
+               OpMemberName %_struct_14 0 "viewProj"
+               OpMemberName %_struct_14 1 "viewInverse"
+               OpMemberName %_struct_14 2 "projInverse"
+               OpMemberName %_struct_14 3 "lightdirection"
+               OpMemberName %_struct_14 4 "padding0"
+               OpMemberName %_struct_14 5 "padding1"
+               OpMemberName %_struct_14 6 "padding2"
+               OpName %cbRayTracingParams "cbRayTracingParams"
+               OpName %SHitPayload "SHitPayload"
+               OpMemberName %SHitPayload 0 "hitValue"
+               OpName %payload "payload"
+               OpName %MissMain "MissMain"
+               OpName %param_var_payload "param.var.payload"
+               OpName %src_MissMain "src.MissMain"
+               OpName %payload_0 "payload"
+               OpName %bb_entry "bb.entry"
+               OpDecorate %cbRayTracingParams DescriptorSet 0
+               OpDecorate %cbRayTracingParams Binding 0
+               OpMemberDecorate %_struct_14 0 Offset 0
+               OpMemberDecorate %_struct_14 0 MatrixStride 16
+               OpMemberDecorate %_struct_14 0 ColMajor
+               OpMemberDecorate %_struct_14 1 Offset 64
+               OpMemberDecorate %_struct_14 1 MatrixStride 16
+               OpMemberDecorate %_struct_14 1 ColMajor
+               OpMemberDecorate %_struct_14 2 Offset 128
+               OpMemberDecorate %_struct_14 2 MatrixStride 16
+               OpMemberDecorate %_struct_14 2 ColMajor
+               OpMemberDecorate %_struct_14 3 Offset 192
+               OpMemberDecorate %_struct_14 4 Offset 208
+               OpMemberDecorate %_struct_14 5 Offset 224
+               OpMemberDecorate %_struct_14 6 Offset 240
+               OpMemberDecorate %type_cbRayTracingParams 0 Offset 0
+               OpDecorate %type_cbRayTracingParams Block
+      %float = OpTypeFloat 32
+%float_0_239999995 = OpConstant %float 0.239999995
+%float_0_75999999 = OpConstant %float 0.75999999
+%float_0_959999979 = OpConstant %float 0.959999979
+    %v3float = OpTypeVector %float 3
+          %9 = OpConstantComposite %v3float %float_0_239999995 %float_0_75999999 %float_0_959999979
+        %int = OpTypeInt 32 1
+      %int_0 = OpConstant %int 0
+    %v4float = OpTypeVector %float 4
+%mat4v4float = OpTypeMatrix %v4float 4
+ %_struct_14 = OpTypeStruct %mat4v4float %mat4v4float %mat4v4float %v4float %v4float %v4float %v4float
+%type_cbRayTracingParams = OpTypeStruct %_struct_14
+%_ptr_Uniform_type_cbRayTracingParams = OpTypePointer Uniform %type_cbRayTracingParams
+%SHitPayload = OpTypeStruct %v3float
+%_ptr_IncomingRayPayloadNV_SHitPayload = OpTypePointer IncomingRayPayloadNV %SHitPayload
+       %void = OpTypeVoid
+         %20 = OpTypeFunction %void
+%_ptr_Function_SHitPayload = OpTypePointer Function %SHitPayload
+         %28 = OpTypeFunction %void %_ptr_Function_SHitPayload
+%_ptr_Function_v3float = OpTypePointer Function %v3float
+%cbRayTracingParams = OpVariable %_ptr_Uniform_type_cbRayTracingParams Uniform
+    %payload = OpVariable %_ptr_IncomingRayPayloadNV_SHitPayload IncomingRayPayloadNV
+   %MissMain = OpFunction %void None %20
+         %21 = OpLabel
+%param_var_payload = OpVariable %_ptr_Function_SHitPayload Function
+         %24 = OpLoad %SHitPayload %payload
+               OpStore %param_var_payload %24
+         %25 = OpFunctionCall %void %src_MissMain %param_var_payload
+         %27 = OpLoad %SHitPayload %param_var_payload
+               OpStore %payload %27
+               OpReturn
+               OpFunctionEnd
+%src_MissMain = OpFunction %void None %28
+  %payload_0 = OpFunctionParameter %_ptr_Function_SHitPayload
+   %bb_entry = OpLabel
+         %32 = OpAccessChain %_ptr_Function_v3float %payload_0 %int_0
+               OpStore %32 %9
+               OpReturn
+               OpFunctionEnd

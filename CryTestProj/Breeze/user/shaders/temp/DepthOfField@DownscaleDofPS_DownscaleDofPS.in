@@ -1,0 +1,125 @@
+/*
+BgAAAHBzXzZfMAAADgAAAERvd25zY2FsZURvZlBTAAADBBAAAABAQBAAAABAQRAAAACAQBAAAACAQQERAAAAAEYBEAAAAABAAAAAAAAAAAA=
+*/
+
+cbuffer PER_BATCH:register(b0, space2)
+{
+  float4 vDofParamsFocus1;
+  float4 vDofParamsFocus0;
+  float4 PS_NearFarClipDist;
+};
+SamplerState DnScDoF_DepthSamp:register(s2, space0);
+SamplerState DnScDoF_HDRTargSamp:register(s3, space0);
+Texture2D<float4>DnScDoF_HDRTarg:register(t1, space0);
+Texture2D<float4>DnScDoF_Depth:register(t0, space0);
+cbuffer CBPerViewGlobal:register(b0, space1)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+void ComputeCircleOfConfusion(in float4 depths,out float4 nearCoC,out float4 farCoC)
+{
+  float4 FocusRangeNearMin=vDofParamsFocus1.y*saturate(1-(depths/vDofParamsFocus1.x));
+  float4 vCocFar=saturate(depths*vDofParamsFocus0.x+vDofParamsFocus0.y);
+  float4 vCocNear=saturate(depths*vDofParamsFocus0.z+vDofParamsFocus0.w)+FocusRangeNearMin;
+  farCoC=vCocFar*vCocFar*vDofParamsFocus1.w;
+  nearCoC=vCocNear*vCocNear*vDofParamsFocus1.w;
+  farCoC=max(farCoC,0.00001);
+  farCoC=clamp(farCoC,-4,4);
+  nearCoC=clamp(nearCoC,-4,4);
+}
+struct vtxOutDownscaleDof
+{
+  float4 HPosition:SV_POSITION;
+  float4 tc0:TEXCOORD0;
+  float4 tc1:TEXCOORD1;
+  float4 tc2:TEXCOORD2;
+  float4 tc3:TEXCOORD3;
+  float4 tc4:TEXCOORD4;
+  float4 tc5:TEXCOORD5;
+  float4 tc6:TEXCOORD6;
+};
+struct OutDownscaleDof
+{
+  float4 LayerNear:SV_Target0;
+  float4 LayerFar:SV_Target1;
+  float2 CocNearFar:SV_Target2;
+};
+OutDownscaleDof DownscaleDofPS(vtxOutDownscaleDof IN)
+{
+  OutDownscaleDof OUT=(OutDownscaleDof)0;
+  float4 depths=float4(GetTexture2D(DnScDoF_Depth,DnScDoF_DepthSamp,IN.tc5.xy).x,GetTexture2D(DnScDoF_Depth,DnScDoF_DepthSamp,IN.tc5.zw).x,GetTexture2D(DnScDoF_Depth,DnScDoF_DepthSamp,IN.tc6.xy).x,GetTexture2D(DnScDoF_Depth,DnScDoF_DepthSamp,IN.tc6.zw).x);
+  depths*=PS_NearFarClipDist.y;
+  float4 c=float4(GetTexture2D(DnScDoF_HDRTarg,DnScDoF_HDRTargSamp,IN.tc2.xy).rgb,1);
+  float4 c0=float4(GetTexture2D(DnScDoF_HDRTarg,DnScDoF_HDRTargSamp,IN.tc0.xy).rgb,1);
+  float4 c1=float4(GetTexture2D(DnScDoF_HDRTarg,DnScDoF_HDRTargSamp,IN.tc0.zw).rgb,1);
+  float4 c2=float4(GetTexture2D(DnScDoF_HDRTarg,DnScDoF_HDRTargSamp,IN.tc1.xy).rgb,1);
+  float4 c3=float4(GetTexture2D(DnScDoF_HDRTarg,DnScDoF_HDRTargSamp,IN.tc1.zw).rgb,1);
+  OUT.LayerNear=(c+c0+c1+c2+c3)*0.2;
+  OUT.LayerFar=OUT.LayerNear;
+  float4 vCocNear,vCocFar;
+  ComputeCircleOfConfusion(depths,vCocNear,vCocFar);
+  OUT.LayerNear.a=max(vCocNear.x,vCocNear.y);
+  OUT.LayerNear.a=max(OUT.LayerNear.a,vCocNear.z);
+  OUT.LayerNear.a=max(OUT.LayerNear.a,vCocNear.w);
+  OUT.LayerFar.a=min(vCocFar.x,vCocFar.y);
+  OUT.LayerFar.a=min(OUT.LayerFar.a,vCocFar.z);
+  OUT.LayerFar.a=min(OUT.LayerFar.a,vCocFar.w);
+  OUT.CocNearFar=float2(OUT.LayerNear.a,OUT.LayerFar.a);
+  OUT.LayerNear.a=saturate(OUT.LayerNear.a);
+  OUT.LayerFar.rgb*=(OUT.LayerFar.a);
+  OUT.LayerNear.rgb*=(OUT.LayerNear.a);
+  return OUT;
+}

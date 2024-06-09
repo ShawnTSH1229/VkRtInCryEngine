@@ -1,0 +1,167 @@
+/*
+BgAAAHBzXzZfMAAADwAAAEhEUkZpbmFsU2NlbmVQUwAEBxAAAABAQBAAAABAQRAAAABAQhAAAABARxAAAABASBAAAABASRAAAACAQAERAAAAAEYBAQAAAABAARAAAAAAQMzMzAAAAAAAAAAA
+*/
+
+cbuffer PER_BATCH:register(b0, space3)
+{
+  float4 HDRColorBalance;
+  float4 SunShafts_SunCol;
+  float4 HDREyeAdaptation;
+  float4 HDRFilmCurve;
+};
+SamplerState linearClampSS:register(s6, space0);
+Texture2D luminanceTex:register(t1, space0);
+Texture2D sunShaftsTex:register(t5, space0);
+Texture2D vignettingTex:register(t3, space0);
+Texture2D<float3>bloomTex:register(t2, space0);
+Texture2D colorChartTex:register(t4, space0);
+Texture2D<float3>hdrTex:register(t0, space0);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b0, space1)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half3 GetLuminanceWeights()
+{
+  return half3(0.2126h,0.7152h,0.0722h);
+}
+half GetLuminance(half3 color)
+{
+  return dot(color,GetLuminanceWeights());
+}
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+float2 MapViewportToRaster(float2 normalizedViewportPos,bool bOtherEye=false)
+{
+  return normalizedViewportPos;
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+void TexColorChart2D(in Texture2D chartTex,in SamplerState chartSampler,inout half3 cImage)
+{
+  const float chartDim=16.0;
+  const float3 scale=float3(chartDim-1.0,chartDim-1.0,chartDim-1.0)/chartDim;
+  const float3 bias=float3(0.5,0.5,0.0)/chartDim;
+  float3 lookup=saturate(cImage)*scale+bias;
+  float slice=lookup.z*chartDim;
+  float sliceFrac=frac(slice);
+  float sliceIdx=slice-sliceFrac;
+  lookup.x=(lookup.x+sliceIdx)/chartDim;
+  float3 col0=GetTexture2D(chartTex,chartSampler,lookup.xy);
+  lookup.x+=1.0/chartDim;
+  float3 col1=GetTexture2D(chartTex,chartSampler,lookup.xy);
+  cImage=col0+(col1-col0)*sliceFrac;
+}
+struct vert2frag
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+  float3 CamVec:TEXCOORD1;
+  float4 baseTCScaled:TEXCOORD2;
+};
+half ComputeExposure(float fIlluminance)
+{
+  half EV100=log2(fIlluminance*10000.0f*100.0/330.0);
+  EV100-=((clamp(log10(fIlluminance*10000.0f+1),0.1,5.2)-3.0)/2.0)*HDREyeAdaptation.z;
+  EV100=clamp(EV100,HDREyeAdaptation.x,HDREyeAdaptation.y);
+  float maxLum=exp2(EV100);
+  return(10000.0f/1.2f)*rcp(maxLum);
+}
+half3 FilmMapping(in vert2frag IN,in half3 cScene,in half3 cBloom,in half3 vAdaptedLum,in half fVignetting)
+{
+  half fExposure=ComputeExposure(vAdaptedLum.y);
+  const half fSceneKey=1.03h-2.0h/(2.0h+log2(vAdaptedLum.x+1.0));
+  fExposure=clamp(fSceneKey/vAdaptedLum.x,HDREyeAdaptation.y,HDREyeAdaptation.z);
+  half3 cColor=fVignetting*fExposure*(cScene+cBloom);
+  half fLuminance=GetLuminance(cColor);
+  cColor=fLuminance+HDRColorBalance.a*(cColor-fLuminance);
+  cColor*=HDRColorBalance.rgb;
+  half4 c=half4(max(cColor,0),HDRFilmCurve.w);
+  const half ShoStren=0.22*HDRFilmCurve.x,LinStren=0.3*HDRFilmCurve.y,LinAngle=0.1,ToeStren=0.2,ToeNum=0.01*HDRFilmCurve.z,ToeDenom=0.3;
+  half4 compressedCol=((c*(ShoStren*c+LinAngle*LinStren)+ToeStren*ToeNum)/(c*(ShoStren*c+LinStren)+ToeStren*ToeDenom))-(ToeNum/ToeDenom);
+  cScene=saturate(compressedCol/compressedCol.w);
+  cScene=select((cScene<0.0031308),12.92h*cScene,1.05499995F*pow(cScene,1.F/2.4000001F)-half3(0.0549999997F,0.0549999997F,0.0549999997F));
+  return cScene;
+}
+half3 HDRToneMapSample(in vert2frag IN,in half3 vSample,in half3 cBloom,in half3 vAdaptedLum,in half fVignetting)
+{
+  vSample=FilmMapping(IN,vSample,cBloom,vAdaptedLum,fVignetting);
+  return saturate(vSample);
+}
+float3 NRand3(float2 seed)
+{
+  return frac(sin(dot(seed.xy,float2(34.483,89.637)))*float3(29156.4765,38273.5639,47843.7546));
+}
+void ApplyRandomDithering(inout half3 color,float2 uv)
+{
+  float3 rndValue=NRand3(uv)+NRand3(uv+0.5789)-0.5;
+  color+=rndValue/255.0;
+}
+pixout HDRFinalScenePS(vert2frag IN)
+{
+  float2 ScreenTC=MapViewportToRaster(IN.baseTCScaled.xy);
+  half fVignetting=1;
+  half3 cBloom=0;
+  half3 vAdaptedLum=luminanceTex.Load(int3(0,0,0));
+  half3 vSample=hdrTex.Load(int3(IN.WPos.xy,0));
+  half3 oSample=HDRToneMapSample(IN,vSample,cBloom,vAdaptedLum,fVignetting);
+  oSample+=sunShaftsTex.Sample(linearClampSS,ScreenTC.xy)*SunShafts_SunCol*(1-oSample);
+  TexColorChart2D(colorChartTex,linearClampSS,oSample);
+  ApplyRandomDithering(oSample,IN.WPos.xy);
+  return(pixout)half4(oSample,1.0f);
+}

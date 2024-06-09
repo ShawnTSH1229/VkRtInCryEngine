@@ -1,0 +1,157 @@
+/*
+BgAAAHBzXzZfMAAAFQAAAEhEUlNhbXBsZUx1bUluaXRpYWxQUwAAAAIFEAAAAEBAEAAAAEBBEAAAAEBCEAAAAEBDEAAAAIBAARAAAAAAQMwAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0, space1)
+{
+  float4 SampleLumOffsets1;
+  float4 SampleLumOffsets0;
+};
+SamplerState HDRLum_LClampSampler:register(s4, space0);
+Texture2D<float4>HDRLum_Norm:register(t1, space0);
+Texture2D<float4>HDRLum_Spec:register(t3, space0);
+Texture2D<float4>HDRLum_Targ:register(t0, space0);
+Texture2D<float4>HDRLum_Diff:register(t2, space0);
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half3 GetLuminanceWeights()
+{
+  return half3(0.2126h,0.7152h,0.0722h);
+}
+half GetLuminance(half3 color)
+{
+  return dot(color,GetLuminanceWeights());
+}
+half3 DecodeColorYCC(half3 encodedCol,const bool useChrominance=true)
+{
+  encodedCol=half3(encodedCol.x,encodedCol.y/(127.0f/255.0f)-1,encodedCol.z/(127.0f/255.0f)-1);
+  if(!useChrominance)encodedCol.yz=0;
+  half3 col;
+  col.r=encodedCol.x+1.402*encodedCol.z;
+  col.g=dot(half3(1,-0.3441,-0.7141),encodedCol.xyz);
+  col.b=encodedCol.x+1.772*encodedCol.y;
+  return col*col;
+}
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+struct MaterialAttribsCommon
+{
+  half3 NormalWorld;
+  half3 Albedo;
+  half3 Reflectance;
+  half3 Transmittance;
+  half Smoothness;
+  half ScatteringIndex;
+  half SelfShadowingSun;
+  int LightingModel;
+};
+MaterialAttribsCommon DecodeGBuffer(half4 bufferA,half4 bufferB,half4 bufferC)
+{
+  MaterialAttribsCommon attribs;
+  attribs.LightingModel=(int)floor(bufferA.w*(3.0f+(255.0f/256.0f)));
+  attribs.NormalWorld=normalize(bufferA.xyz*2-1);
+  attribs.Albedo=bufferB.xyz*bufferB.xyz;
+  attribs.Reflectance=DecodeColorYCC(bufferC.yzw,attribs.LightingModel==0);
+  attribs.Smoothness=bufferC.x;
+  attribs.ScatteringIndex=bufferB.w*(3.0f+(255.0f/256.0f));
+  attribs.Transmittance=half3(0,0,0);
+  if(attribs.LightingModel==1)
+  {
+    attribs.Transmittance=DecodeColorYCC(half3(frac(bufferA.w*(3.0f+(255.0f/256.0f))),bufferC.z,bufferC.w));
+  }
+  attribs.SelfShadowingSun=0;
+  if(attribs.LightingModel==2)
+  {
+    attribs.SelfShadowingSun=saturate(bufferC.z/(127.0f/255.0f)-1);
+  }
+  return attribs;
+}
+float2 MapViewportToRaster(float2 normalizedViewportPos,bool bOtherEye=false)
+{
+  return normalizedViewportPos;
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+struct vtxOut
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+float2 HDRSampleLumInitialPS(vtxOut IN):SV_Target
+{
+  half fRecipSampleCount=0.25h;
+  half fCenterWeight=1;
+  half2 vLumInfo=0;
+  float2 sampleOffsets[4]=
+  {
+    SampleLumOffsets0.xy,SampleLumOffsets0.zw,SampleLumOffsets1.xy,SampleLumOffsets1.zw};
+  [unroll]for(int i=0;
+  i<4;
+  ++i)
+  {
+    float2 SampleTC=IN.baseTC.xy+sampleOffsets[i];
+    SampleTC=MapViewportToRaster(SampleTC);
+    MaterialAttribsCommon attribs=DecodeGBuffer(GetTexture2D(HDRLum_Norm,HDRLum_LClampSampler,SampleTC),GetTexture2D(HDRLum_Diff,HDRLum_LClampSampler,SampleTC),GetTexture2D(HDRLum_Spec,HDRLum_LClampSampler,SampleTC));
+    half baseColorLum=max(max(GetLuminance(attribs.Albedo),GetLuminance(attribs.Reflectance)),0.01);
+    if(GetLuminance(attribs.Albedo)==0)baseColorLum=0.2;
+    half3 cTex=GetTexture2D(HDRLum_Targ,HDRLum_LClampSampler,SampleTC).rgb;
+    half fLum=all(isfinite(cTex))?GetLuminance(cTex):0;
+    vLumInfo.x+=log(fLum+1e-6);
+    vLumInfo.y+=log(fLum/baseColorLum*3.1415+1e-6);
+  }
+  return fCenterWeight*fRecipSampleCount*vLumInfo;
+}

@@ -1,0 +1,163 @@
+/*
+BgAAAHBzXzZfMAAADgAAAENvbXBvc2l0ZURvZlBTAAACBhAAAABAQBAAAABAQRAAAABAQhAAAABARBAAAACAQBAAAACAQQEQAAAAAEDMzMwAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0, space1)
+{
+  float4 vDofParamsFocus1;
+  float4 vDofParamsFocus0;
+  float4 PS_NearFarClipDist;
+  float4 PS_ScreenSize;
+};
+SamplerState CDOF_PCSamp:register(s4, space0);
+SamplerState CDOF_LCSamp:register(s5, space0);
+Texture2D<float4>CDOF_HDRDoF1:register(t2, space0);
+Texture2D<float4>CDOF_HDRDoF0:register(t1, space0);
+Texture2D<float4>CDOF_STarg:register(t3, space0);
+Texture2D<float4>CDOF_Depth:register(t0, space0);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+struct vtxOut
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+void ComputeCircleOfConfusion(in float4 depths,out float4 nearCoC,out float4 farCoC)
+{
+  float4 FocusRangeNearMin=vDofParamsFocus1.y*saturate(1-(depths/vDofParamsFocus1.x));
+  float4 vCocFar=saturate(depths*vDofParamsFocus0.x+vDofParamsFocus0.y);
+  float4 vCocNear=saturate(depths*vDofParamsFocus0.z+vDofParamsFocus0.w)+FocusRangeNearMin;
+  farCoC=vCocFar*vCocFar*vDofParamsFocus1.w;
+  nearCoC=vCocNear*vCocNear*vDofParamsFocus1.w;
+  farCoC=max(farCoC,0.00001);
+  farCoC=clamp(farCoC,-4,4);
+  nearCoC=clamp(nearCoC,-4,4);
+}
+float w0(float a)
+{
+  return(1.0/6.0)*(a*(a*(-a+3.0)-3.0)+1.0);
+}
+float w1(float a)
+{
+  return(1.0/6.0)*(a*a*(3.0*a-6.0)+4.0);
+}
+float w2(float a)
+{
+  return(1.0/6.0)*(a*(a*(-3.0*a+3.0)+3.0)+1.0);
+}
+float w3(float a)
+{
+  return(1.0/6.0)*(a*a*a);
+}
+float g0(float a)
+{
+  return w0(a)+w1(a);
+}
+float g1(float a)
+{
+  return w2(a)+w3(a);
+}
+float h0(float a)
+{
+  return-1.0+w1(a)/(w0(a)+w1(a));
+}
+float h1(float a)
+{
+  return 1.0+w3(a)/(w2(a)+w3(a));
+}
+float4 tex2D_bicubic(Texture2D tex,SamplerState samp,float2 uv,float2 res)
+{
+  uv=uv*res+0.5;
+  float2 iuv=floor(uv);
+  float2 fuv=frac(uv);
+  float g0x=g0(fuv.x);
+  float g1x=g1(fuv.x);
+  float h0x=h0(fuv.x);
+  float h1x=h1(fuv.x);
+  float h0y=h0(fuv.y);
+  float h1y=h1(fuv.y);
+  float2 p0=(float2(iuv.x+h0x,iuv.y+h0y)-0.5)/res;
+  float2 p1=(float2(iuv.x+h1x,iuv.y+h0y)-0.5)/res;
+  float2 p2=(float2(iuv.x+h0x,iuv.y+h1y)-0.5)/res;
+  float2 p3=(float2(iuv.x+h1x,iuv.y+h1y)-0.5)/res;
+  return g0(fuv.y)*(g0x*GetTexture2D(tex,samp,p0)+g1x*GetTexture2D(tex,samp,p1))+g1(fuv.y)*(g0x*GetTexture2D(tex,samp,p2)+g1x*GetTexture2D(tex,samp,p3));
+}
+pixout CompositeDofPS(vtxOut IN)
+{
+  pixout OUT=(pixout)0;
+  half4 cScene=GetTexture2D(CDOF_STarg,CDOF_PCSamp,IN.baseTC.xy);
+  half4 cLayerNear=tex2D_bicubic(CDOF_HDRDoF0,CDOF_LCSamp,IN.baseTC.xy,PS_ScreenSize.xy*0.5);
+  half4 cLayerFar=tex2D_bicubic(CDOF_HDRDoF1,CDOF_LCSamp,IN.baseTC.xy,PS_ScreenSize.xy*0.5);
+  float depth=GetTexture2D(CDOF_Depth,CDOF_PCSamp,IN.baseTC.xy).x*PS_NearFarClipDist.y;
+  float4 nearCoC,farCoC;
+  ComputeCircleOfConfusion(depth.xxxx,nearCoC,farCoC);
+  cLayerFar.rgb/=cLayerFar.a>0?cLayerFar.a:1.0f;
+  cLayerFar.a=saturate(farCoC.x);
+  cLayerNear.rgb=cLayerNear.rgb/(cLayerNear.a>0?cLayerNear.a:1.0f);
+  cLayerNear.a=saturate(cLayerNear.a);
+  OUT.Color=lerp(cScene,cLayerFar,cLayerFar.a);
+  OUT.Color=lerp(OUT.Color,cLayerNear,cLayerNear.a);
+  return OUT;
+}

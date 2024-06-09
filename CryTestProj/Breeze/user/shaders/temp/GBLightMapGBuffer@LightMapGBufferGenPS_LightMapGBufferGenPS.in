@@ -1,0 +1,38 @@
+/*
+BgAAAHBzXzZfMAAAFAAAAExpZ2h0TWFwR0J1ZmZlckdlblBTAQEfAAAAAEAAAAAAAAAAAA==
+*/
+
+struct SGeometryVS2PS
+{
+  float4 position:SV_POSITION;
+  float4 worldPosition:TEXCOORD0;
+  float4 shadingNormal:TEXCOORD1;
+};
+cbuffer CBGeomTrans:register(b0, space0)
+{
+  struct
+  {
+    float4x4 worldTM;
+    float4x4 rotationTM;
+    float4 lightMapScaleAndBias;
+  }
+  cbGeomTrans;
+};
+struct SLightMapGBufferOutput
+{
+  float4 worldPosition:SV_Target0;
+  float4 worldFaceNormal:SV_Target1;
+  float4 worldShadingNormal:SV_Target2;
+};
+SLightMapGBufferOutput LightMapGBufferGenPS(SGeometryVS2PS IN)
+{
+  SLightMapGBufferOutput output;
+  float3 faceNormal=normalize(cross(ddx(IN.worldPosition.xyz),ddy(IN.worldPosition.xyz)));
+  float3 deltaPosition=max(abs(ddx(IN.worldPosition)),abs(ddy(IN.worldPosition)));
+  float texelSize=max(deltaPosition.x,max(deltaPosition.y,deltaPosition.z));
+  texelSize*=sqrt(2.0);
+  output.worldPosition=IN.worldPosition;
+  output.worldShadingNormal=float4(IN.shadingNormal.xyz,1.0);
+  output.worldFaceNormal=float4(deltaPosition,texelSize);
+  return output;
+}

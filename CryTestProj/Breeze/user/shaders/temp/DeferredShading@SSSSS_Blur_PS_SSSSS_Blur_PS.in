@@ -1,0 +1,246 @@
+/*
+BgAAAHBzXzZfMAAADQAAAFNTU1NTX0JsdXJfUFMAAAADBxAAAABAQBAAAABAQRAAAABAQhAAAABAQxAAAABARBAAAABARRAAAACAQAEBAAAAAEABEAAAAABAzMwAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0, space2)
+{
+  float4 SSSBlurDir;
+  float4 PS_NearFarClipDist;
+  float4 PS_ScreenSize;
+  float4 ViewSpaceParams;
+};
+SamplerState SSSSBlur_Sampler:register(s6, space0);
+Texture2D<float4>SSSSBlur_Input:register(t0, space0);
+Texture2D<float4>SSSSBlur_Norms:register(t2, space0);
+Texture2D<float4>SSSSBlur_Irrad:register(t5, space0);
+Texture2D<float4>SSSSBlur_Spec:register(t4, space0);
+Texture2D<float4>SSSSBlur_LDepth:register(t1, space0);
+Texture2D<float4>SSSSBlur_Diff:register(t3, space0);
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+half3 GetLuminanceWeights()
+{
+  return half3(0.2126h,0.7152h,0.0722h);
+}
+half GetLuminance(half3 color)
+{
+  return dot(color,GetLuminanceWeights());
+}
+half3 DecodeColorYCC(half3 encodedCol,const bool useChrominance=true)
+{
+  encodedCol=half3(encodedCol.x,encodedCol.y/(127.0f/255.0f)-1,encodedCol.z/(127.0f/255.0f)-1);
+  if(!useChrominance)encodedCol.yz=0;
+  half3 col;
+  col.r=encodedCol.x+1.402*encodedCol.z;
+  col.g=dot(half3(1,-0.3441,-0.7141),encodedCol.xyz);
+  col.b=encodedCol.x+1.772*encodedCol.y;
+  return col*col;
+}
+half4 GetTexture2DLod(Texture2D tex,SamplerState samplerState,float4 uv)
+{
+  return tex.SampleLevel(samplerState,uv.xy,uv.w);
+}
+half2 GetTexture2DLod(Texture2D<float2>tex,SamplerState samplerState,float4 uv)
+{
+  return tex.SampleLevel(samplerState,uv.xy,uv.w);
+}
+half4 GetTexture2DLod(Texture2D tex,SamplerState samplerState,float2 uv,float Lod)
+{
+  return tex.SampleLevel(samplerState,uv.xy,Lod);
+}
+half4 GetTexture2D(Texture2D tex,SamplerState samplerState,float2 uv)
+{
+  return tex.Sample(samplerState,uv);
+}
+float GetLinearDepth(float fDevDepth,bool bScaled=false)
+{
+  return fDevDepth*(bScaled?PS_NearFarClipDist.y:1.0f);
+}
+float GetLinearDepth(Texture2D depthTexture,int2 vPixCoord,bool bScaled=false)
+{
+  float fDepth=depthTexture.Load(int3(vPixCoord,0)).x;
+  return GetLinearDepth(fDepth,bScaled);
+}
+float GetLinearDepth(Texture2D depthTexture,float2 ScreenTC,bool bScaled=false)
+{
+  int2 vPixCoord=int2(ScreenTC*PS_ScreenSize.xy);
+  return GetLinearDepth(depthTexture,vPixCoord,bScaled);
+}
+struct MaterialAttribsCommon
+{
+  half3 NormalWorld;
+  half3 Albedo;
+  half3 Reflectance;
+  half3 Transmittance;
+  half Smoothness;
+  half ScatteringIndex;
+  half SelfShadowingSun;
+  int LightingModel;
+};
+MaterialAttribsCommon DecodeGBuffer(half4 bufferA,half4 bufferB,half4 bufferC)
+{
+  MaterialAttribsCommon attribs;
+  attribs.LightingModel=(int)floor(bufferA.w*(3.0f+(255.0f/256.0f)));
+  attribs.NormalWorld=normalize(bufferA.xyz*2-1);
+  attribs.Albedo=bufferB.xyz*bufferB.xyz;
+  attribs.Reflectance=DecodeColorYCC(bufferC.yzw,attribs.LightingModel==0);
+  attribs.Smoothness=bufferC.x;
+  attribs.ScatteringIndex=bufferB.w*(3.0f+(255.0f/256.0f));
+  attribs.Transmittance=half3(0,0,0);
+  if(attribs.LightingModel==1)
+  {
+    attribs.Transmittance=DecodeColorYCC(half3(frac(bufferA.w*(3.0f+(255.0f/256.0f))),bufferC.z,bufferC.w));
+  }
+  attribs.SelfShadowingSun=0;
+  if(attribs.LightingModel==2)
+  {
+    attribs.SelfShadowingSun=saturate(bufferC.z/(127.0f/255.0f)-1);
+  }
+  return attribs;
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+struct vtxOut
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+cbuffer CBDeferredDecal:register(b0, space2)
+{
+  struct
+  {
+    float4x4 matVolumeProj;
+    float4x4 matInvVolumeProj;
+    float4x4 matDecalTS;
+    float4 textureRect[2];
+    float4 diffuseCol;
+    float4 specularCol;
+    float4 mipLevels;
+    float4 generalParams;
+    float4 opacityParams;
+  }
+  cbDecal;
+};
+cbuffer CBSSDO:register(b0, space2)
+{
+  struct SSDOConstants
+  {
+    float4 screenSize;
+    float4 nearFarClipDist;
+    float4 viewSpaceParams;
+    float4 ssdoParams;
+    float4 hmaoParams;
+  }
+  cbSSDO;
+};
+pixout SSSSS_Blur_PS(vtxOut IN)
+{
+  pixout OUT=(pixout)0;
+  const int kernelWidth=6;
+  const float3 profileVarArr[4]=
+  {
+    float3(3.3,2.8,1.4),float3(3.3,1.4,1.1),float3(1.0,1.0,1.0),float3(1.0,1.0,1.0)};
+  const float4 profileSpikeRadArr[4]=
+  {
+    float4(0.03,0.03,0.08,8.0),float4(0.015,0.020,0.025,1.0),float4(0.10,0.10,0.10,10.0),float4(0.10,0.10,0.10,10.0)};
+  const float offsets[6]=
+  {
+    0.352,0.719,1.117,1.579,2.177,3.213};
+  MaterialAttribsCommon attribs;
+  attribs=DecodeGBuffer(GetTexture2D(SSSSBlur_Norms,SSSSBlur_Sampler,IN.baseTC.xy),GetTexture2D(SSSSBlur_Diff,SSSSBlur_Sampler,IN.baseTC.xy),GetTexture2D(SSSSBlur_Spec,SSSSBlur_Sampler,IN.baseTC.xy));
+  if(attribs.ScatteringIndex==0)discard;
+  float profileIndex=floor(attribs.ScatteringIndex);
+  float sssAmount=frac(attribs.ScatteringIndex);
+  float3 spikeStrength=saturate(profileSpikeRadArr[profileIndex]*(1-sssAmount)*10);
+  float3 blurFalloff=-1.0f/(2*profileVarArr[profileIndex]);
+  float radius=0.0055*profileSpikeRadArr[profileIndex].w*(profileIndex!=1?sssAmount:1);
+  float centerDepth=GetLinearDepth(SSSSBlur_LDepth,IN.baseTC.xy);
+  float3 centerColor=GetTexture2D(SSSSBlur_Input,SSSSBlur_Sampler,IN.baseTC.xy).rgb;
+  float3 vsPos=float3(IN.baseTC.xy*ViewSpaceParams.xy+ViewSpaceParams.zw,1)*centerDepth*PS_NearFarClipDist.y;
+  float3 vsNormal=cross(ddy_fine(vsPos),ddx_fine(vsPos));
+  float3 vsView=-vsPos;
+  float perspectiveScale=max((SSSBlurDir.x>0.001)?dot(normalize(vsNormal.xz),normalize(vsView.xz)):dot(normalize(vsNormal.yz),normalize(vsView.yz)),0.3);
+  float2 projRadius=SSSBlurDir.xy*perspectiveScale*radius/(centerDepth*PS_NearFarClipDist.y);
+  float3 totalWeight=1;
+  float3 colorSum=centerColor;
+  [unroll]for(int i=0;
+  i<2;
+  i++)
+  {[unroll]for(int j=0;
+    j<kernelWidth;
+    j++)
+    {
+      float2 uv=IN.baseTC.xy+offsets[j]/5.5*projRadius;
+      float sampleDepth=GetTexture2DLod(SSSSBlur_LDepth,SSSSBlur_Sampler,float4(uv,0,0)).x;
+      float3 sampleColor=GetTexture2DLod(SSSSBlur_Input,SSSSBlur_Sampler,float4(uv,0,0)).rgb;
+      float depthDiff=(sampleDepth-centerDepth)*PS_NearFarClipDist.y*1000;
+      float3 weight=exp((offsets[j]*offsets[j]+depthDiff*depthDiff)*blurFalloff);
+      totalWeight+=weight;
+      colorSum+=weight*sampleColor;
+    }
+    projRadius*=-1;
+  }
+  OUT.Color.xyz=colorSum/totalWeight;
+  half3 origIrradiance=GetTexture2D(SSSSBlur_Irrad,SSSSBlur_Sampler,IN.baseTC.xy).rgb;
+  OUT.Color.xyz=lerp(OUT.Color.xyz,origIrradiance,spikeStrength);
+  half3 albedo=attribs.Albedo;
+  albedo*=saturate(1-GetLuminance(attribs.Reflectance));
+  OUT.Color.xyz*=(profileIndex!=1)?sqrt(albedo):albedo;
+  return OUT;
+}

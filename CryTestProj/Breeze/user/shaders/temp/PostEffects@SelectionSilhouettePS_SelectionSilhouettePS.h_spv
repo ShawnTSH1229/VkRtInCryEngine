@@ -1,0 +1,371 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 233
+; Schema: 0
+               OpCapability Shader
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %SelectionSilhouettePS "SelectionSilhouettePS" %in_var_TEXCOORD0 %in_var_TEXCOORD1 %in_var_TEXCOORD2 %out_var_SV_Target0
+               OpExecutionMode %SelectionSilhouettePS OriginUpperLeft
+               OpSource HLSL 600
+               OpName %type_PER_BATCH "type.PER_BATCH"
+               OpMemberName %type_PER_BATCH 0 "selectionColor"
+               OpMemberName %type_PER_BATCH 1 "ghostAlpha"
+               OpMemberName %type_PER_BATCH 2 "highlightColor"
+               OpName %PER_BATCH "PER_BATCH"
+               OpName %type_sampler "type.sampler"
+               OpName %SelSil_Sampler "SelSil_Sampler"
+               OpName %type_2d_image "type.2d.image"
+               OpName %SelSil_Source "SelSil_Source"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %in_var_TEXCOORD1 "in.var.TEXCOORD1"
+               OpName %in_var_TEXCOORD2 "in.var.TEXCOORD2"
+               OpName %out_var_SV_Target0 "out.var.SV_Target0"
+               OpName %SelectionSilhouettePS "SelectionSilhouettePS"
+               OpName %type_sampled_image "type.sampled.image"
+               OpDecorate %in_var_TEXCOORD0 Location 0
+               OpDecorate %in_var_TEXCOORD1 Location 1
+               OpDecorate %in_var_TEXCOORD2 Location 2
+               OpDecorate %out_var_SV_Target0 Location 0
+               OpDecorate %PER_BATCH DescriptorSet 2
+               OpDecorate %PER_BATCH Binding 0
+               OpDecorate %SelSil_Sampler DescriptorSet 0
+               OpDecorate %SelSil_Sampler Binding 1
+               OpDecorate %SelSil_Source DescriptorSet 0
+               OpDecorate %SelSil_Source Binding 0
+               OpMemberDecorate %type_PER_BATCH 0 Offset 0
+               OpMemberDecorate %type_PER_BATCH 1 Offset 16
+               OpMemberDecorate %type_PER_BATCH 2 Offset 32
+               OpDecorate %type_PER_BATCH Block
+        %int = OpTypeInt 32 1
+      %int_1 = OpConstant %int 1
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+       %uint = OpTypeInt 32 0
+     %uint_8 = OpConstant %uint 8
+     %uint_2 = OpConstant %uint 2
+     %uint_0 = OpConstant %uint 0
+     %uint_1 = OpConstant %uint 1
+     %uint_4 = OpConstant %uint 4
+      %int_2 = OpConstant %int 2
+      %int_3 = OpConstant %int 3
+     %v4uint = OpTypeVector %uint 4
+         %26 = OpConstantComposite %v4uint %uint_8 %uint_8 %uint_8 %uint_8
+         %27 = OpConstantComposite %v4uint %uint_2 %uint_2 %uint_2 %uint_2
+         %28 = OpConstantComposite %v4uint %uint_0 %uint_0 %uint_0 %uint_0
+         %29 = OpConstantComposite %v4uint %uint_1 %uint_1 %uint_1 %uint_1
+         %30 = OpConstantComposite %v4uint %uint_4 %uint_4 %uint_4 %uint_4
+      %int_0 = OpConstant %int 0
+       %bool = OpTypeBool
+       %true = OpConstantTrue %bool
+    %float_1 = OpConstant %float 1
+%type_PER_BATCH = OpTypeStruct %v4float %float %v4float
+%_ptr_Uniform_type_PER_BATCH = OpTypePointer Uniform %type_PER_BATCH
+%type_sampler = OpTypeSampler
+%_ptr_UniformConstant_type_sampler = OpTypePointer UniformConstant %type_sampler
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+%_ptr_Input_v4float = OpTypePointer Input %v4float
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+       %void = OpTypeVoid
+         %41 = OpTypeFunction %void
+%_ptr_Function_float = OpTypePointer Function %float
+    %v2float = OpTypeVector %float 2
+     %v4bool = OpTypeVector %bool 4
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+%_ptr_Function_v4float = OpTypePointer Function %v4float
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%type_sampled_image = OpTypeSampledImage %type_2d_image
+  %PER_BATCH = OpVariable %_ptr_Uniform_type_PER_BATCH Uniform
+%SelSil_Sampler = OpVariable %_ptr_UniformConstant_type_sampler UniformConstant
+%SelSil_Source = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD1 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD2 = OpVariable %_ptr_Input_v4float Input
+%out_var_SV_Target0 = OpVariable %_ptr_Output_v4float Output
+         %48 = OpConstantNull %v4float
+%SelectionSilhouettePS = OpFunction %void None %41
+         %49 = OpLabel
+         %50 = OpVariable %_ptr_Function_v4float Function
+         %51 = OpLoad %v4float %in_var_TEXCOORD0
+         %52 = OpLoad %v4float %in_var_TEXCOORD1
+         %53 = OpLoad %v4float %in_var_TEXCOORD2
+         %54 = OpAccessChain %_ptr_Uniform_float %PER_BATCH %int_1
+         %55 = OpLoad %float %54
+               OpStore %50 %48
+         %56 = OpLoad %type_2d_image %SelSil_Source
+         %57 = OpLoad %type_sampler %SelSil_Sampler
+         %58 = OpCompositeExtract %float %51 0
+         %59 = OpCompositeExtract %float %51 1
+         %60 = OpCompositeConstruct %v2float %58 %59
+         %61 = OpSampledImage %type_sampled_image %56 %57
+         %62 = OpImageSampleImplicitLod %v4float %61 %60 None
+         %63 = OpCompositeExtract %float %62 0
+         %64 = OpBitcast %uint %63
+         %65 = OpShiftRightLogical %uint %64 %uint_8
+         %66 = OpBitwiseAnd %uint %64 %uint_2
+         %67 = OpINotEqual %bool %66 %uint_0
+         %68 = OpBitwiseAnd %uint %64 %uint_1
+         %69 = OpINotEqual %bool %68 %uint_0
+         %70 = OpBitwiseAnd %uint %64 %uint_4
+         %71 = OpINotEqual %bool %70 %uint_0
+         %72 = OpLoad %type_2d_image %SelSil_Source
+         %73 = OpLoad %type_sampler %SelSil_Sampler
+         %74 = OpVectorShuffle %v2float %52 %52 0 1
+         %75 = OpSampledImage %type_sampled_image %72 %73
+         %76 = OpImageSampleImplicitLod %v4float %75 %74 None
+         %77 = OpCompositeExtract %float %76 0
+         %78 = OpBitcast %uint %77
+         %79 = OpLoad %type_2d_image %SelSil_Source
+         %80 = OpLoad %type_sampler %SelSil_Sampler
+         %81 = OpVectorShuffle %v2float %52 %52 2 3
+         %82 = OpSampledImage %type_sampled_image %79 %80
+         %83 = OpImageSampleImplicitLod %v4float %82 %81 None
+         %84 = OpCompositeExtract %float %83 0
+         %85 = OpBitcast %uint %84
+         %86 = OpLoad %type_2d_image %SelSil_Source
+         %87 = OpLoad %type_sampler %SelSil_Sampler
+         %88 = OpVectorShuffle %v2float %53 %53 0 1
+         %89 = OpSampledImage %type_sampled_image %86 %87
+         %90 = OpImageSampleImplicitLod %v4float %89 %88 None
+         %91 = OpCompositeExtract %float %90 0
+         %92 = OpBitcast %uint %91
+         %93 = OpLoad %type_2d_image %SelSil_Source
+         %94 = OpLoad %type_sampler %SelSil_Sampler
+         %95 = OpVectorShuffle %v2float %53 %53 2 3
+         %96 = OpSampledImage %type_sampled_image %93 %94
+         %97 = OpImageSampleImplicitLod %v4float %96 %95 None
+         %98 = OpCompositeExtract %float %97 0
+         %99 = OpBitcast %uint %98
+        %100 = OpCompositeConstruct %v4uint %78 %85 %92 %99
+        %101 = OpShiftRightLogical %v4uint %100 %26
+        %102 = OpCompositeConstruct %v4uint %65 %65 %65 %65
+        %103 = OpINotEqual %v4bool %101 %102
+        %104 = OpAny %bool %103
+               OpSelectionMerge %105 None
+               OpBranchConditional %104 %106 %107
+        %106 = OpLabel
+        %108 = OpCompositeConstruct %v4uint %65 %65 %65 %65
+        %109 = OpUGreaterThan %v4bool %101 %108
+        %110 = OpBitwiseAnd %v4uint %100 %27
+        %111 = OpINotEqual %v4bool %110 %28
+        %112 = OpBitwiseAnd %v4uint %100 %29
+        %113 = OpINotEqual %v4bool %112 %28
+        %114 = OpBitwiseAnd %v4uint %100 %30
+        %115 = OpINotEqual %v4bool %114 %28
+        %116 = OpLogicalAnd %v4bool %111 %103
+        %117 = OpAny %bool %116
+               OpSelectionMerge %118 None
+               OpBranchConditional %117 %119 %120
+        %119 = OpLabel
+               OpSelectionMerge %121 None
+               OpBranchConditional %67 %122 %123
+        %122 = OpLabel
+        %124 = OpLogicalAnd %v4bool %109 %111
+        %125 = OpAny %bool %124
+               OpSelectionMerge %126 None
+               OpBranchConditional %125 %127 %128
+        %127 = OpLabel
+        %129 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_2
+        %130 = OpLoad %v4float %129
+               OpStore %50 %130
+        %131 = OpLogicalNot %v4bool %115
+        %132 = OpLogicalAnd %v4bool %124 %131
+        %133 = OpAny %bool %132
+        %134 = OpLogicalNot %bool %133
+               OpSelectionMerge %135 None
+               OpBranchConditional %134 %136 %135
+        %136 = OpLabel
+        %137 = OpLogicalNot %bool %71
+               OpBranch %135
+        %135 = OpLabel
+        %138 = OpPhi %bool %true %127 %137 %136
+               OpSelectionMerge %139 None
+               OpBranchConditional %138 %140 %141
+        %140 = OpLabel
+               OpBranch %139
+        %141 = OpLabel
+               OpBranch %139
+        %139 = OpLabel
+        %142 = OpPhi %float %float_1 %140 %55 %141
+        %143 = OpAccessChain %_ptr_Function_float %50 %int_3
+               OpStore %143 %142
+               OpBranch %126
+        %128 = OpLabel
+        %144 = OpLogicalNot %bool %71
+               OpSelectionMerge %145 None
+               OpBranchConditional %144 %146 %145
+        %146 = OpLabel
+        %147 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_2
+        %148 = OpLoad %v4float %147
+               OpStore %50 %148
+               OpBranch %145
+        %145 = OpLabel
+               OpBranch %126
+        %126 = OpLabel
+               OpBranch %121
+        %123 = OpLabel
+        %149 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_2
+        %150 = OpLoad %v4float %149
+               OpStore %50 %150
+        %151 = OpLogicalAnd %v4bool %115 %111
+        %152 = OpAny %bool %151
+               OpSelectionMerge %153 None
+               OpBranchConditional %152 %154 %155
+        %154 = OpLabel
+               OpBranch %153
+        %155 = OpLabel
+               OpBranch %153
+        %153 = OpLabel
+        %156 = OpPhi %float %55 %154 %float_1 %155
+        %157 = OpAccessChain %_ptr_Function_float %50 %int_3
+               OpStore %157 %156
+               OpBranch %121
+        %121 = OpLabel
+               OpBranch %118
+        %120 = OpLabel
+        %158 = OpLogicalAnd %v4bool %113 %103
+        %159 = OpAny %bool %158
+        %160 = OpLogicalNot %bool %67
+        %161 = OpLogicalAnd %bool %159 %160
+               OpSelectionMerge %162 None
+               OpBranchConditional %161 %163 %164
+        %163 = OpLabel
+               OpSelectionMerge %165 None
+               OpBranchConditional %69 %166 %167
+        %166 = OpLabel
+        %168 = OpLogicalAnd %v4bool %109 %113
+        %169 = OpAny %bool %168
+               OpSelectionMerge %170 None
+               OpBranchConditional %169 %171 %172
+        %171 = OpLabel
+        %173 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+        %174 = OpLoad %v4float %173
+               OpStore %50 %174
+        %175 = OpLogicalNot %v4bool %115
+        %176 = OpLogicalAnd %v4bool %168 %175
+        %177 = OpAny %bool %176
+        %178 = OpLogicalNot %bool %177
+               OpSelectionMerge %179 None
+               OpBranchConditional %178 %180 %179
+        %180 = OpLabel
+        %181 = OpLogicalNot %bool %71
+               OpBranch %179
+        %179 = OpLabel
+        %182 = OpPhi %bool %true %171 %181 %180
+               OpSelectionMerge %183 None
+               OpBranchConditional %182 %184 %185
+        %184 = OpLabel
+               OpBranch %183
+        %185 = OpLabel
+               OpBranch %183
+        %183 = OpLabel
+        %186 = OpPhi %float %float_1 %184 %55 %185
+        %187 = OpAccessChain %_ptr_Function_float %50 %int_3
+               OpStore %187 %186
+               OpBranch %170
+        %172 = OpLabel
+        %188 = OpLogicalNot %bool %71
+               OpSelectionMerge %189 None
+               OpBranchConditional %188 %190 %189
+        %190 = OpLabel
+        %191 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+        %192 = OpLoad %v4float %191
+               OpStore %50 %192
+               OpBranch %189
+        %189 = OpLabel
+               OpBranch %170
+        %170 = OpLabel
+               OpBranch %165
+        %167 = OpLabel
+        %193 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+        %194 = OpLoad %v4float %193
+               OpStore %50 %194
+        %195 = OpLogicalAnd %v4bool %115 %113
+        %196 = OpAny %bool %195
+               OpSelectionMerge %197 None
+               OpBranchConditional %196 %198 %199
+        %198 = OpLabel
+               OpBranch %197
+        %199 = OpLabel
+               OpBranch %197
+        %197 = OpLabel
+        %200 = OpPhi %float %55 %198 %float_1 %199
+        %201 = OpAccessChain %_ptr_Function_float %50 %int_3
+               OpStore %201 %200
+               OpBranch %165
+        %165 = OpLabel
+               OpBranch %162
+        %164 = OpLabel
+               OpSelectionMerge %202 None
+               OpBranchConditional %69 %203 %204
+        %203 = OpLabel
+        %205 = OpLogicalNot %bool %71
+               OpSelectionMerge %206 None
+               OpBranchConditional %205 %207 %206
+        %207 = OpLabel
+        %208 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+        %209 = OpLoad %v4float %208
+               OpStore %50 %209
+               OpBranch %206
+        %206 = OpLabel
+               OpBranch %202
+        %204 = OpLabel
+               OpSelectionMerge %210 None
+               OpBranchConditional %67 %211 %210
+        %211 = OpLabel
+        %212 = OpLogicalNot %bool %71
+               OpSelectionMerge %213 None
+               OpBranchConditional %212 %214 %213
+        %214 = OpLabel
+        %215 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_2
+        %216 = OpLoad %v4float %215
+               OpStore %50 %216
+               OpBranch %213
+        %213 = OpLabel
+               OpBranch %210
+        %210 = OpLabel
+               OpBranch %202
+        %202 = OpLabel
+               OpBranch %162
+        %162 = OpLabel
+               OpBranch %118
+        %118 = OpLabel
+               OpBranch %105
+        %107 = OpLabel
+               OpSelectionMerge %217 None
+               OpBranchConditional %69 %218 %219
+        %218 = OpLabel
+        %220 = OpLogicalNot %bool %71
+               OpSelectionMerge %221 None
+               OpBranchConditional %220 %222 %221
+        %222 = OpLabel
+        %223 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+        %224 = OpLoad %v4float %223
+               OpStore %50 %224
+               OpBranch %221
+        %221 = OpLabel
+               OpBranch %217
+        %219 = OpLabel
+               OpSelectionMerge %225 None
+               OpBranchConditional %67 %226 %225
+        %226 = OpLabel
+        %227 = OpLogicalNot %bool %71
+               OpSelectionMerge %228 None
+               OpBranchConditional %227 %229 %228
+        %229 = OpLabel
+        %230 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_2
+        %231 = OpLoad %v4float %230
+               OpStore %50 %231
+               OpBranch %228
+        %228 = OpLabel
+               OpBranch %225
+        %225 = OpLabel
+               OpBranch %217
+        %217 = OpLabel
+               OpBranch %105
+        %105 = OpLabel
+        %232 = OpLoad %v4float %50
+               OpStore %out_var_SV_Target0 %232
+               OpReturn
+               OpFunctionEnd

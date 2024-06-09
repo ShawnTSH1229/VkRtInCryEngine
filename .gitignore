@@ -49,9 +49,9 @@ __pycache__/*
 #tropical_toon_island
 #TanGram
 /Code/GameSDK/cbuild/*
-/CryTestProj/Breeze/user/*
-/CryTestProj/Breeze/Breeze_package/*
-/CryTestProj/Breeze/rc_out_PC_pure/*
+#/CryTestProj/Breeze/user/*
+#/CryTestProj/Breeze/Breeze_package/*
+#/CryTestProj/Breeze/rc_out_PC_pure/*
 CRYENGINE_v5.7.0_SDKs.zip
 /cbuild/*
 /cbuild2/*

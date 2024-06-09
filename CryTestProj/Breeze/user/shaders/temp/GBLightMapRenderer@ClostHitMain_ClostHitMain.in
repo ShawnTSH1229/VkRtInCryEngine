@@ -1,0 +1,25 @@
+/*
+BwAAAGxpYl82XzMADAAAAENsb3N0SGl0TWFpbgEEHA0AAABAHA0AAEBBHA0AAEBCHA0AAMBDzMwAAAAAAAAAAA==
+*/
+
+cbuffer cbRayTracingParams:register(b0)
+{
+  struct
+  {
+    float4 lightdirection;
+  }
+  rayTracingParams;
+};
+struct SHitPayload
+{
+  bool bHit;
+};
+struct SRayTracingIntersectionAttributes
+{
+  float x;
+  float y;
+};
+[shader("closesthit")]void ClostHitMain(inout SHitPayload payload,in SRayTracingIntersectionAttributes attributes)
+{
+  payload.bHit=true;
+}

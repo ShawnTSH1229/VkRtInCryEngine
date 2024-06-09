@@ -1,0 +1,202 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 160
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %GaussBlurBilinearPS "GaussBlurBilinearPS" %in_var_TEXCOORD0 %in_var_TEXCOORD1 %in_var_TEXCOORD2 %in_var_TEXCOORD3 %out_var_SV_Target0
+               OpExecutionMode %GaussBlurBilinearPS OriginUpperLeft
+               OpSource HLSL 600
+               OpName %type_PER_BATCH "type.PER_BATCH"
+               OpMemberName %type_PER_BATCH 0 "clampTC"
+               OpMemberName %type_PER_BATCH 1 "psWeights"
+               OpName %PER_BATCH "PER_BATCH"
+               OpName %type_sampler "type.sampler"
+               OpName %GaussB_Sampler "GaussB_Sampler"
+               OpName %type_2d_image "type.2d.image"
+               OpName %GaussB_Source "GaussB_Source"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %in_var_TEXCOORD1 "in.var.TEXCOORD1"
+               OpName %in_var_TEXCOORD2 "in.var.TEXCOORD2"
+               OpName %in_var_TEXCOORD3 "in.var.TEXCOORD3"
+               OpName %out_var_SV_Target0 "out.var.SV_Target0"
+               OpName %GaussBlurBilinearPS "GaussBlurBilinearPS"
+               OpName %type_sampled_image "type.sampled.image"
+               OpDecorate %in_var_TEXCOORD0 Location 0
+               OpDecorate %in_var_TEXCOORD1 Location 1
+               OpDecorate %in_var_TEXCOORD2 Location 2
+               OpDecorate %in_var_TEXCOORD3 Location 3
+               OpDecorate %out_var_SV_Target0 Location 0
+               OpDecorate %PER_BATCH DescriptorSet 2
+               OpDecorate %PER_BATCH Binding 0
+               OpDecorate %GaussB_Sampler DescriptorSet 0
+               OpDecorate %GaussB_Sampler Binding 1
+               OpDecorate %GaussB_Source DescriptorSet 0
+               OpDecorate %GaussB_Source Binding 0
+               OpDecorate %_arr_v4float_uint_16 ArrayStride 16
+               OpMemberDecorate %type_PER_BATCH 0 Offset 0
+               OpMemberDecorate %type_PER_BATCH 1 Offset 16
+               OpDecorate %type_PER_BATCH Block
+      %float = OpTypeFloat 32
+    %v4float = OpTypeVector %float 4
+        %int = OpTypeInt 32 1
+      %int_1 = OpConstant %int 1
+      %int_0 = OpConstant %int 0
+      %int_2 = OpConstant %int 2
+      %int_3 = OpConstant %int 3
+      %int_4 = OpConstant %int 4
+      %int_5 = OpConstant %int 5
+      %int_6 = OpConstant %int 6
+      %int_7 = OpConstant %int 7
+       %uint = OpTypeInt 32 0
+    %uint_16 = OpConstant %uint 16
+%_arr_v4float_uint_16 = OpTypeArray %v4float %uint_16
+%type_PER_BATCH = OpTypeStruct %v4float %_arr_v4float_uint_16
+%_ptr_Uniform_type_PER_BATCH = OpTypePointer Uniform %type_PER_BATCH
+%type_sampler = OpTypeSampler
+%_ptr_UniformConstant_type_sampler = OpTypePointer UniformConstant %type_sampler
+%type_2d_image = OpTypeImage %float 2D 2 0 0 1 Unknown
+%_ptr_UniformConstant_type_2d_image = OpTypePointer UniformConstant %type_2d_image
+%_ptr_Input_v4float = OpTypePointer Input %v4float
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+       %void = OpTypeVoid
+         %35 = OpTypeFunction %void
+    %v2float = OpTypeVector %float 2
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%_ptr_Uniform__arr_v4float_uint_16 = OpTypePointer Uniform %_arr_v4float_uint_16
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+%type_sampled_image = OpTypeSampledImage %type_2d_image
+  %PER_BATCH = OpVariable %_ptr_Uniform_type_PER_BATCH Uniform
+%GaussB_Sampler = OpVariable %_ptr_UniformConstant_type_sampler UniformConstant
+%GaussB_Source = OpVariable %_ptr_UniformConstant_type_2d_image UniformConstant
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD1 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD2 = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD3 = OpVariable %_ptr_Input_v4float Input
+%out_var_SV_Target0 = OpVariable %_ptr_Output_v4float Output
+%GaussBlurBilinearPS = OpFunction %void None %35
+         %40 = OpLabel
+         %41 = OpLoad %v4float %in_var_TEXCOORD0
+         %42 = OpLoad %v4float %in_var_TEXCOORD1
+         %43 = OpLoad %v4float %in_var_TEXCOORD2
+         %44 = OpLoad %v4float %in_var_TEXCOORD3
+         %45 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %46 = OpLoad %v4float %45
+         %47 = OpVectorShuffle %v4float %46 %46 0 2 0 2
+         %48 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %49 = OpLoad %v4float %48
+         %50 = OpVectorShuffle %v4float %49 %49 1 3 1 3
+         %51 = OpExtInst %v4float %1 FClamp %41 %47 %50
+         %52 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %53 = OpLoad %v4float %52
+         %54 = OpVectorShuffle %v4float %53 %53 0 2 0 2
+         %55 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %56 = OpLoad %v4float %55
+         %57 = OpVectorShuffle %v4float %56 %56 1 3 1 3
+         %58 = OpExtInst %v4float %1 FClamp %42 %54 %57
+         %59 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %60 = OpLoad %v4float %59
+         %61 = OpVectorShuffle %v4float %60 %60 0 2 0 2
+         %62 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %63 = OpLoad %v4float %62
+         %64 = OpVectorShuffle %v4float %63 %63 1 3 1 3
+         %65 = OpExtInst %v4float %1 FClamp %43 %61 %64
+         %66 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %67 = OpLoad %v4float %66
+         %68 = OpVectorShuffle %v4float %67 %67 0 2 0 2
+         %69 = OpAccessChain %_ptr_Uniform_v4float %PER_BATCH %int_0
+         %70 = OpLoad %v4float %69
+         %71 = OpVectorShuffle %v4float %70 %70 1 3 1 3
+         %72 = OpExtInst %v4float %1 FClamp %44 %68 %71
+         %73 = OpLoad %type_2d_image %GaussB_Source
+         %74 = OpLoad %type_sampler %GaussB_Sampler
+         %75 = OpVectorShuffle %v2float %51 %51 0 1
+         %76 = OpSampledImage %type_sampled_image %73 %74
+         %77 = OpImageSampleImplicitLod %v4float %76 %75 None
+         %78 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+         %79 = OpAccessChain %_ptr_Uniform_v4float %78 %int_0
+         %80 = OpAccessChain %_ptr_Uniform_float %79 %int_0
+         %81 = OpLoad %float %80
+         %82 = OpVectorTimesScalar %v4float %77 %81
+         %83 = OpLoad %type_2d_image %GaussB_Source
+         %84 = OpLoad %type_sampler %GaussB_Sampler
+         %85 = OpVectorShuffle %v2float %51 %51 2 3
+         %86 = OpSampledImage %type_sampled_image %83 %84
+         %87 = OpImageSampleImplicitLod %v4float %86 %85 None
+         %88 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+         %89 = OpAccessChain %_ptr_Uniform_v4float %88 %int_1
+         %90 = OpAccessChain %_ptr_Uniform_float %89 %int_0
+         %91 = OpLoad %float %90
+         %92 = OpVectorTimesScalar %v4float %87 %91
+         %93 = OpFAdd %v4float %82 %92
+         %94 = OpLoad %type_2d_image %GaussB_Source
+         %95 = OpLoad %type_sampler %GaussB_Sampler
+         %96 = OpVectorShuffle %v2float %58 %58 0 1
+         %97 = OpSampledImage %type_sampled_image %94 %95
+         %98 = OpImageSampleImplicitLod %v4float %97 %96 None
+         %99 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %100 = OpAccessChain %_ptr_Uniform_v4float %99 %int_2
+        %101 = OpAccessChain %_ptr_Uniform_float %100 %int_0
+        %102 = OpLoad %float %101
+        %103 = OpVectorTimesScalar %v4float %98 %102
+        %104 = OpFAdd %v4float %93 %103
+        %105 = OpLoad %type_2d_image %GaussB_Source
+        %106 = OpLoad %type_sampler %GaussB_Sampler
+        %107 = OpVectorShuffle %v2float %58 %58 2 3
+        %108 = OpSampledImage %type_sampled_image %105 %106
+        %109 = OpImageSampleImplicitLod %v4float %108 %107 None
+        %110 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %111 = OpAccessChain %_ptr_Uniform_v4float %110 %int_3
+        %112 = OpAccessChain %_ptr_Uniform_float %111 %int_0
+        %113 = OpLoad %float %112
+        %114 = OpVectorTimesScalar %v4float %109 %113
+        %115 = OpFAdd %v4float %104 %114
+        %116 = OpLoad %type_2d_image %GaussB_Source
+        %117 = OpLoad %type_sampler %GaussB_Sampler
+        %118 = OpVectorShuffle %v2float %65 %65 0 1
+        %119 = OpSampledImage %type_sampled_image %116 %117
+        %120 = OpImageSampleImplicitLod %v4float %119 %118 None
+        %121 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %122 = OpAccessChain %_ptr_Uniform_v4float %121 %int_4
+        %123 = OpAccessChain %_ptr_Uniform_float %122 %int_0
+        %124 = OpLoad %float %123
+        %125 = OpVectorTimesScalar %v4float %120 %124
+        %126 = OpFAdd %v4float %115 %125
+        %127 = OpLoad %type_2d_image %GaussB_Source
+        %128 = OpLoad %type_sampler %GaussB_Sampler
+        %129 = OpVectorShuffle %v2float %65 %65 2 3
+        %130 = OpSampledImage %type_sampled_image %127 %128
+        %131 = OpImageSampleImplicitLod %v4float %130 %129 None
+        %132 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %133 = OpAccessChain %_ptr_Uniform_v4float %132 %int_5
+        %134 = OpAccessChain %_ptr_Uniform_float %133 %int_0
+        %135 = OpLoad %float %134
+        %136 = OpVectorTimesScalar %v4float %131 %135
+        %137 = OpFAdd %v4float %126 %136
+        %138 = OpLoad %type_2d_image %GaussB_Source
+        %139 = OpLoad %type_sampler %GaussB_Sampler
+        %140 = OpVectorShuffle %v2float %72 %72 0 1
+        %141 = OpSampledImage %type_sampled_image %138 %139
+        %142 = OpImageSampleImplicitLod %v4float %141 %140 None
+        %143 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %144 = OpAccessChain %_ptr_Uniform_v4float %143 %int_6
+        %145 = OpAccessChain %_ptr_Uniform_float %144 %int_0
+        %146 = OpLoad %float %145
+        %147 = OpVectorTimesScalar %v4float %142 %146
+        %148 = OpFAdd %v4float %137 %147
+        %149 = OpLoad %type_2d_image %GaussB_Source
+        %150 = OpLoad %type_sampler %GaussB_Sampler
+        %151 = OpVectorShuffle %v2float %72 %72 2 3
+        %152 = OpSampledImage %type_sampled_image %149 %150
+        %153 = OpImageSampleImplicitLod %v4float %152 %151 None
+        %154 = OpAccessChain %_ptr_Uniform__arr_v4float_uint_16 %PER_BATCH %int_1
+        %155 = OpAccessChain %_ptr_Uniform_v4float %154 %int_7
+        %156 = OpAccessChain %_ptr_Uniform_float %155 %int_0
+        %157 = OpLoad %float %156
+        %158 = OpVectorTimesScalar %v4float %153 %157
+        %159 = OpFAdd %v4float %148 %158
+               OpStore %out_var_SV_Target0 %159
+               OpReturn
+               OpFunctionEnd

@@ -1,0 +1,325 @@
+; SPIR-V
+; Version: 1.0
+; Generator: Google spiregg; 0
+; Bound: 165
+; Schema: 0
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Vertex %Common_CustomRenderPassVS "Common_CustomRenderPassVS" %in_var_POSITION %in_var_TEXCOORD0 %gl_Position %out_var_TEXCOORD0 %out_var_TEXCOORD1_centroid %out_var_TEXCOORD2 %out_var_TEXCOORD3
+               OpSource HLSL 600
+               OpName %type_CBPerViewGlobal "type.CBPerViewGlobal"
+               OpMemberName %type_CBPerViewGlobal 0 "CV_ViewProjZeroMatr"
+               OpMemberName %type_CBPerViewGlobal 1 "CV_AnimGenParams"
+               OpMemberName %type_CBPerViewGlobal 2 "CV_ViewProjMatr"
+               OpMemberName %type_CBPerViewGlobal 3 "CV_ViewProjNearestMatr"
+               OpMemberName %type_CBPerViewGlobal 4 "CV_InvViewProj"
+               OpMemberName %type_CBPerViewGlobal 5 "CV_PrevViewProjMatr"
+               OpMemberName %type_CBPerViewGlobal 6 "CV_PrevViewProjNearestMatr"
+               OpMemberName %type_CBPerViewGlobal 7 "CV_ScreenToWorldBasis"
+               OpMemberName %type_CBPerViewGlobal 8 "CV_TessInfo"
+               OpMemberName %type_CBPerViewGlobal 9 "CV_WorldViewPosition"
+               OpMemberName %type_CBPerViewGlobal 10 "CV_CameraRightVector"
+               OpMemberName %type_CBPerViewGlobal 11 "CV_CameraFrontVector"
+               OpMemberName %type_CBPerViewGlobal 12 "CV_CameraUpVector"
+               OpMemberName %type_CBPerViewGlobal 13 "CV_ScreenSize"
+               OpMemberName %type_CBPerViewGlobal 14 "CV_HPosScale"
+               OpMemberName %type_CBPerViewGlobal 15 "CV_ProjRatio"
+               OpMemberName %type_CBPerViewGlobal 16 "CV_NearestScaled"
+               OpMemberName %type_CBPerViewGlobal 17 "CV_NearFarClipDist"
+               OpMemberName %type_CBPerViewGlobal 18 "CV_SunLightDir"
+               OpMemberName %type_CBPerViewGlobal 19 "CV_SunColor"
+               OpMemberName %type_CBPerViewGlobal 20 "CV_SkyColor"
+               OpMemberName %type_CBPerViewGlobal 21 "CV_FogColor"
+               OpMemberName %type_CBPerViewGlobal 22 "CV_TerrainInfo"
+               OpMemberName %type_CBPerViewGlobal 23 "CV_DecalZFightingRemedy"
+               OpMemberName %type_CBPerViewGlobal 24 "CV_FrustumPlaneEquation"
+               OpMemberName %type_CBPerViewGlobal 25 "CV_WindGridOffset"
+               OpMemberName %type_CBPerViewGlobal 26 "CV_ViewMatr"
+               OpMemberName %type_CBPerViewGlobal 27 "CV_InvViewMatr"
+               OpMemberName %type_CBPerViewGlobal 28 "CV_ProjMatr"
+               OpMemberName %type_CBPerViewGlobal 29 "CV_ProjMatrUnjittered"
+               OpName %CBPerViewGlobal "CBPerViewGlobal"
+               OpName %type_CBPerDraw "type.CBPerDraw"
+               OpMemberName %type_CBPerDraw 0 "CD_WorldMatrix"
+               OpMemberName %type_CBPerDraw 1 "CD_PrevWorldMatrix"
+               OpMemberName %type_CBPerDraw 2 "CD_CustomData"
+               OpMemberName %type_CBPerDraw 3 "CD_CustomData1"
+               OpMemberName %type_CBPerDraw 4 "CD_CustomData2"
+               OpMemberName %type_CBPerDraw 5 "CD_LightMapScaleAndOffset"
+               OpName %CBPerDraw "CBPerDraw"
+               OpName %in_var_POSITION "in.var.POSITION"
+               OpName %in_var_TEXCOORD0 "in.var.TEXCOORD0"
+               OpName %out_var_TEXCOORD0 "out.var.TEXCOORD0"
+               OpName %out_var_TEXCOORD1_centroid "out.var.TEXCOORD1_centroid"
+               OpName %out_var_TEXCOORD2 "out.var.TEXCOORD2"
+               OpName %out_var_TEXCOORD3 "out.var.TEXCOORD3"
+               OpName %Common_CustomRenderPassVS "Common_CustomRenderPassVS"
+               OpDecorate %gl_Position BuiltIn Position
+               OpDecorate %in_var_POSITION Location 0
+               OpDecorate %in_var_TEXCOORD0 Location 1
+               OpDecorate %out_var_TEXCOORD0 Location 0
+               OpDecorate %out_var_TEXCOORD1_centroid Location 1
+               OpDecorate %out_var_TEXCOORD2 Location 2
+               OpDecorate %out_var_TEXCOORD3 Location 3
+               OpDecorate %CBPerViewGlobal DescriptorSet 3
+               OpDecorate %CBPerViewGlobal Binding 1
+               OpDecorate %CBPerDraw DescriptorSet 0
+               OpDecorate %CBPerDraw Binding 0
+               OpMemberDecorate %type_CBPerViewGlobal 0 Offset 0
+               OpMemberDecorate %type_CBPerViewGlobal 0 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 0 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 1 Offset 64
+               OpMemberDecorate %type_CBPerViewGlobal 2 Offset 80
+               OpMemberDecorate %type_CBPerViewGlobal 2 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 2 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 3 Offset 144
+               OpMemberDecorate %type_CBPerViewGlobal 3 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 3 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 4 Offset 208
+               OpMemberDecorate %type_CBPerViewGlobal 4 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 4 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 5 Offset 272
+               OpMemberDecorate %type_CBPerViewGlobal 5 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 5 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 6 Offset 336
+               OpMemberDecorate %type_CBPerViewGlobal 6 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 6 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 7 Offset 400
+               OpMemberDecorate %type_CBPerViewGlobal 7 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 7 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 8 Offset 448
+               OpMemberDecorate %type_CBPerViewGlobal 9 Offset 464
+               OpMemberDecorate %type_CBPerViewGlobal 10 Offset 480
+               OpMemberDecorate %type_CBPerViewGlobal 11 Offset 496
+               OpMemberDecorate %type_CBPerViewGlobal 12 Offset 512
+               OpMemberDecorate %type_CBPerViewGlobal 13 Offset 528
+               OpMemberDecorate %type_CBPerViewGlobal 14 Offset 544
+               OpMemberDecorate %type_CBPerViewGlobal 15 Offset 560
+               OpMemberDecorate %type_CBPerViewGlobal 16 Offset 576
+               OpMemberDecorate %type_CBPerViewGlobal 17 Offset 592
+               OpMemberDecorate %type_CBPerViewGlobal 18 Offset 608
+               OpMemberDecorate %type_CBPerViewGlobal 19 Offset 624
+               OpMemberDecorate %type_CBPerViewGlobal 20 Offset 640
+               OpMemberDecorate %type_CBPerViewGlobal 21 Offset 656
+               OpMemberDecorate %type_CBPerViewGlobal 22 Offset 672
+               OpMemberDecorate %type_CBPerViewGlobal 23 Offset 688
+               OpMemberDecorate %type_CBPerViewGlobal 24 Offset 704
+               OpMemberDecorate %type_CBPerViewGlobal 24 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 24 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 25 Offset 768
+               OpMemberDecorate %type_CBPerViewGlobal 26 Offset 784
+               OpMemberDecorate %type_CBPerViewGlobal 26 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 26 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 27 Offset 848
+               OpMemberDecorate %type_CBPerViewGlobal 27 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 27 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 28 Offset 912
+               OpMemberDecorate %type_CBPerViewGlobal 28 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 28 ColMajor
+               OpMemberDecorate %type_CBPerViewGlobal 29 Offset 976
+               OpMemberDecorate %type_CBPerViewGlobal 29 MatrixStride 16
+               OpMemberDecorate %type_CBPerViewGlobal 29 ColMajor
+               OpDecorate %type_CBPerViewGlobal Block
+               OpMemberDecorate %type_CBPerDraw 0 Offset 0
+               OpMemberDecorate %type_CBPerDraw 0 MatrixStride 16
+               OpMemberDecorate %type_CBPerDraw 0 ColMajor
+               OpMemberDecorate %type_CBPerDraw 1 Offset 48
+               OpMemberDecorate %type_CBPerDraw 1 MatrixStride 16
+               OpMemberDecorate %type_CBPerDraw 1 ColMajor
+               OpMemberDecorate %type_CBPerDraw 2 Offset 96
+               OpMemberDecorate %type_CBPerDraw 3 Offset 112
+               OpMemberDecorate %type_CBPerDraw 4 Offset 128
+               OpMemberDecorate %type_CBPerDraw 5 Offset 144
+               OpDecorate %type_CBPerDraw Block
+      %float = OpTypeFloat 32
+    %float_1 = OpConstant %float 1
+  %float_0_5 = OpConstant %float 0.5
+    %v4float = OpTypeVector %float 4
+    %v3float = OpTypeVector %float 3
+%mat4v4float = OpTypeMatrix %v4float 4
+        %int = OpTypeInt 32 1
+      %int_3 = OpConstant %int 3
+      %int_0 = OpConstant %int 0
+       %uint = OpTypeInt 32 0
+     %uint_2 = OpConstant %uint 2
+      %int_2 = OpConstant %int 2
+     %uint_0 = OpConstant %uint 0
+     %uint_1 = OpConstant %uint 1
+     %uint_3 = OpConstant %uint 3
+      %int_7 = OpConstant %int 7
+%float_0_00999999978 = OpConstant %float 0.00999999978
+    %float_0 = OpConstant %float 0
+   %float_n1 = OpConstant %float -1
+    %v2float = OpTypeVector %float 2
+         %34 = OpConstantComposite %v2float %float_1 %float_n1
+     %int_14 = OpConstant %int 14
+%mat3v4float = OpTypeMatrix %v4float 3
+%type_CBPerViewGlobal = OpTypeStruct %mat4v4float %v4float %mat4v4float %mat4v4float %mat4v4float %mat4v4float %mat4v4float %mat3v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %v4float %mat4v4float %v4float %mat4v4float %mat4v4float %mat4v4float %mat4v4float
+%_ptr_Uniform_type_CBPerViewGlobal = OpTypePointer Uniform %type_CBPerViewGlobal
+%type_CBPerDraw = OpTypeStruct %mat3v4float %mat3v4float %v4float %v4float %v4float %v4float
+%_ptr_Uniform_type_CBPerDraw = OpTypePointer Uniform %type_CBPerDraw
+%_ptr_Input_v4float = OpTypePointer Input %v4float
+%_ptr_Input_v2float = OpTypePointer Input %v2float
+%_ptr_Output_v4float = OpTypePointer Output %v4float
+       %void = OpTypeVoid
+         %43 = OpTypeFunction %void
+%_ptr_Function_v4float = OpTypePointer Function %v4float
+%_ptr_Function_mat4v4float = OpTypePointer Function %mat4v4float
+%_ptr_Uniform_v4float = OpTypePointer Uniform %v4float
+%_ptr_Uniform_mat4v4float = OpTypePointer Uniform %mat4v4float
+%_ptr_Function_float = OpTypePointer Function %float
+%_ptr_Uniform_mat3v4float = OpTypePointer Uniform %mat3v4float
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+%_ptr_Function_mat3v4float = OpTypePointer Function %mat3v4float
+%CBPerViewGlobal = OpVariable %_ptr_Uniform_type_CBPerViewGlobal Uniform
+  %CBPerDraw = OpVariable %_ptr_Uniform_type_CBPerDraw Uniform
+%in_var_POSITION = OpVariable %_ptr_Input_v4float Input
+%in_var_TEXCOORD0 = OpVariable %_ptr_Input_v2float Input
+%gl_Position = OpVariable %_ptr_Output_v4float Output
+%out_var_TEXCOORD0 = OpVariable %_ptr_Output_v4float Output
+%out_var_TEXCOORD1_centroid = OpVariable %_ptr_Output_v4float Output
+%out_var_TEXCOORD2 = OpVariable %_ptr_Output_v4float Output
+%out_var_TEXCOORD3 = OpVariable %_ptr_Output_v4float Output
+         %52 = OpConstantNull %v4float
+         %53 = OpConstantComposite %v4float %float_1 %float_0 %float_0 %float_0
+         %54 = OpConstantComposite %v4float %float_0 %float_1 %float_0 %float_0
+         %55 = OpConstantComposite %v4float %float_0 %float_0 %float_1 %float_0
+         %56 = OpConstantComposite %v4float %float_0 %float_0 %float_0 %float_1
+         %57 = OpConstantComposite %mat4v4float %53 %54 %55 %56
+%Common_CustomRenderPassVS = OpFunction %void None %43
+         %58 = OpLabel
+         %59 = OpVariable %_ptr_Function_mat4v4float Function
+         %60 = OpVariable %_ptr_Function_v4float Function
+         %61 = OpVariable %_ptr_Function_mat4v4float Function
+         %62 = OpVariable %_ptr_Function_mat3v4float Function
+         %63 = OpVariable %_ptr_Function_v4float Function
+         %64 = OpLoad %v4float %in_var_POSITION
+         %65 = OpLoad %v2float %in_var_TEXCOORD0
+               OpStore %60 %52
+         %66 = OpCompositeExtract %float %64 0
+         %67 = OpCompositeExtract %float %64 1
+         %68 = OpCompositeExtract %float %64 2
+         %69 = OpCompositeConstruct %v4float %66 %67 %68 %float_1
+         %70 = OpCompositeExtract %float %65 0
+         %71 = OpCompositeExtract %float %65 1
+         %72 = OpCompositeConstruct %v4float %70 %71 %float_0 %float_1
+         %73 = OpAccessChain %_ptr_Uniform_v4float %CBPerDraw %int_3
+         %74 = OpLoad %v4float %73
+         %75 = OpAccessChain %_ptr_Uniform_mat4v4float %CBPerViewGlobal %int_0
+         %76 = OpLoad %mat4v4float %75
+               OpStore %61 %57
+         %77 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerDraw %int_0
+         %78 = OpLoad %mat3v4float %77
+               OpStore %62 %78
+         %79 = OpAccessChain %_ptr_Function_v4float %62 %uint_0
+         %80 = OpLoad %v4float %79
+         %81 = OpAccessChain %_ptr_Function_v4float %61 %uint_0
+               OpStore %81 %80
+         %82 = OpAccessChain %_ptr_Function_v4float %62 %uint_1
+         %83 = OpLoad %v4float %82
+         %84 = OpAccessChain %_ptr_Function_v4float %61 %uint_1
+               OpStore %84 %83
+         %85 = OpAccessChain %_ptr_Function_v4float %62 %uint_2
+         %86 = OpLoad %v4float %85
+         %87 = OpAccessChain %_ptr_Function_v4float %61 %uint_2
+               OpStore %87 %86
+         %88 = OpLoad %mat4v4float %61
+               OpStore %59 %88
+               OpBranch %89
+         %89 = OpLabel
+               OpBranch %90
+         %90 = OpLabel
+         %91 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+         %92 = OpAccessChain %_ptr_Uniform_float %91 %uint_0 %uint_3
+         %93 = OpLoad %float %92
+         %94 = OpAccessChain %_ptr_Function_float %59 %uint_0 %uint_3
+         %95 = OpLoad %float %94
+         %96 = OpFSub %float %95 %93
+               OpStore %94 %96
+         %97 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+         %98 = OpAccessChain %_ptr_Uniform_float %97 %uint_1 %uint_3
+         %99 = OpLoad %float %98
+        %100 = OpAccessChain %_ptr_Function_float %59 %uint_1 %uint_3
+        %101 = OpLoad %float %100
+        %102 = OpFSub %float %101 %99
+               OpStore %100 %102
+        %103 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+        %104 = OpAccessChain %_ptr_Uniform_float %103 %uint_2 %uint_3
+        %105 = OpLoad %float %104
+        %106 = OpAccessChain %_ptr_Function_float %59 %uint_2 %uint_3
+        %107 = OpLoad %float %106
+        %108 = OpFSub %float %107 %105
+               OpStore %106 %108
+               OpBranch %109
+        %109 = OpLabel
+        %110 = OpLoad %mat4v4float %59
+               OpBranch %111
+        %111 = OpLabel
+        %112 = OpVectorShuffle %v4float %69 %69 4 5 6 3
+        %113 = OpLoad %mat4v4float %59
+        %114 = OpVectorTimesMatrix %v4float %112 %113
+               OpBranch %115
+        %115 = OpLabel
+        %116 = OpVectorTimesMatrix %v4float %69 %110
+        %117 = OpVectorTimesMatrix %v4float %116 %76
+               OpStore %63 %117
+        %118 = OpVectorShuffle %v4float %52 %114 4 5 6 3
+               OpStore %60 %72
+        %119 = OpAccessChain %_ptr_Function_float %63 %int_3
+        %120 = OpLoad %float %119
+        %121 = OpAccessChain %_ptr_Function_float %60 %int_2
+               OpStore %121 %120
+        %122 = OpAccessChain %_ptr_Function_v4float %59 %uint_0
+        %123 = OpAccessChain %_ptr_Function_float %122 %int_3
+        %124 = OpLoad %float %123
+        %125 = OpAccessChain %_ptr_Function_v4float %59 %uint_1
+        %126 = OpAccessChain %_ptr_Function_float %125 %int_3
+        %127 = OpLoad %float %126
+        %128 = OpAccessChain %_ptr_Function_v4float %59 %uint_2
+        %129 = OpAccessChain %_ptr_Function_float %128 %int_3
+        %130 = OpLoad %float %129
+        %131 = OpCompositeConstruct %v3float %124 %127 %130
+        %132 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+        %133 = OpAccessChain %_ptr_Uniform_float %132 %uint_0 %uint_3
+        %134 = OpLoad %float %133
+        %135 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+        %136 = OpAccessChain %_ptr_Uniform_float %135 %uint_1 %uint_3
+        %137 = OpLoad %float %136
+        %138 = OpAccessChain %_ptr_Uniform_mat3v4float %CBPerViewGlobal %int_7
+        %139 = OpAccessChain %_ptr_Uniform_float %138 %uint_2 %uint_3
+        %140 = OpLoad %float %139
+        %141 = OpCompositeConstruct %v3float %134 %137 %140
+        %142 = OpFAdd %v3float %131 %141
+        %143 = OpExtInst %float %1 Length %142
+        %144 = OpExtInst %float %1 Fract %143
+        %145 = OpFAdd %float %144 %float_0_00999999978
+        %146 = OpAccessChain %_ptr_Function_float %60 %int_3
+               OpStore %146 %145
+        %147 = OpVectorShuffle %v2float %117 %117 0 1
+        %148 = OpVectorShuffle %v2float %117 %117 3 3
+        %149 = OpExtInst %v2float %1 Fma %147 %34 %148
+        %150 = OpVectorTimesScalar %v2float %149 %float_0_5
+               OpBranch %151
+        %151 = OpLabel
+        %152 = OpVectorShuffle %v2float %150 %52 0 1
+        %153 = OpAccessChain %_ptr_Uniform_v4float %CBPerViewGlobal %int_14
+        %154 = OpLoad %v4float %153
+        %155 = OpCompositeExtract %float %154 0
+        %156 = OpCompositeExtract %float %154 1
+        %157 = OpCompositeConstruct %v2float %155 %156
+        %158 = OpFMul %v2float %152 %157
+        %159 = OpVectorShuffle %v4float %117 %158 4 5 2 3
+               OpBranch %160
+        %160 = OpLabel
+        %161 = OpLoad %v4float %60
+        %162 = OpCompositeExtract %float %117 1
+        %163 = OpFNegate %float %162
+        %164 = OpCompositeInsert %v4float %163 %117 1
+               OpStore %gl_Position %164
+               OpStore %out_var_TEXCOORD0 %161
+               OpStore %out_var_TEXCOORD1_centroid %159
+               OpStore %out_var_TEXCOORD2 %74
+               OpStore %out_var_TEXCOORD3 %118
+               OpReturn
+               OpFunctionEnd

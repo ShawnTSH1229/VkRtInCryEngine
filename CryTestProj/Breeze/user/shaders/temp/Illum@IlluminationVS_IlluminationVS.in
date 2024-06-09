@@ -1,0 +1,570 @@
+/*
+BgAAAHZzXzZfMAAADgAAAElsbHVtaW5hdGlvblZTAAAEARUAAAAAQAYBAAAAAEIBAAAAAEMXAAAAAEQBAAAAQE4EAAAAQFAQAAAAQHIPHwAAAABBHwAAAEBAHwAAAEBBHwAAAEBCHwAAAEBDHwAAAEBEHwAAAEBFHwAAAEBGHwAAAEBHHwAAAEBIHwAAAEBJHwAAAEBKHwAAAEBLHwAAAEBMHwAAAEBNLx8AAAAARR8AAAAARh8AAABAUR8AAABAUh8AAABAUx8AAABAVB8AAABAVR8AAABAVh8AAABAVx8AAABAWB8AAABAWR8AAABAWh8AAABAWx8AAABAXB8AAABAXR8AAABAXh8AAABAYB8AAABAYR8AAABAYh8AAABAYx8AAABAZB8AAABAZR8AAABAZh8AAABAZx8AAABAaB8AAABAaR8AAABAah8AAABAax8AAABAbB8AAABAbR8AAABAbh8AAABAbx8AAABAcB8AAABAcR8AAACAQB8AAACAQR8AAACAQh8AAACAQx8AAACARB8AAACARR8AAACARh8AAACARx8AAACASB8AAACASR8AAACASh8AAACASx8AAACAT8wAAAAAAAAAAA==
+*/
+
+cbuffer PER_BATCH:register(b0, space0)
+{
+  //DecalAtten;
+  float4 vfHeightDensityRampParams;
+  float4 vfScatteringParams;
+  float4 vfGlobalEnvProbeParams0;
+  float4 vfScatteringBlendParams;
+  float4 vfScatteringColor;
+  float4 vfDistributionParams;
+  float4 vfSamplingParams;
+  float3 vfColGradDelta;
+  float4 irreg_kernel_2d[16/2];
+  float4 vfRampParams;
+  float4 vfColGradRadial;
+  float4 vfGlobalEnvProbeParams1;
+  //DecalBinormal;
+  float4 vfColGradParams;
+  float4 vfHeightDensityParams;
+  float3 vfColGradBase;
+  float4 vfDistanceParams;
+  float4 vfParams;
+  //DecalTangent;
+  float4 vfScatteringSecondaryColor;
+  float4 vfSunDir;
+};
+cbuffer PER_MATERIAL:register(b0, space2)
+{
+  float4x4 CM_MatrixTCM:packoffset(c31);
+  float4 CM_DeformWave:packoffset(c35);
+  float3 __0bendDetailFrequency__1bendDetailLeafAmplitude__2bendDetailBranchAmplitude__3:packoffset(c38);
+  float __0EmittanceMapGamma__1__2__3:packoffset(c42);
+  float2 __0__1SSSIndex__2__3:packoffset(c48);
+};
+SamplerState ssMaterialBilinearClamp:register(s39, space3);
+Texture2D windGridTex:register(t11, space3);
+cbuffer CBPerViewGlobal:register(b1, space3)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b0, space3)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b0, space3)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b0, space1)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b1, space1)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+float3 TangNormalUnnormalized(float4 Tangent,float4 Binormal)
+{
+  return cross(Tangent.xyz,Binormal.xyz)*Tangent.w;
+}
+float3 TangNormal(float4 Tangent,float4 Binormal)
+{
+  return normalize(TangNormalUnnormalized(Tangent,Binormal));
+}
+half4 GetTexture2DLod(Texture2D tex,SamplerState samplerState,float4 uv)
+{
+  return tex.SampleLevel(samplerState,uv.xy,uv.w);
+}
+half2 GetTexture2DLod(Texture2D<float2>tex,SamplerState samplerState,float4 uv)
+{
+  return tex.SampleLevel(samplerState,uv.xy,uv.w);
+}
+half4 GetTexture2DLod(Texture2D tex,SamplerState samplerState,float2 uv,float Lod)
+{
+  return tex.SampleLevel(samplerState,uv.xy,Lod);
+}
+float2 GetScaledScreenTC(float2 TC)
+{
+  return TC*CV_HPosScale;
+}
+float4 HPosToScreenTC(float4 HPos,bool scaled=true)
+{
+  float4 ScrTC=HPos;
+  ScrTC.xy=(HPos.xy*float2(1,-1)+HPos.ww)*0.5;
+  if(scaled)
+  {
+    ScrTC.xy=GetScaledScreenTC(ScrTC.xy);
+  }
+  return ScrTC;
+}
+float4 GetInputColor(in float4 Color)
+{
+  return Color.zyxw;
+}
+static const float LTC_LUT_SIZE=64.0f;
+static const float LTC_LUT_SCALE=(LTC_LUT_SIZE-1.0f)/LTC_LUT_SIZE;
+static const float LTC_LUT_BIAS=0.5f/LTC_LUT_SIZE;
+cbuffer CBPerInstance:register(b0, space0)
+{};
+cbuffer CBPerDraw:register(b0, space0)
+{
+  float3x4 CD_WorldMatrix;
+  float3x4 CD_PrevWorldMatrix;
+  float4 CD_CustomData;
+  float4 CD_CustomData1;
+  float4 CD_CustomData2;
+  float4 CD_LightMapScaleAndOffset;
+};
+float4 Get_SPI_SkinningInfo()
+{
+  return(float4)0;
+}
+float3x4 Get_SPI_ObjWorldMat(int nIndex)
+{
+  return CD_WorldMatrix;
+}
+float4 DecodeBending(float3 vPos,float bendingRadius,float bendingScale)
+{
+  const half fTime=CV_AnimGenParams.z;
+  half2 vPhase=vPos.xy*0.125h;
+  float fRadiusVert=bendingRadius;
+  float fWaveFreq=0.4f/(fRadiusVert+1.f)+0.2f;
+  float2 vFreq=float2(fWaveFreq,fWaveFreq*1.125);
+  half2 tc=(vPos.xy-CV_WindGridOffset.xy)*CV_WindGridOffset.zw;
+  half2 vWindVec=GetTexture2DLod(windGridTex,ssMaterialBilinearClamp,float4(tc.xy,0,0)).xy;
+  const float fWAVE_PARALLEL=0.008f;
+  const float fWAVE_TRANSVERSE=0.002f;
+  float2 vAmp=float2(vWindVec.x*fWAVE_PARALLEL+vWindVec.y*fWAVE_TRANSVERSE,vWindVec.y*fWAVE_PARALLEL-vWindVec.x*fWAVE_TRANSVERSE);
+  half2 vAddBending=sin((fTime*vFreq+vPhase)*3.1415926)*vAmp;
+  half4 result;
+  result.xy=vAddBending.xy*50.f+vWindVec.xy;
+  result.z=length(vWindVec.xy)*2.f;
+  result.w=length(vAddBending+vWindVec.xy)*0.3f;
+  result.xyz*=bendingScale;
+  return result;
+}
+float4 Get_SPI_BendInfo(int nIndex,float3 worldPos)
+{
+  return(float4)0;
+}
+struct CSSkinVertexOut
+{
+  float3 pos;
+  float pad1;
+  float4 qtangent;
+  float3 tangent;
+  float pad2;
+  float3 bitangent;
+  float pad3;
+  float2 uv;
+  float2 pad4;
+};
+float3 transform_quat_vec(const float4 quat,const float3 vec)
+{
+  float3 r2,r3;
+  r2=cross(quat.xyz,vec);
+  r2=quat.w*vec+r2;
+  r3=cross(quat.xyz,r2);
+  r3=r3*2+vec;
+  return r3;
+}
+float3x3 quat_to_mat(const float4 quat)
+{
+  float3 r0,r1,r2;
+  float4 q2;
+  float3 c0=float3(-1,0,1);
+  q2=quat+quat;
+  r2=q2.w*c0.xyz;
+  r0=quat.wzy*r2.zxz+c0.xyy;
+  r0=quat.x*q2.xyz+r0;
+  r1=quat.zwx*r2.zzx+c0.yxy;
+  r1=quat.y*q2.xyz+r1;
+  r2=cross(r0,r1);
+  return float3x3(r0,r1,r2);
+}
+float4 transform_quat_quat(const float4 q,const float4 p)
+{
+  float4 c,r;
+  c.xyz=cross(q.xyz,p.xyz);
+  c.w=-dot(q.xyz,p.xyz);
+  r=p*q.w+c;
+  r.xyz=q*p.w+r;
+  return r;
+}
+float3x4 convert_dq_to_mat(float4 nq,float4 dq)
+{
+  float3 t=(nq.w*dq.xyz-dq.w*nq.xyz+cross(nq.xyz,dq.xyz));
+  float3 v2=nq.xyz+nq.xyz;
+  float xx=1-v2.x*nq.x;
+  float yy=v2.y*nq.y;
+  float xw=v2.x*nq.w;
+  float xy=v2.y*nq.x;
+  float yz=v2.z*nq.y;
+  float yw=v2.y*nq.w;
+  float xz=v2.z*nq.x;
+  float zz=v2.z*nq.z;
+  float zw=v2.z*nq.w;
+  float3x4 r;
+  r._m00=1-yy-zz;
+  r._m01=xy-zw;
+  r._m02=xz+yw;
+  r._m03=t.x+t.x;
+  r._m10=xy+zw;
+  r._m11=xx-zz;
+  r._m12=yz-xw;
+  r._m13=t.y+t.y;
+  r._m20=xz-yw;
+  r._m21=yz+xw;
+  r._m22=xx-yy;
+  r._m23=t.z+t.z;
+  return r;
+}
+float4 mat_to_quat(float3x3 m)
+{
+  float4 q;
+  float s,p,tr=m._m00+m._m11+m._m22;
+  q.w=1;
+  q.x=0;
+  q.y=0;
+  q.z=0;
+  if(tr>0)
+  {
+    s=sqrt(tr+1.0f);
+    p=0.5f/s;
+    q.w=s*0.5f;
+    q.x=(m._m21-m._m12)*p;
+    q.y=(m._m02-m._m20)*p;
+    q.z=(m._m10-m._m01)*p;
+  }
+  else if((m._m00>=m._m11)&&(m._m00>=m._m22))
+  {
+    s=sqrt(m._m00-m._m11-m._m22+1.0f);
+    p=0.5f/s;
+    q.w=(m._m21-m._m12)*p;
+    q.x=s*0.5f;
+    q.y=(m._m10+m._m01)*p;
+    q.z=(m._m20+m._m02)*p;
+  }
+  else if((m._m11>=m._m00)&&(m._m11>=m._m22))
+  {
+    s=sqrt(m._m11-m._m22-m._m00+1.0f);
+    p=0.5f/s;
+    q.w=(m._m02-m._m20)*p;
+    q.x=(m._m01+m._m10)*p;
+    q.y=s*0.5f;
+    q.z=(m._m21+m._m12)*p;
+  }
+  else if((m._m22>=m._m00)&&(m._m22>=m._m11))
+  {
+    s=sqrt(m._m22-m._m00-m._m11+1.0f);
+    p=0.5f/s;
+    q.w=(m._m10-m._m01)*p;
+    q.x=(m._m02+m._m20)*p;
+    q.y=(m._m12+m._m21)*p;
+    q.z=s*0.5f;
+  }
+  return q;
+}
+struct SSkinExtraBlendWeights
+{
+  uint BlendWeights;
+  uint BlendIndices[2];
+};
+StructuredBuffer<SSkinExtraBlendWeights>SkinExtraBlendWeights:register(t3, space1);
+StructuredBuffer<CSSkinVertexOut>SkinnedVertices:register(t3, space1);
+struct SSkinBlendWeightsOut
+{
+  float4 BlendWeights;
+  int4 BlendIndices;
+};
+struct app2vertCommon
+{
+  float4 Position:POSITION;
+  float2 baseTC:TEXCOORD0;
+  float4 Color:COLOR;
+  float4 Tangent:TANGENT;
+  float4 Binormal:BITANGENT;
+};
+struct app2vertGeneral
+{
+  app2vertCommon vertCommon;
+};
+struct streamPos
+{
+  float4 Position;
+  float4 WorldPos;
+  float4 PositionCurr;
+  float4 PositionPrev;
+  float4 WorldPosPrev;
+  float4 Color;
+  float4 baseTC;
+  float4 Tangent;
+  float4 Binormal;
+  float3x3 ObjToTangentSpace;
+  float4x4 InstMatrix;
+};
+float4 D3DX_R8G8B8A8_UNORM_TO_FLOAT4(uint packedInput)
+{
+  float4 unpackedOutput;
+  unpackedOutput.x=(float)(packedInput&0x000000ff)/255.0f;
+  unpackedOutput.y=(float)(((packedInput>>8)&0x000000ff))/255.0f;
+  unpackedOutput.z=(float)(((packedInput>>16)&0x000000ff))/255.0f;
+  unpackedOutput.w=(float)(packedInput>>24)/255.0f;
+  return unpackedOutput;
+}
+uint4 D3DX_R16G16B16A16_SINT_TO_UINT4(uint packedInput[2])
+{
+  int4 unpackedOutput;
+  unpackedOutput.x=(packedInput[0]&0x0000ffff);
+  unpackedOutput.y=(packedInput[0]>>16&0x0000ffff);
+  unpackedOutput.z=(packedInput[1]&0x0000ffff);
+  unpackedOutput.w=(packedInput[1]>>16&0x0000ffff);
+  return unpackedOutput;
+}
+void vtxStreamUnifySkinning(in app2vertCommon IN,inout streamPos OUT)
+{}
+void vtxStreamUnifyTangents(in app2vertCommon IN,inout streamPos OUT)
+{
+  OUT.Tangent=IN.Tangent;
+  OUT.Binormal=IN.Binormal;
+  OUT.Tangent.x+=1e-6;
+  OUT.Binormal.x-=1e-6;
+  OUT.ObjToTangentSpace[0]=OUT.Tangent.xyz;
+  OUT.ObjToTangentSpace[1]=OUT.Binormal.xyz;
+  OUT.ObjToTangentSpace[2]=normalize(cross(OUT.Tangent.xyz,OUT.Binormal.xyz))*OUT.Tangent.w;
+}
+void vtxStreamUnifyCommonInstancing(in app2vertCommon IN,inout streamPos OUT)
+{}
+void vtxStreamUnifyCommon(in app2vertCommon IN,inout streamPos OUT)
+{
+  {
+    OUT.Position=float4(IN.Position.xyz,1.0f);
+    OUT.baseTC=float4(IN.baseTC,0,1);
+    OUT.Color=GetInputColor(IN.Color);
+    vtxStreamUnifyCommonInstancing(IN,OUT);
+    vtxStreamUnifyTangents(IN,OUT);
+    vtxStreamUnifySkinning(IN,OUT);
+  }
+  }
+void streamPos_FromGeneral(in app2vertGeneral IN,inout streamPos OUT)
+{
+  vtxStreamUnifyCommon(IN.vertCommon,OUT);
+}
+float4 TriangleWave(float4 x)
+{
+  return abs(frac(x+0.5)*2.0-1.0);
+}
+void _MainBending(inout float3 vPos,half3 vBendParams)
+{}
+void _DetailBending(half3 worldPos,inout float3 vPos,float3 vNormal,half3 vVertexInfo,half4 vBendDetailParams)
+{}
+void _VTBending(inout float3 vPos,half3 BendInfoLocal,inout float3 vNormal,half3 vColor,half3 worldPos,half4 vBendDetailParams)
+{}
+void pos_wind_General(inout float4 InPos,float3 vNorm,float4 cVtxColors,streamPos IN)
+{}
+void _VTModify(inout float4 inPos,float3 vNorm,float4x4 InstMatrix,streamPos IN,bool bRelativeToCam,int nType)
+{
+  const half fTime=CV_AnimGenParams.z;
+  float4 vTC=0;
+  vTC=IN.baseTC;
+}
+float4 SkinPosition(int4 indices,float4 weights,int4 extraIndices,float4 extraWeights,inout float4 position,inout float3 normal,bool bPrevFrame=false)
+{
+  return position;
+}
+float4 SkinPositionTangent(int4 indices,float4 weights,int4 extraIndices,float4 extraWeights,inout float4 position,inout float4 tangent,inout float3x3 tangentFrame,inout float3 normal,bool bPrevFrame=false)
+{
+  return position;
+}
+float4x4 GetInstanceMatrix(int nInstance=0)
+{
+  float4x4 Mat=float4x4(float4(1,0,0,0),float4(0,1,0,0),float4(0,0,1,0),float4(0,0,0,1));
+  float3x4 objWorldMat=Get_SPI_ObjWorldMat(nInstance);
+  Mat[0]=objWorldMat[0];
+  Mat[1]=objWorldMat[1];
+  Mat[2]=objWorldMat[2];
+  return Mat;
+}
+void Matrix_Inst_General(inout streamPos IN)
+{
+  int nInstance=0;
+  IN.InstMatrix=GetInstanceMatrix(nInstance);
+}
+float4 _pos_HPos(float4x4 VPMatrix,float4x4 InstMatrix,float4 InPos)
+{
+  {
+    float4 vWorldPos=mul(InstMatrix,InPos);
+    return mul(VPMatrix,vWorldPos);
+  }
+  }
+float4 _pos_Modificators(float4x4 VPMatrix,float4x4 InstMatrix,inout streamPos IN,bool bRelativeToCam=true,bool bPrevFrame=false,float fPrevDelta=0)
+{
+  int nType=0;
+  float4 InPos=IN.Position;
+  if(bPrevFrame==false)
+  {
+    IN.Position.xyz=InPos.xyz;
+    IN.WorldPos=mul(IN.InstMatrix,IN.Position);
+  }
+  else
+  {
+    InPos.xyz=lerp(IN.PositionCurr.xyz,InPos.xyz,fPrevDelta);
+    IN.PositionPrev.xyz=InPos.xyz;
+    IN.WorldPosPrev=mul(IN.InstMatrix,IN.PositionPrev);
+  }
+  float4 HPosition=_pos_HPos(VPMatrix,InstMatrix,InPos);
+  return HPosition;
+}
+float4 Pos_VS_General(float4x4 VPMatrix,inout streamPos IN,bool bRelativeToCam=true,bool bInstanceMatToWorld=false)
+{
+  {
+    float4 HPosition;
+    Matrix_Inst_General(IN);
+    if(bInstanceMatToWorld)
+    {
+      IN.InstMatrix[0][3]+=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).x;
+      IN.InstMatrix[1][3]+=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).y;
+      IN.InstMatrix[2][3]+=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).z;
+    }
+    if(bRelativeToCam)
+    {
+      IN.InstMatrix[0][3]-=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).x;
+      IN.InstMatrix[1][3]-=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).y;
+      IN.InstMatrix[2][3]-=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).z;
+    }
+    HPosition=_pos_Modificators(VPMatrix,IN.InstMatrix,IN,bRelativeToCam);
+    return HPosition;
+  }
+  }
+float4 _TCModify(float4 inTC,out float4 outTC,float4 vPos,float3 vNorm,int nTSlot)
+{
+  outTC.xyzw=inTC.xyzw;
+  return inTC;
+}
+void _TCModifyDecal(in streamPos vertPassPos,out float4 outTC,out float3 outDistAtten)
+{
+  float4 vPosDecal=vertPassPos.Position;
+  float3 vNorm=vertPassPos.ObjToTangentSpace[2];
+  outDistAtten=1;
+}
+struct vert2FragGeneral
+{
+  float4 HPosition:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+  float4 vTangent:TEXCOORD1;
+  float4 vBinormal:TEXCOORD2;
+  float4 vView:TEXCOORD3;
+  float4 screenProj:TEXCOORD4;
+};
+void vs_shared_output(in app2vertGeneral IN,inout vert2FragGeneral OUT,inout streamPos vertPassPos,bool bUseBump,bool bRelativeToCam=true)
+{
+  streamPos_FromGeneral(IN,vertPassPos);
+  float4 vPosDecal=vertPassPos.Position;
+  float4 HPosition=Pos_VS_General(CV_ViewProjZeroMatr,vertPassPos,bRelativeToCam);
+  float3 vNorm=vertPassPos.ObjToTangentSpace[2];
+  float4 baseTC=vertPassPos.baseTC;
+  _TCModify(baseTC,OUT.baseTC,vertPassPos.Position,vNorm,0);
+  float3 worldTangentS=normalize(mul((const float3x3)vertPassPos.InstMatrix,vertPassPos.ObjToTangentSpace[0]));
+  float3 worldTangentT=normalize(mul((const float3x3)vertPassPos.InstMatrix,vertPassPos.ObjToTangentSpace[1]));
+  float3 worldTangentN=normalize(mul((const float3x3)vertPassPos.InstMatrix,vertPassPos.ObjToTangentSpace[2]));
+  OUT.vTangent=float4(worldTangentS,vertPassPos.Tangent.w);
+  OUT.vBinormal.xyz=worldTangentT;
+  OUT.vView.xyz=vertPassPos.WorldPos.xyz;
+  vertPassPos.WorldPos.xyz+=float3(CV_ScreenToWorldBasis[0][3],CV_ScreenToWorldBasis[1][3],CV_ScreenToWorldBasis[2][3]).xyz;
+  OUT.HPosition=HPosition;
+  OUT.screenProj=HPosToScreenTC(HPosition);
+  OUT.vView.w=vertPassPos.Position.w;
+}
+vert2FragGeneral IlluminationVS(app2vertGeneral IN)
+{
+  vert2FragGeneral OUT=(vert2FragGeneral)0;
+  streamPos vertPassPos=(streamPos)0;
+  vs_shared_output(IN,OUT,vertPassPos,true);
+  return OUT;
+}
+cbuffer CBPerPassForward:register(b0, space3)
+{
+  struct
+  {
+    float4 vfParams;
+    float4 vfRampParams;
+    float4 vfSunDir;
+    float3 vfColGradBase;
+    float padding0;
+    float3 vfColGradDelta;
+    float padding1;
+    float4 vfColGradParams;
+    float4 vfColGradRadial;
+    float4 vfShadowDarkening;
+    float4 vfShadowDarkeningSunAmb;
+  }
+  cbFog;
+  struct
+  {
+    float4 vfSamplingParams;
+    float4 vfDistributionParams;
+    float4 vfScatteringParams;
+    float4 vfScatteringBlendParams;
+    float4 vfScatteringColor;
+    float4 vfScatteringSecondaryColor;
+    float4 vfHeightDensityParams;
+    float4 vfHeightDensityRampParams;
+    float4 vfDistanceParams;
+    float4 vfGlobalEnvProbeParams0;
+    float4 vfGlobalEnvProbeParams1;
+  }
+  cbVoxelFog;
+  struct
+  {
+    float4x4 TexGen0;
+    float4x4 TexGen1;
+    float4x4 TexGen2;
+    float4x4 TexGen3;
+    float4 vInvShadowMapSize;
+    float4 fDepthTestBias;
+    float4 fOneDivFarDist;
+    float4 fKernelRadius;
+    float4 CloudShadowParams;
+    float4 CloudShadowAnimParams;
+    float4 irreg_kernel_2d[8];
+  }
+  cbShadowSampling;
+  struct
+  {
+    float4 CloudShadingColorSun;
+    float4 CloudShadingColorSky;
+  }
+  cbClouds;
+  struct
+  {
+    float4 IntegrationMode;
+  }
+  cbSVOGI;
+};

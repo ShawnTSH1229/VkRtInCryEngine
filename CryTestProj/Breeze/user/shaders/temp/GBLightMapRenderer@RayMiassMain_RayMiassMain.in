@@ -1,0 +1,20 @@
+/*
+BwAAAGxpYl82XzMADAAAAFJheU1pYXNzTWFpbgEEHA0AAABAHA0AAEBBHA0AAEBCHA0AAMBDzMwAAAAAAAAAAA==
+*/
+
+cbuffer cbRayTracingParams:register(b0)
+{
+  struct
+  {
+    float4 lightdirection;
+  }
+  rayTracingParams;
+};
+struct SHitPayload
+{
+  bool bHit;
+};
+[shader("miss")]void RayMiassMain(inout SHitPayload payload)
+{
+  payload.bHit=false;
+}
