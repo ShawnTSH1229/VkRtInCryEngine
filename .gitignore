@@ -55,3 +55,4 @@ __pycache__/*
 CRYENGINE_v5.7.0_SDKs.zip
 /cbuild/*
 /cbuild2/*
+/build/*
