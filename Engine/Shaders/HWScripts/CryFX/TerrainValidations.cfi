@@ -1,0 +1,15 @@
+// Copyright 2004-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+
+//===========================================================================
+// Validations
+// Removing of redundant and mutually exclusive flags to prevent generating
+// of the vertex/pixel shaders
+// TODO: make special validations for PS.1.1 only support
+
+#if !%SPEC_MAP
+  #if %SPECULARPOW_GLOSSALPHA
+    #undefine %SPECULARPOW_GLOSSALPHA
+  #endif
+#endif
+

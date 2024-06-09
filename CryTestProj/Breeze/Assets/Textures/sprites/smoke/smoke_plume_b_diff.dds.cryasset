@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="28e2e0e6-f2d5-6a8c-8f1c-33051a61129a" source="smoke_plume_b_diff.tif">
+ <Files>
+  <File path="smoke_plume_b_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

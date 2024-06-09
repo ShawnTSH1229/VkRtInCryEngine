@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="f75215b1-2acb-a334-8f5b-cd68d08f9fb0" source="water_surface2.fbx">
+ <Files>
+  <File path="water_surface2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">2494</Detail>
+  <Detail name="vertexCount">3656</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./water_surface2.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,48 @@
+{
+    "CryScaleformSchematyc_uber_0.cpp": {
+        "Components": [
+            "DynamicComponent.cpp",
+            "DynamicComponent.h",
+            "DynamicFunctions.cpp",
+            "DynamicFunctions.h",
+            "ElementFunctions.cpp",
+            "ElementFunctions.h",
+            "Signals.cpp",
+            "Signals.h"
+        ],
+        "Env": [
+            "DynamicRegistry.cpp",
+            "DynamicRegistry.h",
+            "EnvTypes.h",
+            "FlashRegistry.cpp",
+            "FlashRegistry.h",
+            "FlashTypes.h"
+        ],
+        "Env/Elements": [
+            "EnvDynamicComponent.h",
+            "EnvDynamicFunction.h",
+            "EnvDynamicSignal.h",
+            "EnvFlashComponent.h"
+        ],
+        "Env/Utils": [
+            "FlashUtils.h",
+            "Utils.h"
+        ],
+        "Root": [
+            "IFlashModule.h",
+            "IPlugin.h",
+            "FlashModule.cpp",
+            "FlashModule.h",
+            "Plugin.cpp",
+            "Plugin.h",
+            "resource.h",
+            "StdAfx.cpp",
+            "StdAfx.h"
+        ]
+    },
+    "NoUberFile": {
+        "Module": [
+            "StdAfx.cpp"
+        ]
+    }
+}

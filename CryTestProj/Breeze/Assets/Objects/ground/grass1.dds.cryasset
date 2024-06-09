@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="578bbdfc-729f-b66e-c609-331a78deddea" source="grass1.tif">
+ <Files>
+  <File path="grass1.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">2048</Detail>
+  <Detail name="height">2048</Detail>
+  <Detail name="mipCount">10</Detail>
+ </Details>
+</AssetMetadata>

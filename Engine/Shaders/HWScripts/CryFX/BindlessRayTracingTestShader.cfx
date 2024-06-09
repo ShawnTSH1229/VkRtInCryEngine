@@ -1,0 +1,194 @@
+#define RAY_TRACING_MASK_OPAQUE						0x01   
+#define RAY_TRACING_SHADER_SLOT_MATERIAL	0
+#define RAY_TRACING_SHADER_SLOT_SHADOW		1
+#define RAY_TRACING_NUM_SHADER_SLOTS		2
+
+cbuffer cbRayTracingParams : register(b0)
+{
+    struct
+    {
+        float4x4 viewProj;
+        float4x4 viewInverse;
+        float4x4 projInverse;
+        float4 lightdirection;
+        float4 padding0;
+        float4 padding1;
+        float4 padding2;
+    }rayTracingParams;
+};
+
+RaytracingAccelerationStructure             topLevelAS: register(t1); 
+StructuredBuffer<uint2>                     bindlessBufferIndex: register(t2); 
+RWTexture2D<float4>                         image: register(u3); 
+
+
+struct SObjVertex
+{
+	float3 m_pos;
+	float3 m_normal;
+};
+
+StructuredBuffer<SObjVertex>  	vertices[]: register(t2,space1); 
+StructuredBuffer<uint3>  		    indices[] : register(t3,space1); 
+
+struct SHitPayload
+{
+  float3 hitValue;
+};
+
+struct SShadowHitPayload
+{
+  bool bHit;
+};
+
+struct SRayTracingIntersectionAttributes
+{
+	 float x;
+   float y;
+};
+
+[shader("raygeneration")] 
+void RayGenMain()
+{
+  const uint2 rayIndex = DispatchRaysIndex().xy;
+  const uint2 rayDimension = DispatchRaysDimensions().xy;
+
+  const float2 pixelCenter = float2(rayIndex.xy) + float2(0.5,0.5);
+  const float2 inUV = pixelCenter / float2(rayDimension.xy);
+
+  float2 d = float2(inUV * 2.0 - 1.0) * float2(1.0,-1.0);
+
+  float4 rayOrigin = mul(rayTracingParams.viewInverse,float4(0,0,0,1));
+  float4 target = mul(rayTracingParams.projInverse,float4(d.x,d.y,1.0,1.0));
+  float4 direction = mul(rayTracingParams.viewInverse,float4(normalize(target.xyz),0.0));
+
+  RayDesc ray;
+	ray.Origin = rayOrigin;
+	ray.Direction = direction;
+	ray.TMin = 0.001f;
+	ray.TMax = 10000.0;
+
+  uint rayFlags = RAY_FLAG_FORCE_OPAQUE; // don't run anyhit shader
+  const uint instanceInclusionMask = RAY_TRACING_MASK_OPAQUE;
+
+  SHitPayload payload = (SHitPayload)0;
+
+  TraceRay(
+		topLevelAS,   // AccelerationStructure
+		rayFlags,
+		instanceInclusionMask,
+		RAY_TRACING_SHADER_SLOT_MATERIAL, // RayContributionToHitGroupIndex
+		RAY_TRACING_NUM_SHADER_SLOTS,     // MultiplierForGeometryContributionToShaderIndex
+		1,      // MissShaderIndex
+		ray,    // RayDesc
+		payload // Payload
+	);
+
+  image[rayIndex] = float4(payload.hitValue.xyz,1.0);
+}
+
+float3 computeSpecular(float3 viewDir, float3 lightDir, float3 normal)
+{
+  // Compute specular only if not in shadow
+  const float kPi        = 3.14159265;
+  const float kShininess = 4.0;
+
+  // Specular
+  const float kEnergyConservation = (2.0 + kShininess) / (2.0 * kPi);
+  float3        V                 = normalize(viewDir);
+  float3        R                 = reflect(-lightDir, normal);
+  float       specular            = kEnergyConservation * pow(max(dot(V, R), 0.0), kShininess);
+
+  return specular * float3(0.5,0.5,0.5);
+}
+
+[shader("closesthit")] 
+void ClostHitMain(inout SHitPayload payload, in SRayTracingIntersectionAttributes attributes)
+{
+  uint vbIndex = bindlessBufferIndex[InstanceIndex()].x;
+  uint ibIndex = bindlessBufferIndex[InstanceIndex()].y;
+
+  StructuredBuffer<SObjVertex> vertexBuffer = vertices[NonUniformResourceIndex(vbIndex)];
+	StructuredBuffer<uint3>  indexBuffer = indices[NonUniformResourceIndex(ibIndex)];
+  
+  // Indices of the triangle
+  uint3 primitiveIndices = indexBuffer[PrimitiveIndex()].xyz;
+	
+  // Vertex of the triangle
+  SObjVertex vertex0 = vertexBuffer[primitiveIndices.x];
+  SObjVertex vertex1 = vertexBuffer[primitiveIndices.y];
+  SObjVertex vertex2 = vertexBuffer[primitiveIndices.z];
+
+  const float3 barycentrics = float3(1.0 - attributes.x - attributes.y, attributes.x, attributes.y);
+
+  // Computing the normal at hit position
+  const float3 normal   = vertex0.m_normal * barycentrics.x + vertex1.m_normal * barycentrics.y + vertex2.m_normal * barycentrics.z;
+  const float3 worldNrm = normalize(mul(float4(normal,1.0),ObjectToWorld3x4()).xyz);  // Transforming the normal to world space
+
+  float3 normalizeL = normalize(rayTracingParams.lightdirection.xyz);
+  float nol = max(dot(worldNrm,normalizeL),0.0);
+  
+  const float3 diffuseColor = float3(0.5,0.5,0.5);
+  float diffuse = nol* diffuseColor;
+
+  float3 specular = float3(0.0,0.0,0.0);
+  float attenuation = 1.0f;
+  if(dot(worldNrm,normalizeL) > 0.0f)
+  {
+      RayDesc ray;
+	    ray.Origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent();
+	    ray.Direction = normalizeL;
+	    ray.TMin = 0.001f;
+	    ray.TMax = 10000.0;
+
+      SShadowHitPayload shadowHitPayload;
+      shadowHitPayload.bHit = true;
+
+      const uint instanceInclusionMask = RAY_TRACING_MASK_OPAQUE;
+      uint rayFlags = RAY_FLAG_FORCE_OPAQUE | RAY_FLAG_SKIP_CLOSEST_HIT_SHADER | RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH; // don't run anyhit shader
+      TraceRay(
+	    	topLevelAS,   // AccelerationStructure
+	    	rayFlags,
+	    	instanceInclusionMask,
+	    	RAY_TRACING_SHADER_SLOT_MATERIAL, // RayContributionToHitGroupIndex
+	    	RAY_TRACING_NUM_SHADER_SLOTS,     // MultiplierForGeometryContributionToShaderIndex
+	    	1,      // MissShaderIndex
+	    	ray,    // RayDesc
+	    	shadowHitPayload // Payload
+	    );
+
+      if(shadowHitPayload.bHit)
+      {
+          attenuation = 0.3f;
+      }
+      else
+      {
+          specular = computeSpecular(-WorldRayDirection(),normalizeL,worldNrm);
+      }
+  }
+  
+
+	payload.hitValue = (specular + diffuse + float3(0.1,0.1,0.1)) * attenuation;
+}
+
+[shader("miss")] 
+void MissMain(inout SHitPayload payload)
+{
+	payload.hitValue = float3(0.24,0.76,0.96);
+}
+
+[shader("miss")] 
+void ShadowMiassMain(inout SShadowHitPayload payload)
+{
+	payload.bHit = false;
+}
+
+technique BindlessRayTracingTestTech
+{
+  pass p0
+  {
+    RayGenShaders = {RayGenMain()};
+    HitGroupShaders = {ClostHitMain()};
+    MissShaders = {MissMain(),ShadowMiassMain()};
+  }
+}

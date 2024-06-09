@@ -1,0 +1,193 @@
+// Copyright 2012-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Reflection.cfi"
+
+// Adapted from DeferredShading.cfx SSRefl - todo: generalize for plane
+half4 ReflectionPassPS( v2f_hs IN, half4 vNormal )
+{
+	// Do the specular reflection with ray marching.
+	half4 specularRefl = half4(0,0,0,0);
+	half  specularPrec = 0;
+	
+#if %SSREFL
+	{
+		const float3 vPositionWS = IN.vPosWS.xyz;
+		const float2 ScreenTC = MapViewportToRaster(IN.baseTC.xy);
+		const float2 halfTexel = 0;
+
+		SPerPassWaterParams perPassParams = GetPerPassWaterParams();
+		ReflParams params = (ReflParams)0;
+
+		params.ScreenTC = ScreenTC;
+		params.ProjRatio = g_PS_ProjRatio.xy;
+		params.JitterUV = IN.Position.xy;
+		params.NearFarClipDist = CV_NearFarClipDist.xy;
+		params.UnscaledMultiplier = float2(2.0f, 2.0f);
+		params.ViewVec = normalize(vPositionWS - g_VS_WorldViewPos);
+		params.fDepth = IN.screenProj.w * CV_NearFarClipDist.w;
+		params.vPositionWS = vPositionWS;
+		params.maxLum = 10000.0f;
+		params.NormalWorld = vNormal.xyz;
+		params.Smoothness = vNormal.w;
+		params.Reproject = true;
+		params.ViewProjPrev = perPassParams.viewProjPrev;
+		params.ReprojectToPrev = perPassParams.reprojectToPrev;
+		params.limitMask =
+			// Don't clip left and right because we use X-mirroring to hide the end-of-data seam
+			FRUSTUM_NOCLIP_LEFT | FRUSTUM_NOCLIP_RIGHT;
+	
+		// local reflections setup
+		{
+			params.bgMultiplier = 0.0f;
+			params.MaxDistance = perPassParams.ssrParams.z * ssrDistanceAtt * ssrBorderSizeZ;
+			params.MaxSamples = perPassParams.ssrParams.w * ssrSamplingAtt;
+			params.borderSize = float3(0.0f, ssrBorderSizeY, 1.0f);
+
+			half4 color = SSRRaytrace
+			(
+				linearDepthScaledTex,
+
+				refractionHalfResTex,
+				refractionHalfResTex,
+				ssLinearMirrorX,
+
+				reflectionPrevTex,
+				ssLinearMirrorX,
+
+				params
+			);
+
+			specularRefl += color * color.a * pow(params.blendWeight, ssrBorderFadeExponent) * (1.0f - specularPrec);
+			specularPrec +=         color.a * pow(params.blendWeight, ssrBorderFadeExponent) * (1.0f - specularPrec);
+		}
+
+		// far reflection setup (if no or partially hit only)
+		[branch] if (specularPrec != 1.0f)
+		{
+			params.bgMultiplier = ssrBGMultiplier;
+			params.MaxDistance = perPassParams.ssrParams.z * ssrDistanceAtt;
+			params.MaxSamples = 1;
+			params.borderSize = float3(0.0f, ssrBorderSizeY, 1.0f);
+
+			half4 color = SSRaycast
+			(
+				linearDepthScaledTex,
+
+				refractionHalfResTex,
+				refractionHalfResTex,
+				ssLinearMirrorX,
+
+				reflectionPrevTex,
+				ssLinearMirrorX,
+
+				params
+			);
+
+			specularRefl += color * color.a * pow(params.blendWeight, ssrBorderFadeExponent) * (1.0f - specularPrec);
+			specularPrec +=         color.a * pow(params.blendWeight, ssrBorderFadeExponent) * (1.0f - specularPrec);
+		}
+
+		specularRefl.a = specularPrec;
+	}
+#endif
+
+	return specularRefl;
+}
+
+pixout WaterReflPS(v2f_hs IN)
+{
+	pixout OUT = (pixout) 1;
+	
+	SVolumetricFogParams volFogParams = GetVolumetricFogParams();
+	VolumetricFogSampling vfs = GetVolumetricFogSampling();
+
+	const float fDepth = IN.screenProj.w * CV_NearFarClipDist.w;
+	float2 linearUV = IN.screenProj.xy / IN.screenProj.w;
+	float2 screenTC = MapViewportToRaster(linearUV);
+	float fDepthCenter = linearDepthScaledTex.Load(int3(IN.Position.xy, 0));
+
+	clip( fDepthCenter - fDepth );
+
+	half3 vView = normalize(IN.vView.xyz);
+
+#if 0
+	// Generate normal map from 4 normal map layers + paralax
+	float2 vParalaxOffset = GetParalaxOffset( IN, vView );  
+	half  cSmoothness = (half)  1;
+	half4 cDiffuseMap = (half4) 1;
+	half3 vNormal = BumpGen( IN, vParalaxOffset, cSmoothness, cDiffuseMap);
+#else
+	half  cSmoothness = 1;
+	half4 cDiffuseMap = (half4) 1;
+	half3 vNormal = half3(0, 0, 1); // TODO: flip normal when under water (see BOT/TOP clipping above)
+#endif
+
+	half fNdotE =  (dot( vView.xyz, vNormal ) ) * IN.vView.w;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////    
+	// Get reflection color
+	const half ReflectionBumpScale = NormalsFlatten;
+	
+	half3 vDir = g_VS_WorldViewPos - IN.vPosWS.xyz;
+	half3 vReflN = lerp(half3(0,0,1), vNormal, ReflectionBumpScale);
+	half3 vRefl = reflect(vDir, vReflN);
+	half3 vReflNorm = normalize( vRefl );
+	
+	// Blend in screenspace reflections
+	half4 cSSRefl = ReflectionPassPS(IN, half4(vReflN.xyz, 1)) / PS_HDR_RANGE_ADAPT_MAX;
+	half3 reflectColor = cSSRefl.rgb;
+
+	// EnvCubeReflMul, RealtimeReflMul
+	if (cSSRefl.a != 1.0f)
+	{
+		half3 cCubeRefl = GatherCubemapSpecular(screenTC, IN.vPosWS.xyz - GetWorldViewPos(), vNormal, cSmoothness);
+
+		reflectColor += cCubeRefl * (1.0f - cSSRefl.a);
+	}
+
+	// NOTE: This takes out the whole fog from the reflection, but
+	// we don't put back the fog along the two rays, just to the part
+	// until hitting the reflector, the path from reflector to hit has
+	// not precalculated fog-information available
+	// TODO: remove the fraction of the fog which corresponds to
+	// length(reflector_to_hit) / length(camera_to_hit)
+#if %_RT_FOG && %_RT_VOLUMETRIC_FOG
+	half3 fogColor = 0;
+	float len = length(IN.vView.xyz);
+	VolumetricFogTexcoord vtc = GetVolumetricFogTexcoordParamByScreenProj(volFogParams, IN.screenProj, false, len);
+	float4 vf = GetVolumetricFogValueJittered(volFogParams, vfs, vtc).xyzw;
+	half4 globalFogColor = GetVolumetricFogAnalyticalColor( volFogParams, vfs, -IN.vView.xyz, len );
+	ApplyVolumetricFog(volFogParams, vf, globalFogColor, vtc, fogColor.xyz);
+
+	// subtract fog color from refract color.
+	half3 reflectColorWithFog = reflectColor;
+	reflectColor -= fogColor;
+#endif
+
+	OUT.Color.rgb = reflectColor;
+
+	return OUT;
+}
+
+//////////////////////////////// technique ////////////////
+
+technique WaterReflPass
+{
+	pass p0
+	{
+		ZEnable = false; // todo use downscaled depth target for zculling
+		ZFunc = LEqual;
+		CullMode = None;
+		ZWriteEnable = false;
+		IgnoreMaterialState = true;
+
+		VertexShader = WaterVS() WaterSurfaceVS;
+		GeometryShader = $AutoGS_MultiRes();
+#if %WATER_TESSELLATION_DX11
+		HullShader   = WaterHS() WaterSurfaceHS;
+		DomainShader = WaterReflDS() WaterSurfaceDS;
+#endif
+
+		PixelShader = WaterReflPS() WaterSurfacePS;
+	}
+}

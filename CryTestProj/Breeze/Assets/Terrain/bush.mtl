@@ -1,0 +1,10 @@
+<Material MtlFlags="526336" Shader="Terrain.Layer" GenMask="20222400000" StringGenMask="%NORMAL_MAP%OFFSET_BUMP_MAPPING%SOFT_DEPTH_TEST%TEMP_TERRAIN%USE_ORIGINAL_DIFFUSE_MAP" SurfaceType="" MatTemplate="" Diffuse="1,1,1" Specular="0.05882353,0.05882353,0.05882353" Opacity="1" Shininess="48.978943" CloakAmount="0" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="./bush.dds">
+   <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0" TileU="0.2" TileV="0.2"/>
+  </Texture>
+  <Texture Map="Bumpmap" File="./bush_ddn.dds"/>
+  <Texture Map="Heightmap" File="./bush_displ.dds"/>
+ </Textures>
+ <PublicParams BlendFalloff="1" SoftDepthTestDistRatio="0.15000001" SelfShadowStrength="3" ObmDisplacement="0.0040000002" SoftDepthTestRange="0.050000001" HeightBias="1" BlendFactor="1" NormalMapBumpiness="1"/>
+</Material>

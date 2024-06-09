@@ -1,0 +1,156 @@
+<ObjectLayer>
+ <Layer Name="Main" FullName="Main" GUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Hidden="0" Frozen="0" Expanded="0" Type="0" Exportable="1" ExportLayerPak="1" DefaultLoaded="0" HavePhysics="1" IsDefaultColor="1" Color="4671303" Timestamp="1689782008">
+  <LayerObjects>
+   <Object Type="EntityWithStaticMeshComponent" Layer="Main" LayerGUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Id="b6b0284c-d046-8b84-6e99-190dbbf8a489" Name="Rocket-1" Pos="1273.6641,1116.4904,60.201736" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16777215" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="6ddd0033-6aaa-4b71-b8ea-108258205e29" TypeName="Cry::DefaultComponents::CStaticMeshComponent" GUID="d62a07a4-cb5b-c214-1395-ec41336ef8e5" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Type="RenderAndCollider" FilePath="Objects/plattforms/Rocket.cgf" Material="">
+       <IEditorEntityComponent />
+       <Render ShadowSpec="Low" IgnoreVisArea="false" IgnoreTerrainLayerBlend="false" IgnoreDecalBlend="false" ViewDistRatio="100" LODDistance="100" GIMode="None"/>
+       <Physics WeightType="EWeightType::Mass" Density="9.9999997e-05" Mass="10"/>
+      </properties>
+     </Component>
+     <Component CryXmlVersion="2" TypeGUID="912c6ce8-56f7-4ffa-9134-f98d4e307bd6" TypeName="Cry::DefaultComponents::CRigidBodyComponent" GUID="56dbd3cc-5379-1b9a-3274-54a978266ef6" Name="" UserAdded="true">
+      <properties Networked="false" EnabledByDefault="true" Resting="false" Type="Static" SendCollisionSignal="false">
+       <Buoyancy Damping="0" Density="1000" Resistance="1000"/>
+       <Simulation MaxTimeStep="0.02" SleepSpeed="0.039999999" Damping="0"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="Entity" Layer="Main" LayerGUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Id="d15593f9-cf66-50b3-be56-74b909119b98" Name="PlayerCamera" Pos="1067.7466,888.5838,42.91713" Rotate="0.92547917,0.032404859,-0.013206591,-0.37717885" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="schematyc::libs::playercamera" ClassGUID="db457251-0bff-4396-8b9b-c93e373f48c0" HasEntity="1">
+    <Properties />
+    <SchematycProperties CryXmlVersion="2">
+     <components />
+     <variables />
+    </SchematycProperties>
+    <FlowGraph Description="" Group="" enabled="1" MultiPlayer="ClientServer">
+     <Nodes>
+      <Node Id="2" Class="Debug:ExecuteString" pos="-306,-90,0">
+       <Inputs String="r_ssreflections 0" NextFrame="0"/>
+      </Node>
+      <Node Id="5" Class="Game:Start" pos="-522,-90,0">
+       <Inputs InGame="1" InEditor="1"/>
+      </Node>
+     </Nodes>
+     <Edges>
+      <Edge nodeIn="2" nodeOut="5" portIn="Set" portOut="output" enabled="1"/>
+     </Edges>
+     <GraphTokens />
+    </FlowGraph>
+   </Object>
+   <Object Type="EntityWithComponent" Layer="Main" LayerGUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Id="3775784f-1377-831f-78f6-b221f14786ef" Name="Entity-62" Pos="1171,980,61" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="0a86908d-642f-4590-acef-484e8e39f31b" TypeName="Cry::DefaultComponents::CPointLightComponent" GUID="db365b4c-8c60-58d5-0b20-12e7b96d5f1b" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Active="true" Radius="10" ViewDistance="50">
+       <Optics Enable="true" LensFlare="" AttachtToSun="false" FlareFOV="360"/>
+       <Color DiffMult="1" SpecMult="1">
+        <Color r="1" g="1" b="1" a="1"/>
+       </Color>
+       <Shadows ShadowSpec="None" ShadowBias="1" ShadowSlopeBias="1" ShadownResolution="1" ShadowUpdateMin="4" ShadowMinRes="0" ShadowUpdateRatio="1"/>
+       <Options AttenuationBulbSize="0.1" IgnoreVisAreas="false" AffectVolumetricFog="true" VolumetricFogOnly="false" OnlyAffectThisArea="true" LinkToSkyColor="false" Ambient="false" FogRadialLobe="0" GIMode="None"/>
+       <Animations Style="0" Speed="1"/>
+       <Shape Shape="Point" TwoSided="false" TexturePath="" Width="1" Height="1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithComponent" Layer="Main" LayerGUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Id="88ddd8af-0f0f-6750-2eb9-123410d6160a" Name="Entity-60" Pos="1116,995,56" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="0a86908d-642f-4590-acef-484e8e39f31b" TypeName="Cry::DefaultComponents::CPointLightComponent" GUID="3c8859b2-6ce6-e07d-b631-042a14c5920a" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Active="true" Radius="10" ViewDistance="50">
+       <Optics Enable="true" LensFlare="" AttachtToSun="false" FlareFOV="360"/>
+       <Color DiffMult="1" SpecMult="1">
+        <Color r="1" g="1" b="1" a="1"/>
+       </Color>
+       <Shadows ShadowSpec="None" ShadowBias="1" ShadowSlopeBias="1" ShadownResolution="1" ShadowUpdateMin="4" ShadowMinRes="0" ShadowUpdateRatio="1"/>
+       <Options AttenuationBulbSize="0.1" IgnoreVisAreas="false" AffectVolumetricFog="true" VolumetricFogOnly="false" OnlyAffectThisArea="true" LinkToSkyColor="false" Ambient="false" FogRadialLobe="0" GIMode="None"/>
+       <Animations Style="0" Speed="1"/>
+       <Shape Shape="Point" TwoSided="false" TexturePath="" Width="1" Height="1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithComponent" Layer="Main" LayerGUID="e0943ac8-b828-fa04-fb8e-1e14f1a9abe7" Id="c10160aa-972a-2f73-bfaf-91f47acddfe9" Name="Entity-61" Pos="1156,989,56" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="0a86908d-642f-4590-acef-484e8e39f31b" TypeName="Cry::DefaultComponents::CPointLightComponent" GUID="b75ca2d9-b907-23ef-5120-6d9ca9d81a2e" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Active="true" Radius="10" ViewDistance="50">
+       <Optics Enable="true" LensFlare="" AttachtToSun="false" FlareFOV="360"/>
+       <Color DiffMult="1" SpecMult="5">
+        <Color r="0.74509805" g="0.72549021" b="1" a="1"/>
+       </Color>
+       <Shadows ShadowSpec="None" ShadowBias="1" ShadowSlopeBias="1" ShadownResolution="1" ShadowUpdateMin="4" ShadowMinRes="0" ShadowUpdateRatio="1"/>
+       <Options AttenuationBulbSize="2" IgnoreVisAreas="false" AffectVolumetricFog="true" VolumetricFogOnly="false" OnlyAffectThisArea="true" LinkToSkyColor="false" Ambient="false" FogRadialLobe="0" GIMode="None"/>
+       <Animations Style="0" Speed="1"/>
+       <Shape Shape="Point" TwoSided="false" TexturePath="" Width="1" Height="1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+  </LayerObjects>
+ </Layer>
+</ObjectLayer>

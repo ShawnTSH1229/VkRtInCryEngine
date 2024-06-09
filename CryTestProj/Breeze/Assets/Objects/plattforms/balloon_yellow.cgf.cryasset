@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="b8e63a44-1b2a-d656-a54a-f80b98ed8853">
+ <Files>
+  <File path="balloon_yellow.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">6</Detail>
+  <Detail name="triangleCount">2008</Detail>
+  <Detail name="vertexCount">1509</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./balloon.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

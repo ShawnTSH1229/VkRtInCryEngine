@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="bdce05e0-99b3-630a-bd66-3329a297b7ad" source="" timestamp="1635787274">
+ <Files>
+  <File path="balloon.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">5</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="3">./white.dds</Path>
+  <Path usageCount="1">Objects/house/house.dds</Path>
+  <Path usageCount="1">Objects/house/house_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

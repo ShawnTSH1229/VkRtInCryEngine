@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="459f2c02-f753-319e-9dea-1a5cc7648bb9">
+ <Files>
+  <File path="podium.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">6</Detail>
+  <Detail name="triangleCount">92</Detail>
+  <Detail name="vertexCount">192</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./balloon.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="1891e825-f282-5f79-dd70-1cbb13bf8cdb" source="normanl_ddna.tif">
+ <Files>
+  <File path="normanl_ddna.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

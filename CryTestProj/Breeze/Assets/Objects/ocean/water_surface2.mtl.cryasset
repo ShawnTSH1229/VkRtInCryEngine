@@ -1,0 +1,12 @@
+<AssetMetadata version="0" type="Material" guid="b8c706d6-c301-e613-6802-75c664018d61">
+ <Files>
+  <File path="water_surface2.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">1</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./water.dds</Path>
+ </Dependencies>
+</AssetMetadata>

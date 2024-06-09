@@ -1,0 +1,15 @@
+<ObjectLayer>
+ <Layer Name="Main" FullName="Main" GUID="1a08ee79-5d3e-d0b2-8e7e-627e4d95ab26" Hidden="0" Frozen="0" Expanded="0" Type="0" Exportable="1" ExportLayerPak="1" DefaultLoaded="0" HavePhysics="1" IsDefaultColor="1" Color="4671303" Timestamp="1703480495">
+  <LayerObjects>
+   <Object Type="Brush" Layer="Main" LayerGUID="1a08ee79-5d3e-d0b2-8e7e-627e4d95ab26" Id="130a264b-f447-d289-4f6a-0eb3ab2f56b7" Name="zdm2-1" Pos="1014.7618,1039.2003,20.356892" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16777215" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" Prefab="Objects/gitest/zdm2.cgf" IgnoreVisareas="0" CastShadowMaps="1" GIMode="1" RainOccluder="1" SupportSecondVisarea="0" DynamicDistanceShadows="0" Hideable="0" LodRatio="100" ViewDistRatio="100" ExcludeFromNavigation="0" NoDynamicWater="0" AIRadius="-1" NoStaticDecals="0" RecvWind="0" Occluder="0" DrawLast="0" ShadowLodBias="0" IgnoreTerrainLayerBlend="0" IgnoreDecalBlend="0" RndFlags="180060000408">
+    <CollisionFiltering />
+   </Object>
+   <Object Type="Brush" Layer="Main" LayerGUID="1a08ee79-5d3e-d0b2-8e7e-627e4d95ab26" Id="1b11facb-003d-868b-0b80-3a27027ac453" Name="Cube-1" Pos="1030.4408,1030.9656,32.000488" Rotate="1,0,0,0" Scale="2,2,1" ColorRGB="16777215" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" Prefab="Objects/gitest/Cube.cgf" IgnoreVisareas="0" CastShadowMaps="1" GIMode="1" RainOccluder="1" SupportSecondVisarea="0" DynamicDistanceShadows="0" Hideable="0" LodRatio="100" ViewDistRatio="100" ExcludeFromNavigation="0" NoDynamicWater="0" AIRadius="-1" NoStaticDecals="0" RecvWind="0" Occluder="0" DrawLast="0" ShadowLodBias="0" IgnoreTerrainLayerBlend="0" IgnoreDecalBlend="0" RndFlags="180060000408">
+    <CollisionFiltering />
+   </Object>
+   <Object Type="Brush" Layer="Main" LayerGUID="1a08ee79-5d3e-d0b2-8e7e-627e4d95ab26" Id="5f131b9e-c6e0-ef36-fb85-d74e47fbfdfb" Name="sphere-1" Pos="1030.7321,1030.9656,33.922806" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16777215" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" Prefab="Objects/gitest/sphere.cgf" IgnoreVisareas="0" CastShadowMaps="1" GIMode="1" RainOccluder="1" SupportSecondVisarea="0" DynamicDistanceShadows="0" Hideable="0" LodRatio="100" ViewDistRatio="100" ExcludeFromNavigation="0" NoDynamicWater="0" AIRadius="-1" NoStaticDecals="0" RecvWind="0" Occluder="0" DrawLast="0" ShadowLodBias="0" IgnoreTerrainLayerBlend="0" IgnoreDecalBlend="0" RndFlags="180060000608">
+    <CollisionFiltering />
+   </Object>
+  </LayerObjects>
+ </Layer>
+</ObjectLayer>

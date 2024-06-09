@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="70b2ae14-5aae-2f74-24c1-76e04915529d">
+ <Files>
+  <File path="plattform_2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">7</Detail>
+  <Detail name="triangleCount">1440</Detail>
+  <Detail name="vertexCount">877</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./plattforms.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

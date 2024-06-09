@@ -1,0 +1,58 @@
+// Copyright 2004-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script = "ShaderDrawType = Custom;";
+>;
+
+struct a2v
+{
+  float4 Position : POSITION; 
+  float2 baseTC   : TEXCOORD0;
+  IN_C0
+};
+
+struct v2f
+{
+  float4 Position  : SV_POSITION;
+};
+
+///////////////// vertex shader //////////////////
+
+v2f OcclusionTestVS(a2v IN)
+{
+  v2f OUT = (v2f)0; 
+  OUT.Position = mul(CV_ViewProjMatr, IN.Position);
+  return OUT;
+}
+
+///////////////// pixel shader //////////////////
+
+pixout OcclusionTestPS(v2f IN)
+{
+  pixout OUT = (pixout ) 0;
+  OUT.Color = half4(4,0,0,1);
+  return OUT;
+}
+
+//////////////////////////////// technique ////////////////
+
+technique General
+{
+  pass p0
+  {
+    VertexShader = OcclusionTestVS();
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = OcclusionTestPS();
+    
+    ZEnable = true;
+    ZWriteEnable = false;
+    CullMode = None;
+  }
+}
+
+
+/////////////////////// eof ///

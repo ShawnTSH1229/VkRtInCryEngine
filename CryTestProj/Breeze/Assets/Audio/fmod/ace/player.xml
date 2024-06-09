@@ -1,0 +1,16 @@
+<AudioSystemData name="Player" version="5" triggers="2">
+ <ImplData events="2"/>
+ <Triggers>
+  <Trigger name="c_player_fts_jump">
+   <Event name="Player/c_player_fts_jump"/>
+  </Trigger>
+  <Trigger name="c_player_fts_walk">
+   <Event name="Player/c_player_fts_walk"/>
+  </Trigger>
+ </Triggers>
+ <EditorData>
+  <Library />
+  <Folders />
+  <Controls />
+ </EditorData>
+</AudioSystemData>

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="785169f6-39ae-f1bc-c9cf-beff9abc6d3f" source="tree_palm_02.fbx">
+ <Files>
+  <File path="tree_palm_02.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">3</Detail>
+  <Detail name="triangleCount">596</Detail>
+  <Detail name="vertexCount">494</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./tree_palm_01.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

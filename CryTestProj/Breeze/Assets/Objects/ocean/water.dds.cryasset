@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="db985a0d-dc03-8975-dce4-7372bd4e3ac5" source="water.tif">
+ <Files>
+  <File path="water.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">2048</Detail>
+  <Detail name="height">2048</Detail>
+  <Detail name="mipCount">10</Detail>
+ </Details>
+</AssetMetadata>

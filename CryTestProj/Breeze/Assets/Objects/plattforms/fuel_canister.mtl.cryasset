@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="b3fabbb8-5149-5287-09db-f39907c0589e">
+ <Files>
+  <File path="fuel_canister.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">4</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="2">./white.dds</Path>
+  <Path usageCount="1">./fuel_can_diff.dds</Path>
+ </Dependencies>
+</AssetMetadata>

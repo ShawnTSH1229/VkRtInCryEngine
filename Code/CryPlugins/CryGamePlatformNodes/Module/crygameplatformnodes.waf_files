@@ -1,0 +1,214 @@
+{
+    "Interface_uber.cpp": {
+        "Interface": [
+            "../Interface/GamePlatformHelper.h",
+            "../Interface/IPlatformEventManager.h",
+            "../Interface/IPlugin.h",
+            "../Interface/IRemoteStorageCache.h",
+            "../Interface/IStatisticsManager.h"
+        ]
+    },
+    "Events_uber.cpp": {
+        "Interface/Events": [
+            "../Interface/Events/BaseContext.h",
+            "../Interface/Events/OnAccountAdded.h",
+            "../Interface/Events/OnAccountNameChanged.h",
+            "../Interface/Events/OnAccountRemoved.h",
+            "../Interface/Events/OnAuthTokenReceived.h",
+            "../Interface/Events/OnAvatarImageLoaded.h",
+            "../Interface/Events/OnCatalogItemsReceived.h",
+            "../Interface/Events/OnCatalogReceived.h",
+            "../Interface/Events/OnChatMessage.h",
+            "../Interface/Events/OnCheckMultiplayerAccess.h",
+            "../Interface/Events/OnContentCreated.h",
+            "../Interface/Events/OnCreatedLobby.h",
+            "../Interface/Events/OnDownloadedSharedFile.h",
+            "../Interface/Events/OnEnvironmentVariableChanged.h",
+            "../Interface/Events/OnExternalInvitationRequest.h",
+            "../Interface/Events/OnFileShared.h",
+            "../Interface/Events/OnGameCreated.h",
+            "../Interface/Events/OnGetSteamAuthTicketResponse.h",
+            "../Interface/Events/OnInventoryItemConsumed.h",
+            "../Interface/Events/OnInventoryReceived.h",
+            "../Interface/Events/OnJoinedLobby.h",
+            "../Interface/Events/OnLeaderboardEntryDownloaded.h",
+            "../Interface/Events/OnLeave.h",
+            "../Interface/Events/OnLicensesChanged.h",
+            "../Interface/Events/OnLobbyDataUpdate.h",
+            "../Interface/Events/OnLobbyJoinFailed.h",
+            "../Interface/Events/OnLobbyQueryComplete.h",
+            "../Interface/Events/OnLogInStateChanged.h",
+            "../Interface/Events/OnMicroTransactionAuthorizationResponse.h",
+            "../Interface/Events/OnNetworkStatusChanged.h",
+            "../Interface/Events/OnOverlayActivated.h",
+            "../Interface/Events/OnPersonaStateChanged.h",
+            "../Interface/Events/OnPlatformServiceError.h",
+            "../Interface/Events/OnPlayerBanned.h",
+            "../Interface/Events/OnPlayerDisconnected.h",
+            "../Interface/Events/OnPlayerEntered.h",
+            "../Interface/Events/OnPlayerKicked.h",
+            "../Interface/Events/OnPlayerLeft.h",
+            "../Interface/Events/OnPreJoinLobby.h",
+            "../Interface/Events/OnShutdown.h",
+            "../Interface/Events/OnTextFiltered.h",
+            "../Interface/Events/OnUserDataUpdate.h",
+            "../Interface/Events/OnUserPermissionChanged.h"
+        ]
+    },
+    "Types_uber.cpp": {
+        "Interface/Types": [
+            "../Interface/Types/Achievement.h",
+            "../Interface/Types/AchievementData.h",
+            "../Interface/Types/DynArray.h",
+            "../Interface/Types/FixedString.h",
+            "../Interface/Types/Leaderboard.h",
+            "../Interface/Types/Lobby.h",
+            "../Interface/Types/Platform.h",
+            "../Interface/Types/PlatformEventFlags.h",
+            "../Interface/Types/RemoteStorage.h",
+            "../Interface/Types/Service.h",
+            "../Interface/Types/Statistic.h",
+            "../Interface/Types/StatisticData.h",
+            "../Interface/Types/StatisticValue.h"
+        ]
+    },
+    "Utils_uber.cpp": {
+        "Interface/Utils": [
+            "../Interface/Utils/PluginUtils.h"
+        ]
+    },
+    "Module_uber.cpp": {
+        "Module": [
+            "Plugin.cpp",
+            "Plugin.h"
+        ]
+    },
+    "FlowGraph_uber.cpp": {
+        "FlowGraph": [
+            "FlowGraph/FlowNodeManager.cpp",
+            "FlowGraph/CreateStatisticNodes.h",
+            "FlowGraph/FlowNodeFactory.h",
+            "FlowGraph/FlowNodeManager.h",
+            "FlowGraph/PlatformConfigs.h"
+        ]
+    },
+    "Nodes_uber.cpp": {
+        "FlowGraphNodes": [
+            "FlowGraph/Nodes/AccountNodes.cpp",
+            "FlowGraph/Nodes/CatalogNodes.cpp",
+            "FlowGraph/Nodes/ContainerNodes.cpp",
+            "FlowGraph/Nodes/GeneralNodes.cpp",
+            "FlowGraph/Nodes/InventoryNodes.cpp",
+            "FlowGraph/Nodes/LeadboardNodes.cpp",
+            "FlowGraph/Nodes/LobbyNodes.cpp",
+            "FlowGraph/Nodes/MatchmakingNodes.cpp",
+            "FlowGraph/Nodes/NetworkingNodes.cpp",
+            "FlowGraph/Nodes/OverlayNodes.cpp",
+            "FlowGraph/Nodes/RemoteStorageNodes.cpp",
+            "FlowGraph/Nodes/StatisticsNodes.cpp",
+            "FlowGraph/Nodes/UserGeneratedContentNodes.cpp",
+            "FlowGraph/Nodes/AccountNodes.h",
+            "FlowGraph/Nodes/CatalogNodes.h",
+            "FlowGraph/Nodes/ContainerBaseNode.h",
+            "FlowGraph/Nodes/ContainerNodes.h",
+            "FlowGraph/Nodes/GeneralNodes.h",
+            "FlowGraph/Nodes/InventoryNodes.h",
+            "FlowGraph/Nodes/LeadboardNodes.h",
+            "FlowGraph/Nodes/LobbyNodes.h",
+            "FlowGraph/Nodes/MatchmakingNodes.h",
+            "FlowGraph/Nodes/NetworkingNodes.h",
+            "FlowGraph/Nodes/OverlayNodes.h",
+            "FlowGraph/Nodes/RemoteStorageNodes.h",
+            "FlowGraph/Nodes/StatisticsNodes.h",
+            "FlowGraph/Nodes/UserGeneratedContentNodes.h"
+        ]
+    },
+    "Listeners_uber.cpp": {
+        "FlowGraph/Nodes/Listeners": [
+            "FlowGraph/Nodes/Listeners/AccountEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/CatalogEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/InventoryEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/LeaderboardEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/LobbyEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/MatchmakingEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/NetworkingEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/RemoteStorageEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/ServiceEventNodes.cpp",
+            "FlowGraph/Nodes/Listeners/AccountEventNodes.h",
+            "FlowGraph/Nodes/Listeners/CatalogEventNodes.h",
+            "FlowGraph/Nodes/Listeners/InventoryEventNodes.h",
+            "FlowGraph/Nodes/Listeners/LeaderboardEventNodes.h",
+            "FlowGraph/Nodes/Listeners/ListenerBaseNode.h",
+            "FlowGraph/Nodes/Listeners/LobbyEventNodes.h",
+            "FlowGraph/Nodes/Listeners/MatchmakingEventNodes.h",
+            "FlowGraph/Nodes/Listeners/NetworkingEventNodes.h",
+            "FlowGraph/Nodes/Listeners/RemoteStorageEventNodes.h",
+            "FlowGraph/Nodes/Listeners/ServiceEventNodes.h"
+        ]
+    },
+    "Schematyc_uber.cpp": {
+        "Schematyc": [
+            "Schematyc/GamePlatformEnv.h",
+            "Schematyc/Utils.h"
+        ]
+    },
+    "Components_uber.cpp": {
+        "Schematyc/Components": [
+            "Schematyc/Components/PlatformSignalComponent.cpp",
+            "Schematyc/Components/PlatformSignalComponent.h"
+        ]
+    },
+    "DataTypes_uber.cpp": {
+        "Schematyc/Functions/DataTypes": [
+            "Schematyc/Functions/DataTypes/Accounts.cpp",
+            "Schematyc/Functions/DataTypes/Catalog.cpp",
+            "Schematyc/Functions/DataTypes/FixedString.cpp",
+            "Schematyc/Functions/DataTypes/Inventory.cpp",
+            "Schematyc/Functions/DataTypes/Leaderboards.cpp",
+            "Schematyc/Functions/DataTypes/Lobby.cpp",
+            "Schematyc/Functions/DataTypes/Networking.cpp",
+            "Schematyc/Functions/DataTypes/Overlay.cpp",
+            "Schematyc/Functions/DataTypes/RemoteStorage.cpp",
+            "Schematyc/Functions/DataTypes/Service.cpp",
+            "Schematyc/Functions/DataTypes/Statistics.cpp",
+            "Schematyc/Functions/DataTypes/UserGeneratedContent.cpp"
+        ]
+    },
+    "Service_uber.cpp": {
+        "Schematyc/Functions/Service": [
+            "Schematyc/Functions/Service/Accounts.cpp",
+            "Schematyc/Functions/Service/Catalog.cpp",
+            "Schematyc/Functions/Service/General.cpp",
+            "Schematyc/Functions/Service/Inventory.cpp",
+            "Schematyc/Functions/Service/Leaderboards.cpp",
+            "Schematyc/Functions/Service/Lobby.cpp",
+            "Schematyc/Functions/Service/Networking.cpp",
+            "Schematyc/Functions/Service/Overlay.cpp",
+            "Schematyc/Functions/Service/RemoteStorage.cpp",
+            "Schematyc/Functions/Service/Statistics.cpp",
+            "Schematyc/Functions/Service/UserGeneratedContent.cpp"
+        ]
+    },
+    "System_uber.cpp": {
+        "System": [
+            "System/PlatformEventManager.cpp",
+            "System/RemoteStorageCache.cpp",
+            "System/StatisticsManager.cpp",
+            "System/PlatformEventManager.h",
+            "System/RemoteStorageCache.h",
+            "System/StatisticsManager.h"
+        ]
+    },
+    "CryGamePlatformNodes_uber.cpp": {
+        "Root": [
+            "resource.h",
+            "StdAfx.cpp",
+            "StdAfx.h"
+        ]
+    },
+    "NoUberFile": {
+        "Root": [
+            "StdAfx.cpp"
+        ]
+    }
+}

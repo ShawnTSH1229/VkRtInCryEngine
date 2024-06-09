@@ -1,0 +1,63 @@
+<Material MtlFlags="524544" vertModifType="0">
+ <SubMaterials>
+  <Material Name="cliff_plattform" MtlFlags="524416" Shader="Illum" GenMask="4000000000020" StringGenMask="%NORMAL_MAP%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="0.95597368,0.95597368,0.95597368" Specular="0.026241222,0.026241222,0.026241222" Opacity="1" Shininess="40" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="terrain/cliff.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Bumpmap" File="terrain/cliff_ddn.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="proxy" MtlFlags="525440" Shader="Nodraw" GenMask="0" StringGenMask="" SurfaceType="mat_concrete" MatTemplate="" Diffuse="1,0,0" Specular="0,0,0" Opacity="0.5" vertModifType="0" LayerAct="1">
+   <Textures />
+  </Material>
+  <Material Name="plattform_soil" MtlFlags="524416" Shader="Illum" GenMask="4000000000020" StringGenMask="%NORMAL_MAP%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="1,1,1" Specular="0.026241222,0.026241222,0.026241222" Opacity="1" Shininess="40" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="terrain/soil3.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Bumpmap" File="terrain/soil_ddn.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Heightmap" File="terrain/soil_displ.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="jump_pad" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_bouncy" MatTemplate="" Diffuse="1,0.070360094,0.070360094" Specular="0.026241222,0.026241222,0.026241222" Opacity="1" Shininess="40.035" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./white.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="grass" MtlFlags="524416" Shader="Vegetation" GenMask="2400000020" StringGenMask="%NORMAL_MAP%TEMP_VEGETATION%VERTCOLORS" SurfaceType="mat_canopy" MatTemplate="" Diffuse="1,1,1" Specular="0.026241222,0.026241222,0.026241222" Opacity="1" Shininess="40" AlphaTest="0.30000001" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="Objects/ground/grass1.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Bumpmap" File="Objects/ground/grass1_ddn.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams bendDetailLeafAmplitude="0.2" bendDetailFrequency="1" bendDetailBranchAmplitude="-0.5" VertexAlphaBlendFactor="1"/>
+  </Material>
+  <Material Name="plattform_leaf" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_canopy" MatTemplate="" Diffuse="0.41788515,0.83077008,0.052860655" Specular="0.026241222,0.026241222,0.026241222" Opacity="1" Shininess="40" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./white.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="jumppad_proxy" MtlFlags="525440" Shader="Nodraw" GenMask="0" StringGenMask="" SurfaceType="mat_bouncy" MatTemplate="" Diffuse="1,0,0" Specular="0,0,0" Opacity="1" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures />
+  </Material>
+ </SubMaterials>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

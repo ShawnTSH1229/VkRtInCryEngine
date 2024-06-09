@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="cedaf5d0-ccc3-bd44-d27c-ab0080663348" source="bush_forest_1.fbx">
+ <Files>
+  <File path="bush_forest_1.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">3</Detail>
+  <Detail name="triangleCount">1060</Detail>
+  <Detail name="vertexCount">1776</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./tree_forest.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="e2288f37-c404-4861-4437-2ab1c7dd2d5f">
+ <Files>
+  <File path="Fuel.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">5</Detail>
+  <Detail name="triangleCount">1216</Detail>
+  <Detail name="vertexCount">1010</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./fuel_canister.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

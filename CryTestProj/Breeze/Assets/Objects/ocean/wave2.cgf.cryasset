@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="a4b9e08c-2c02-a0ae-6ba2-1eb111babfc0" source="wave2.fbx">
+ <Files>
+  <File path="wave2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">28</Detail>
+  <Detail name="vertexCount">56</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./waves.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

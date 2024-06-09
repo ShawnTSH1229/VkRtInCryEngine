@@ -1,0 +1,187 @@
+// Copyright 2004-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "NoPreview;"
+           "LocalConstants;"
+           "ShaderDrawType = Custom;"
+           "ShaderType = PostProcess;"
+>; 
+
+//=============================================================
+
+/// Un-Tweakables //////////////////////
+
+float4 BlurOffset;
+float4 PixelOffset < vsregister = VS_REG_PB_0; >
+
+///////////////////////////////
+// Textures and Sampler states
+Texture2D<float4> BlurSrcTex         : register(t0);
+Texture2D<float4> DepthTex           : register(t1);
+Texture2D<float2> ClipVolumeIdTex    : register(t2);
+
+SamplerState BlurSrcSS         : register(s0);
+SamplerState DepthSS           : register(s1);
+SamplerState ClipVolumeIdSS    : register(s2);
+
+
+/////////////////////////////
+// structs
+struct app2vertShadow
+{
+  IN_P
+  float2 baseTC     : TEXCOORD0;
+  IN_C0
+};
+
+///////////////// SSDO blur //////////////////
+
+struct vtxOut
+{
+  float4 HPosition  : SV_POSITION;
+  float4 baseTC     : TEXCOORD0;
+};
+
+float4 SSAO_BlurKernel;
+
+vtxOut SSDO_Blur_VS(uint VertexID : SV_VertexID)
+{
+  vtxOut OUT = (vtxOut)0; 
+  OUT.HPosition = GetHPos_FromTriVertexID(VertexID);
+  float2 baseTC = GetBaseTC_FromTriVertexID(VertexID);
+
+  // output texture coordinates
+  OUT.baseTC.xy = baseTC + PixelOffset.xy;
+  OUT.baseTC.zw = OUT.baseTC.xy * PixelOffset.zw;
+
+  return OUT;
+}
+
+pixout SSDO_Blur_PS(vtxOut IN)
+{
+	pixout OUT = (pixout)1;
+
+	half4 depth4;
+  
+	// In order to get four bilinear-filtered samples(16 samples effectively)
+  // +-+-+-+-+
+  // +-0-+-1-+
+  // +-+-+-+-+
+  // +-2-+-3-+
+  // +-+-+-+-+
+	half2 addr0 = floor(IN.baseTC.zw) * BlurOffset.zw;
+	half2 addr1 = addr0 + SSAO_BlurKernel.xy;
+	half2 addr2 = addr0 + SSAO_BlurKernel.yz;
+	half2 addr3 = addr2 + SSAO_BlurKernel.xy;
+
+	half4 value0 = GetTexture2D(BlurSrcTex, BlurSrcSS, addr0 );
+	half4 value1 = GetTexture2D(BlurSrcTex, BlurSrcSS, addr1 );
+	half4 value2 = GetTexture2D(BlurSrcTex, BlurSrcSS, addr2 );
+	half4 value3 = GetTexture2D(BlurSrcTex, BlurSrcSS, addr3 );
+	
+	// Sample depth values
+	const half4 vDepthAddrOffset = half4(1.h, 1.h, -1.h, -1.h) * BlurOffset.xyxy;
+	depth4.x = GetTexture2D(DepthTex, DepthSS, addr0 + vDepthAddrOffset.zw);
+	depth4.y = GetTexture2D(DepthTex, DepthSS, addr1 + vDepthAddrOffset.xw);
+	depth4.z = GetTexture2D(DepthTex, DepthSS, addr2 + vDepthAddrOffset.zy);
+	depth4.w = GetTexture2D(DepthTex, DepthSS, addr3 + vDepthAddrOffset.xy);
+
+	half centerDepth = GetLinearDepth(DepthTex, IN.baseTC.xy);
+	half4 weight4 = saturate(1.h - 35.h * abs(depth4 / centerDepth - 1.h));
+
+	half totalWeight = dot(weight4, 1.h);
+	weight4 /= totalWeight;
+	
+	OUT.Color = (value0 + value1 + value2 + value3) * 0.25h;
+	if (totalWeight > 0.01h)
+		OUT.Color = weight4.x * value0 + weight4.y * value1 + weight4.z * value2 + weight4.w * value3;
+
+	return OUT;
+}
+
+#define MAX_CLIPVOLUMES 63
+#define CLIPVOLUME_IGNORE_OUTDOOR_AO	(1<<5)
+
+float4 HMAO_ClipVolumeData[MAX_CLIPVOLUMES];
+
+SamplerState SampStatePoint
+{
+	Filter = MIN_MAG_MIP_POINT;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+float2 HMAO_Blur_PS(vtxOut IN) : SV_Target
+{
+	float2 OUT = float2(0, 0);
+	
+	const int halfKernelWidth = 2;
+	
+	const float2 centerDepth = DepthTex.Load(int3(IN.baseTC.zw,0)).rg;
+	const float similarity = PS_NearFarClipDist.y * 0.5f;
+	
+	float2 weightSum = 0;
+
+	for(int y=-halfKernelWidth; y<=halfKernelWidth; ++y)
+	{
+		for(int x=-halfKernelWidth; x<=halfKernelWidth; ++x)
+		{
+			int2 samplePos = IN.baseTC.zw + int2(x,y);
+
+			float2 colorSample = BlurSrcTex.Load(int3(samplePos, 0)).rg;
+			float2 depthSample = DepthTex.Load(int3(samplePos, 0)).rg;
+
+			float2 sampleWeight = exp2(abs(depthSample - centerDepth) * -similarity);
+			OUT.rg += colorSample * sampleWeight;
+			
+			weightSum += sampleWeight;
+		}
+	}
+
+	OUT.rg /= weightSum;
+	
+#if %_RT_SAMPLE0
+	float4 clipVolumeIDs = ClipVolumeIdTex.GatherRed(SampStatePoint, IN.baseTC.xy);
+	
+	const uint4 nClipVolumeID = uint4(clipVolumeIDs * 255.0f) & MAX_CLIPVOLUMES;
+	const uint4 nClipVolumeData = uint4(
+		asuint(HMAO_ClipVolumeData[nClipVolumeID.x].a),
+		asuint(HMAO_ClipVolumeData[nClipVolumeID.y].a),
+		asuint(HMAO_ClipVolumeData[nClipVolumeID.z].a),
+		asuint(HMAO_ClipVolumeData[nClipVolumeID.w].a)
+	);
+	
+	float avgIgnoreOutdoor = dot((nClipVolumeData & CLIPVOLUME_IGNORE_OUTDOOR_AO) ? 1.0 : 0.0, 0.25);
+	OUT.rg = 1-(1-OUT.rg)*(1-avgIgnoreOutdoor);
+#endif
+	
+	return OUT;
+}
+
+//////////////////////////////// technique ////////////////
+
+technique SSDO_Blur
+{
+  pass p0
+  {
+		VertexShader = SSDO_Blur_VS();
+    PixelShader = SSDO_Blur_PS();
+  }
+}
+
+technique HMAO_Blur
+{
+  pass p0
+  {
+    VertexShader = SSDO_Blur_VS();
+    PixelShader = HMAO_Blur_PS() ResolvePS;
+  }
+}
+
+/////////////////////// eof ///

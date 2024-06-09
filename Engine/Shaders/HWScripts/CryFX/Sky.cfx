@@ -1,0 +1,134 @@
+// Copyright 2004-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "ModificatorVT.cfi"
+#include "shadeLib.cfi"
+#include "SkyCommon.cfi"
+
+// TODO: remove after old graphics pipeline is removed.
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "Public;"
+           "ShaderDrawType = Sky;"
+           "ShaderType = General;"
+>;
+
+DIFFUSEMAP
+
+float SkyboxAngle
+<
+  register = REG_PM_PARAM_0.x;
+  string UIWidget = "slider";
+  string UIName = "Angle";
+  string UIDescription = "Set angle of skybox rotation";
+  float UIMin = 0.0;
+  float UIMax = 360.0;
+  float UIStep = 1.0;
+> = 0.0;
+
+///////////////////////////// 
+ 
+struct a2v 
+{
+	float4 Position : POSITION; //in object space
+	float2 baseTC   : TEXCOORD0;
+	IN_C0
+};
+
+struct v2f
+{
+	float4 Position  : SV_POSITION;  //in projection space
+	float2 baseTC    : TEXCOORD0;
+	float3 viewDir	 : TEXCOORD1;
+};
+ 
+struct v2fZ
+{
+	float4 Position  : SV_POSITION;  //in projection space
+}; 
+
+///////////////// vertex shader //////////////////
+v2f SkyVS(a2v IN)
+{
+	v2f OUT = (v2f)0; 
+
+	// Position in screen space.
+	float4 vPos = IN.Position;
+	OUT.Position = _pos_Common(vPos);
+	OUT.Position.z = OUT.Position.w;
+  
+	OUT.baseTC.xy = IN.baseTC.xy;  
+  
+	//OUT.viewDir = IN.Position.xyz - g_VS_WorldViewPos.xyz;
+	OUT.viewDir = IN.Position.xyz;
+
+	return OUT; 
+} 
+
+v2fZ SkyZVS(a2v IN)
+{
+	v2fZ OUT = (v2fZ)0; 
+
+	// Position in screen space.
+	float4 vPos = IN.Position;
+	OUT.Position = _pos_Common(vPos);
+	OUT.Position.z = OUT.Position.w;
+
+	return OUT;
+}
+
+///////////////// pixel shader //////////////////
+
+pixout SkyPS(v2f IN)
+{
+	pixout OUT = (pixout)0;
+    OUT.Color = float4(GetDiffuseTex(diffuseTex, IN.baseTC.xy).rgb, 1);
+	return OUT;
+}
+
+pixout_gbuffer SkyZPS(v2fZ IN) 
+{
+	// Legacy Dummy
+	pixout_gbuffer OUT = (pixout_gbuffer)0;
+	return OUT;
+}
+
+//////////////////////////////// technique ////////////////
+
+technique General
+<
+  string Script =
+         "TechniqueZ=ZPass;"
+>
+{
+  pass p0
+  {
+    VertexShader = SkyVS();
+    
+    ZEnable = true;
+    ZWriteEnable = false;
+    CullMode = None;
+    
+    PixelShader = SkyPS();
+  }
+}
+
+technique ZPass
+{
+  pass p0
+  {
+    VertexShader = SkyZVS();
+    
+    ZEnable = true;
+    ZWriteEnable = false;
+    CullMode = None;
+    
+    PixelShader = SkyZPS();
+  }
+}
+
+
+/////////////////////// eof ///

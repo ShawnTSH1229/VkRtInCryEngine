@@ -1,0 +1,73 @@
+// Copyright 2005-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "ShaderDrawType = Custom;"
+           "ShaderType = FX;"
+           "LocalConstants;"
+>;
+
+float4 vClearColor;
+float4 vClearRect;
+float4 vClearDepth;
+
+struct pixout_clear
+{
+#if %_RT_SAMPLE0
+	float4 Color0  : SV_Target0;
+#if %_RT_SAMPLE1
+	float4 Color1  : SV_Target1;
+#if %_RT_SAMPLE2
+	float4 Color2  : SV_Target2;
+#if %_RT_SAMPLE3
+	float4 Color3  : SV_Target3;
+#endif
+#endif
+#endif
+#endif
+};
+
+float4 ClearVS(float3 inPosition  : POSITION) : SV_Position
+{
+	float2 clipPos = inPosition.xy * vClearRect.xy + vClearRect.zw;
+	return float4(clipPos, vClearDepth.x, 1.0);
+}
+
+pixout_clear ClearPS()
+{
+	pixout_clear OUT;
+
+#if %_RT_SAMPLE0
+	OUT.Color0 = vClearColor;
+#if %_RT_SAMPLE1
+	OUT.Color1 = vClearColor;
+#if %_RT_SAMPLE2
+	OUT.Color2 = vClearColor;
+#if %_RT_SAMPLE3
+	OUT.Color3 = vClearColor;
+#endif
+#endif
+#endif
+#endif
+
+	return OUT;
+}
+
+//========================================================================
+
+technique Clear
+{
+	pass p0
+	{
+		VertexShader = ClearVS();
+		PixelShader  = ClearPS();
+	}
+}
+
+/////////////////////// eof ///
+

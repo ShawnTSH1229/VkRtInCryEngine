@@ -1,0 +1,7 @@
+<Material MtlFlags="526336" Shader="Particles" GenMask="400" StringGenMask="" SurfaceType="" MatTemplate="" Diffuse="1,1,1" Opacity="1" Shininess="9.9450016" CloakAmount="0" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="Textures/sprites/dirt/dirt_patch_a_diff.dds"/>
+  <Texture Map="Bumpmap" File="Textures/sprites/dirt/dirt_patch_a_ddn.dds"/>
+ </Textures>
+ <PublicParams GlobalIlluminationAmount="1"/>
+</Material>

@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="521dea57-8262-73f3-1595-7155dd94505b" source="smoke_patches_a_diff.tif">
+ <Files>
+  <File path="smoke_patches_a_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">512</Detail>
+  <Detail name="height">512</Detail>
+  <Detail name="mipCount">8</Detail>
+ </Details>
+</AssetMetadata>

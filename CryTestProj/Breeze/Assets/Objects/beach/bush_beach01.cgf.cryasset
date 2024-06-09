@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="cb772e8e-432d-1596-6367-754f7062a910" source="bush_beach01.fbx">
+ <Files>
+  <File path="bush_beach01.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">3</Detail>
+  <Detail name="triangleCount">957</Detail>
+  <Detail name="vertexCount">839</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./bush_beach01.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="8239ba06-8225-80c8-c5ae-dd4850c15a48" source="" timestamp="1597249443">
+ <Files>
+  <File path="smoke_a.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">Textures/sprites/smoke/smoke_patches_a_diff.dds</Path>
+  <Path usageCount="1">Textures/sprites/smoke/smoke_patches_a_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

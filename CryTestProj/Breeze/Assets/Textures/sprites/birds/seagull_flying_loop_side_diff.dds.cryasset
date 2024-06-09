@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="9daa54b4-c65c-2317-d918-b43691382f57" source="seagull_flying_loop_side_diff.tif">
+ <Files>
+  <File path="seagull_flying_loop_side_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

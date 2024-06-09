@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="04019eae-6ca7-e3cd-6d89-b603535cdc13" source="dirt_patch_a_diff.tif">
+ <Files>
+  <File path="dirt_patch_a_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">512</Detail>
+  <Detail name="height">512</Detail>
+  <Detail name="mipCount">8</Detail>
+ </Details>
+</AssetMetadata>

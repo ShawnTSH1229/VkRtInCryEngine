@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="7e8a5862-755a-3e97-5c99-24813538b990" source="roof2.fbx">
+ <Files>
+  <File path="roof2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">6</Detail>
+  <Detail name="triangleCount">184</Detail>
+  <Detail name="vertexCount">364</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./house.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

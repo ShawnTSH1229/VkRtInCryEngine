@@ -1,0 +1,6 @@
+<download name="tropical_toon_island" type="Map">
+ <index src="filelist.xml" dest="filelist.xml"/>
+ <files>
+  <file src="level.pak" dest="level.pak" size="13555592" md5="77c6b49387727c543a4233154d5c2b08"/>
+ </files>
+</download>

@@ -1,0 +1,9 @@
+<Material MtlFlags="524288" Shader="Vegetation" GenMask="2400800000" StringGenMask="%LEAVES%TEMP_VEGETATION%VERTCOLORS" SurfaceType="" MatTemplate="" Diffuse="0.97647059,0.95294118,0.88235295" Specular="0.18431373,0.18431373,0.18431373" Opacity="1" Shininess="16.510803" CloakAmount="0" vertModifType="1" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="%engine%/engineassets/textures/white.dds"/>
+ </Textures>
+ <VertexDeform Type="1" DividerX="10" DividerY="0.0099999998" NoiseScale="1,1,1">
+  <WaveX Type="1" Amp="0.050000001" Level="0" Phase="0" Freq="0.1"/>
+ </VertexDeform>
+ <PublicParams bendDetailLeafAmplitude="1" bendDetailFrequency="1" bendDetailBranchAmplitude="-0.5" BlendTerrainCol="0" VertexAlphaBlendFactor="1" NormalViewDependency="0.5" TransmittanceColor="0.76078433,0.88627452,1" CapOpacityFalloff="1" BackDiffuseMultiplier="1" BlendTerrainColDist="0.5"/>
+</Material>

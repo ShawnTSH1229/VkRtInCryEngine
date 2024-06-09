@@ -1,0 +1,8 @@
+<TimeOfDay Time="12" TimeStart="0" TimeEnd="24" TimeAnimSpeed="0">
+ <Presets>
+  <Preset Name="%ENGINE%/EngineAssets/Shading/default.env"/>
+  <Preset Name="Libs/environmentpresets/levels/tropical_toon_island_day.env" Default="1"/>
+  <Preset Name="Libs/environmentpresets/levels/tropical_toon_island_morning.env"/>
+  <Preset Name="Libs/environmentpresets/levels/tropical_toon_island_night.env"/>
+ </Presets>
+</TimeOfDay>

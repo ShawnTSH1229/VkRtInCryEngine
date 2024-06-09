@@ -1,0 +1,13 @@
+<AudioSystemData name="Parameter" version="5" parameters="1">
+ <ImplData parameters="1"/>
+ <Parameters>
+  <Parameter name="area_fade_distance">
+   <Parameter name="area_fade_distance"/>
+  </Parameter>
+ </Parameters>
+ <EditorData>
+  <Library />
+  <Folders />
+  <Controls />
+ </EditorData>
+</AudioSystemData>

@@ -1,0 +1,37 @@
+<AudioSystemData name="Ambience" version="5" triggers="9">
+ <ImplData events="9"/>
+ <Triggers>
+  <Trigger name="l_amb_global">
+   <Event name="Ambience/l_amb_global"/>
+  </Trigger>
+  <Trigger name="l_amb_global_forest">
+   <Event name="Ambience/l_amb_global_forest"/>
+  </Trigger>
+  <Trigger name="l_amb_global_water_a">
+   <Event name="Ambience/l_amb_global_water_a"/>
+  </Trigger>
+  <Trigger name="l_amb_global_water_b">
+   <Event name="Ambience/l_amb_global_water_b"/>
+  </Trigger>
+  <Trigger name="l_amb_global_ocean_a">
+   <Event name="Ambience/l_amb_global_ocean_a"/>
+  </Trigger>
+  <Trigger name="l_amb_global_ocean_b">
+   <Event name="Ambience/l_amb_global_ocean_b"/>
+  </Trigger>
+  <Trigger name="l_amb_global_ocean_c">
+   <Event name="Ambience/l_amb_global_ocean_c"/>
+  </Trigger>
+  <Trigger name="l_amb_global_ocean_d">
+   <Event name="Ambience/l_amb_global_ocean_d"/>
+  </Trigger>
+  <Trigger name="l_amb_global_water_c">
+   <Event name="Ambience/l_amb_global_water_c"/>
+  </Trigger>
+ </Triggers>
+ <EditorData>
+  <Library />
+  <Folders />
+  <Controls />
+ </EditorData>
+</AudioSystemData>

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="c93320dc-6315-9f4d-6f1f-4fb37c60d286">
+ <Files>
+  <File path="Rocket.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">6</Detail>
+  <Detail name="triangleCount">1980</Detail>
+  <Detail name="vertexCount">1863</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./rocket.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

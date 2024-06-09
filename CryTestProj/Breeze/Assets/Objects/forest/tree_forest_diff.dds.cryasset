@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="d7373513-fc60-7719-20e4-c72ed55cc85a" source="tree_forest_diff.tif">
+ <Files>
+  <File path="tree_forest_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">2048</Detail>
+  <Detail name="height">2048</Detail>
+  <Detail name="mipCount">10</Detail>
+ </Details>
+</AssetMetadata>

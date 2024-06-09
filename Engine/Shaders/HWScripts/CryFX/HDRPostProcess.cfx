@@ -1,0 +1,1170 @@
+// Copyright 2009-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+#include "PostEffectsLib.cfi"
+#include "ShadowCommon.cfi"
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "NoPreview;"
+           "LocalConstants;"
+           "ShaderDrawType = Custom;"
+           "ShaderType = PostProcess;"
+>;
+
+/// Un-Tweakables //////////////////////
+float4 ScreenSize  : PB_ScreenSize < register = VS_REG_PB_0 >;
+
+float4 SampleOffsets[16] < register = c0; >
+float4x4 mViewProjPrev;
+
+float4 HDRParams0;
+
+float4 HDREyeAdaptation;
+float4 HDRFilmCurve;
+float3 HDRBloomColor;
+float4 HDRColorBalance;			// (ColorBalance.rgb, fHDRSaturation)
+float4 HDRMiscParams;				// (1.0f, 1.0f, 1.0f, 1.0f)
+
+float4 SunShafts_SunCol;
+
+float4 ElapsedTime;
+float Time = {PB_time};
+
+Texture2D<float4> zMap : register(t0);
+
+Texture2DMS<float4> baseMapMS : register(t0);
+Texture2DMS<float4> zMapMS : register(t0);
+
+struct app2vert
+{
+	IN_P
+	IN_TBASE
+	IN_C0
+};
+
+struct app2vertToneMap
+{
+	IN_P
+	IN_TBASE
+	float3 CamVec       : TEXCOORD1;
+};
+
+struct app2vertFog
+{
+	IN_P
+	float2 baseTC       : TEXCOORD0;
+	float3 CamVec       : TEXCOORD1;
+};
+
+struct vert2frag
+{
+	OUT_HPOS_IN_WPOS
+
+	float4 baseTC       : TEXCOORD0;
+	float3 CamVec       : TEXCOORD1;
+
+	float4 baseTCScaled : TEXCOORD2;
+};
+
+struct vert2fragFog
+{
+	OUT_HPOS_IN_WPOS
+
+	float2 baseTC       : TEXCOORD0;
+	float3 CamVec       : TEXCOORD1;
+
+	MSAA_SAMPLE_INDEX_PS
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+vert2frag TransformedVS(app2vertToneMap IN)
+{
+	vert2frag OUT = (vert2frag)0; 
+	float4 vPos = IN.Position;
+
+	vPos.y = 1 -vPos.y;
+	OUT.HPosition = float4(vPos.xy*2-1, vPos.z, 1.0);
+
+	float2 baseTC = IN.baseTC.xy;
+
+	half2 offset = half2(frac(Time.x*27), frac(Time.x*19));
+
+	OUT.baseTC.xy = baseTC;
+
+	OUT.baseTCScaled.xy = GetScaledScreenTC(baseTC);    
+	OUT.baseTCScaled.wz = ((OUT.baseTCScaled.xy + offset) / 64.0) * g_VS_ScreenSize.xy;
+
+	OUT.CamVec.xyz = IN.CamVec;
+
+	return OUT;
+}
+
+vert2fragFog PreTransformedFogVS(app2vertFog IN)
+{
+	vert2fragFog OUT = (vert2fragFog)0;
+
+	OUT.HPosition = Get2dHPos(IN.Position);
+
+	OUT.baseTC.xy = IN.baseTC.xy;
+	OUT.CamVec.xyz = IN.CamVec.xyz;
+
+	return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Texture2D<float4> HDRBloom_Temp           : register(t0); // WxH quarter res
+Texture2D<float4> HDRBloom_Temp2          : register(t1); // WxH quarter res
+SamplerState HDRCalc_BloomSampler         : register(s0); // PointClamp or LinearClamp
+
+float3 HDRBloomGaussianPS(vtxOut IN) : SV_Target
+{
+	const float weights[15] = { 153, 816, 3060, 8568, 18564, 31824, 43758, 48620, 43758, 31824, 18564, 8568, 3060, 816, 153 };
+	const float weightSum = 262106.0;
+	
+	float2 coords = IN.baseTC.xy - HDRParams0.xy * 7.0;
+	half3 vColor = 0;
+	
+	[unroll]
+	for (int i = 0; i < 15; ++i)
+	{
+		vColor += GetTexture2D(HDRBloom_Temp, HDRCalc_BloomSampler, coords).rgb * (weights[i] / weightSum);
+		coords += HDRParams0.xy;
+	}
+	
+	// Compose sum of Gaussians in final pass
+#if %_RT_SAMPLE0
+	half3 bloom0 = GetTexture2D(HDRBloom_Temp2, HDRCalc_BloomSampler, IN.baseTC.xy).rgb;
+	half3 bloom1 = vColor;
+
+	vColor = (0.0174 * bloom0 + 0.192 * bloom1) / (0.0174 + 0.192);
+#endif
+	
+	return vColor;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float4 SampleLumOffsets0;
+float4 SampleLumOffsets1;
+
+Texture2D<float4> HDRLum_Targ           : register(t0);
+Texture2D<float4> HDRLum_Norm           : register(t1);
+Texture2D<float4> HDRLum_Diff           : register(t2);
+Texture2D<float4> HDRLum_Spec           : register(t3);
+SamplerState HDRLum_LClampSampler       : register(s0);   //LinearClamp
+
+float2 HDRSampleLumInitialPS(vtxOut IN) : SV_Target
+{
+	half  fRecipSampleCount = 0.25h;
+	half  fCenterWeight = 1;//saturate(1-length(IN.baseTC.xy*2-1));
+	half2 vLumInfo = 0;
+
+	float2 sampleOffsets[4] = {SampleLumOffsets0.xy, SampleLumOffsets0.zw, SampleLumOffsets1.xy, SampleLumOffsets1.zw};
+	
+	[unroll] for (int i = 0; i < 4; ++i)
+	{
+		float2 SampleTC = IN.baseTC.xy + sampleOffsets[i];
+		SampleTC = MapViewportToRaster(SampleTC);
+		 
+		// Use base color to get a coarse approximation of the (incoming) illuminance
+		MaterialAttribsCommon attribs = DecodeGBuffer(
+			GetTexture2D(HDRLum_Norm, HDRLum_LClampSampler, SampleTC),
+			GetTexture2D(HDRLum_Diff, HDRLum_LClampSampler, SampleTC),
+			GetTexture2D(HDRLum_Spec, HDRLum_LClampSampler, SampleTC));
+		half baseColorLum = max(max(GetLuminance(attribs.Albedo), GetLuminance(attribs.Reflectance)), 0.01);
+		
+		// Assume emissive surfaces (especially sky) have the typical scene reflectance to keep auto exposure more stable
+		if (GetLuminance(attribs.Albedo) == 0)
+			baseColorLum = 0.2;
+		
+		half3 cTex = GetTexture2D(HDRLum_Targ, HDRLum_LClampSampler, SampleTC).rgb;
+		half  fLum = all(isfinite(cTex)) ? GetLuminance(cTex) : 0;  // Filter out nans
+
+		vLumInfo.x += log(fLum + 1e-6);                      // Luminance
+		vLumInfo.y += log(fLum / baseColorLum * PI + 1e-6);  // Illuminance
+	}
+
+	return fCenterWeight * fRecipSampleCount * vLumInfo;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float2 HDRSampleLumIterativePS(vtxOut IN) : SV_Target
+{
+	const int nIter = 4;
+	const half nIterI = 0.25f;
+
+	// TODO: Could use Gather instead? (no iteration necessary)
+	half2 vResampleSum = 0; 
+	for (int i=0; i < nIter; i++)
+		vResampleSum += GetTexture2D(HDRLum_Targ, HDRLum_LClampSampler, IN.baseTC.xy + SampleOffsets[i].xy).rg;
+
+	vResampleSum *= nIterI;
+#if %_RT_SAMPLE0 
+	vResampleSum = exp( vResampleSum );
+#endif
+
+	return vResampleSum;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Final eye/luminance adaptation
+
+Texture2D<float2> HDRCalc_Prev : register(t0); // 1x1 rg
+Texture2D<float2> HDRCalc_TMap : register(t1); // 1x1 rg
+
+float2 HDRCalculateAdaptedLumPS() : SV_Target
+{
+	half2 vAdaptedLum = HDRCalc_Prev.Load(int3(0, 0, 0));
+	half2 vCurrentLum = HDRCalc_TMap.Load(int3(0, 0, 0));
+
+	return max(0, vAdaptedLum + (vCurrentLum - vAdaptedLum) *  ElapsedTime.yyzz);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define LIGHT_UNIT_SCALE 10000.0f
+
+half ComputeExposure(float fIlluminance)
+{
+	// Compute EV with ISO 100 and standard camera settings
+	half EV100 = log2(fIlluminance * LIGHT_UNIT_SCALE * 100.0 / 330.0);
+	
+	// Apply automatic exposure compensation based on scene key
+	EV100 -= ((clamp(log10(fIlluminance * LIGHT_UNIT_SCALE + 1), 0.1, 5.2) - 3.0) / 2.0) * HDREyeAdaptation.z;
+	
+	// Clamp EV
+	EV100 = clamp(EV100, HDREyeAdaptation.x, HDREyeAdaptation.y);
+	
+	// Compute maximum luminance based on Saturation Based Film Sensitivity (ISO 100, lens factor q=0.65)
+	float maxLum = exp2(EV100);
+	
+	return (LIGHT_UNIT_SCALE / 1.2f) * rcp(maxLum);
+}
+
+half3 FilmMapping( in vert2frag IN, in half3 cScene, in half3 cBloom, in half3 vAdaptedLum, in half fVignetting )
+{
+	// Compute exposure
+	half fExposure = ComputeExposure(vAdaptedLum.y);
+	
+#if %_RT_SAMPLE4
+	// Legacy exposure mode
+	// Krawczyk scene key estimation adjusted to better fit our range - low (0.05) to high key (0.8) interpolation based on avg scene luminance
+	const half fSceneKey = 1.03h - 2.0h / (2.0h + log2(vAdaptedLum.x + 1.0));
+	fExposure = clamp(fSceneKey / vAdaptedLum.x, HDREyeAdaptation.y, HDREyeAdaptation.z);
+#endif
+
+	//half3 cColor = fVignetting * fExposure * lerp(cScene, cBloom, saturate(HDRBloomColor));
+	half3 cColor = fVignetting * fExposure * (cScene + cBloom);//TanGram :TiledBloom
+
+
+	// hdr color grading
+	half fLuminance = GetLuminance(cColor);
+	cColor = fLuminance + HDRColorBalance.a * ( cColor - fLuminance );	// saturation
+	cColor *= HDRColorBalance.rgb;	// color balance
+
+	// Filmic response curve as proposed by J. Hable
+	half4 c = half4(max(cColor, 0), HDRFilmCurve.w);
+	const half ShoStren = 0.22 * HDRFilmCurve.x, LinStren = 0.3 * HDRFilmCurve.y, LinAngle = 0.1, ToeStren = 0.2, ToeNum = 0.01 * HDRFilmCurve.z, ToeDenom = 0.3;
+	half4 compressedCol = ((c * (ShoStren * c + LinAngle*LinStren) + ToeStren*ToeNum) / (c * (ShoStren * c + LinStren) + ToeStren*ToeDenom)) - (ToeNum/ToeDenom);
+	cScene = saturate(compressedCol / compressedCol.w);
+	
+	// Apply gamma correction using exact sRGB curve
+	cScene = select((cScene < 0.0031308), 12.92h * cScene, 1.05499995F * pow(cScene, 1.F / 2.4000001F) - half3(0.0549999997F, 0.0549999997F, 0.0549999997F));
+	return cScene;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+half4 GetHDRTargetMS( float2 baseTC, int NumSamples, int nCurrSample ) 
+{
+	int3 vPixCoord = int3( baseTC * PS_ScreenSize.xy, 0);
+	return baseMapMS.Load(vPixCoord, nCurrSample);
+}
+
+half4 GetZTargetMS( float2 baseTC, int NumSamples, int nCurrSample ) 
+{
+	int3 vPixCoord = int3( baseTC * PS_ScreenSize.xy, 0);
+	return zMapMS.Load(vPixCoord, nCurrSample);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+half3 HDRToneMapSample( in vert2frag IN, in half3 vSample, in half3 cBloom, in half3 vAdaptedLum, in half fVignetting)
+{
+	vSample = FilmMapping(IN, vSample, cBloom, vAdaptedLum, fVignetting);
+
+	return saturate(vSample);
+}
+
+float3 NRand3( float2 seed )
+{
+	return frac(sin(dot(seed.xy, float2(34.483, 89.637))) * float3(29156.4765, 38273.5639, 47843.7546));
+}
+
+void ApplyRandomDithering(inout half3 color, float2 uv)
+{
+	// Apply dithering in sRGB space to minimize quantization artifacts
+	// Use a triangular distribution which gives a more uniform noise by avoiding low-noise areas
+	float3 rndValue = NRand3(uv) + NRand3(uv + 0.5789) - 0.5;
+	color += rndValue / 255.0;
+}
+
+void ApplyOrderedDithering(inout half3 color, int2 uv)
+{
+	// Get values from -15.5/32 to 15.5/32 (~-0.5f to ~0.5f)
+	float fThresholdR = GetDissolveThreshold17(uv + int2(0, 0)) - 0.5f * (15.0f / 16);
+	float fThresholdG = GetDissolveThreshold17(uv + int2(0, 1)) - 0.5f * (15.0f / 16);
+	float fThresholdB = GetDissolveThreshold17(uv + int2(0, 2)) - 0.5f * (15.0f / 16);
+
+	// Add dithering below 10bit range (we convert from HDR to 10bit)
+	// NOTE: with R11G11B10F we could add dither below the 6bit mantissa instead
+	color.r = saturate(color.r + fThresholdR * (1.0f / 1024.0f));
+	color.g = saturate(color.g + fThresholdG * (1.0f / 1024.0f));
+	color.b = saturate(color.b + fThresholdB * (1.0f / 1024.0f));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Texture2D<float3> hdrTex   : register(t0); // WxH
+Texture2D luminanceTex     : register(t1); // 1x1
+
+Texture2D<float3> bloomTex : register(t2); // WxH quarter res
+Texture2D vignettingTex    : register(t7); // ?x?
+Texture2D colorChartTex    : register(t8); // ?x?
+Texture2D sunShaftsTex     : register(t9); // WxH full or half res
+
+SamplerState linearClampSS : register(s0);
+
+pixout HDRFinalScenePS(vert2frag IN)
+{
+	float2 ScreenTC = MapViewportToRaster(IN.baseTCScaled.xy);
+
+	half  fVignetting = 1;
+	half3 cBloom = 0;
+
+#if !%_RT_SAMPLE2 // Vignetting enabled/disabled
+	fVignetting = vignettingTex.Sample(linearClampSS, ScreenTC.xy); 
+#endif
+#if %_RT_SAMPLE3
+	cBloom = bloomTex.Sample(linearClampSS, ScreenTC.xy);
+#endif
+
+	half3 vAdaptedLum = luminanceTex.Load(int3(0, 0, 0));
+	half3 vSample = hdrTex.Load(int3(IN.WPos.xy, 0));
+	half3 oSample = HDRToneMapSample( IN, vSample, cBloom, vAdaptedLum, fVignetting);
+
+	// Apply merged post processes
+#if %_RT_SAMPLE5
+	oSample += sunShaftsTex.Sample(linearClampSS, ScreenTC.xy) * SunShafts_SunCol * (1 - oSample); // Blend in ldr sunshafts	
+#endif
+
+#if %_RT_SAMPLE1
+	TexColorChart2D(colorChartTex, linearClampSS, oSample);
+#endif
+	
+#if %_RT_SAMPLE6
+	ApplyRandomDithering(oSample, IN.WPos.xy);
+#endif
+
+	return (pixout)half4(oSample, 1.0f);
+}
+
+pixout HDRFinalSceneDebugPS(vert2frag IN)
+{
+    half3 oSample;
+
+#if %_RT_DEBUG0
+	half fExposure = 0.00001 * ComputeExposure( luminanceTex.Load(int3(0, 0, 0)).y );
+	half3 vSample = hdrTex.Load(int3(IN.WPos.xy, 0)) * fExposure;
+
+	oSample = select((vSample < 0.0031308), 12.9200001F * col, 1.05499995F * pow(vSample, 1.F / 2.4000001F) - half3(0.0549999997F, 0.0549999997F, 0.0549999997F));
+#elif %_RT_DEBUG1
+	half3 vSample = hdrTex.Load(int3(IN.WPos.xy, 0));
+
+	if(any(isnan(vSample)) || any(isinf(vSample)))
+		oSample = float3(1.0f, 0.0f, 0.0f);
+	else if(any(vSample<0.0f))
+		oSample = float3(0.0f, 1.0f, 0.0f);
+	else 
+		oSample = float3(0.5f, 0.5f, 0.5f);
+#endif
+ 
+	return (pixout)half4(oSample, 1.0f);
+}
+
+pixout HDRFinalSceneFixedExposurePS(vert2frag IN)
+{
+	half3 vAdaptedLum = float3(1.0f, 1.0f, 1.0f);
+	half3 vSample = hdrTex.Load(int3(IN.WPos.xy, 0));
+	half3 oSample;
+	
+	{
+		// Compute exposure
+		const half fExposure = 1.0f;
+		half3 cColor = fExposure * vSample;
+
+#if 0
+		// Filmic response curve as proposed by J. Hable
+		half4 c = half4(max(cColor, 0), HDRFilmCurve.w);
+		const half ShoStren = 0.22 * HDRFilmCurve.x, LinStren = 0.3 * HDRFilmCurve.y, LinAngle = 0.1, ToeStren = 0.2, ToeNum = 0.01 * HDRFilmCurve.z, ToeDenom = 0.3;
+		half4 compressedCol = ((c * (ShoStren * c + LinAngle*LinStren) + ToeStren*ToeNum) / (c * (ShoStren * c + LinStren) + ToeStren*ToeDenom)) - (ToeNum / ToeDenom);
+		oSample = saturate(compressedCol / compressedCol.w);
+#endif
+
+		// Apply gamma correction using exact sRGB curve
+		oSample = select((vSample < 0.0031308), 12.9200001F * vSample, 1.05499995F * pow(vSample, 1.F / 2.4000001F) - half3(0.0549999997F, 0.0549999997F, 0.0549999997F))
+	}
+
+	return (pixout)half4(oSample, 1.0f);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct fragInShadowFog
+{
+	#ifdef D3D10
+		float4 WPos	:	SV_POSITION;
+	#else
+		float4 WPos : VPOS;
+	#endif
+	float2 ScreenTC		:	TEXCOORD0;
+	
+	//TD - remove
+	//not used
+  float3 CamVec       : TEXCOORD1;
+	MSAA_SAMPLE_INDEX_PS
+};
+
+Texture2D fogShadowDepthTex : register(t0) = TS_ZTarget;
+Texture2D fogShadowInterleaveTex : register(t1) = "%ENGINE%/EngineAssets/Textures/FogVolShadowJitter.dds";
+Texture2D fogShadowRotTex : register(t2) = "%ENGINE%/EngineAssets/Textures/rotrandom.dds";
+Texture2D fogCloudShadowTex : register(t3) = TS_CloudShadow;
+Texture2D fogShadowMap0Tex : register(t4) = TS_Shadow0;
+Texture2D fogShadowMap1Tex : register(t5) = TS_Shadow2;
+Texture2D fogShadowMap2Tex : register(t6) = TS_Shadow4;
+Texture2D fogShadowMap3Tex : register(t7) = TS_Shadow6;
+Texture3D fogShadowVolCloudTex : register(t8) = TS_VolCloudShadow;
+
+SamplerComparisonState fogShadowLinearClampCompSS : register(s0) = SS_Shadow2;
+SamplerState fogShadowPointWrapSS : register(s1) = SS_PointWrap;
+SamplerState fogShadowPointClampSS : register(s2) = SS_PointClamp;
+SamplerState fogShadowBilinearWrapSS : register(s3) = SS_MaterialBilinearWrap;
+SamplerState fogShadowBilinearClampSS : register(s4) = SS_MaterialTrilinearBorder;
+
+float4x4 TexGen0;
+float4x4 TexGen1;
+float4x4 TexGen2;
+float4x4 TexGen3;
+
+float4 vInvShadowMapSize;
+float4 fDepthTestBias; // defines how hard depth test is (default is 100 - hard test)
+float4 fOneDivFarDist;
+float4 fKernelRadius;
+
+float4 CloudShadowParams;
+float4 CloudShadowAnimParams;
+
+float4 irreg_kernel_2d[HALF_MAX_SHADOW_SAMPLES_NUM];
+
+float4 volFogShadowRange;
+
+SShadowSamplingParams GetShadowSamplingParams()
+{
+    SShadowSamplingParams s;
+
+    s.TexGen0 = TexGen0;
+    s.TexGen1 = TexGen1;
+    s.TexGen2 = TexGen2;
+    s.TexGen3 = TexGen3;
+
+    s.vInvShadowMapSize = vInvShadowMapSize;
+    s.fDepthTestBias = fDepthTestBias; // defines how hard depth test is (default is 100 - hard test)
+    s.fOneDivFarDist = fOneDivFarDist;
+    s.fKernelRadius = fKernelRadius;
+
+    s.CloudShadowParams = CloudShadowParams;
+    s.CloudShadowAnimParams = CloudShadowAnimParams;
+
+    s.irreg_kernel_2d = irreg_kernel_2d;
+
+    return s;
+}
+
+float4 CalcHomogeneousPos(float2 WPos, float SceneDepth, float4x4 mScreenToShadow)
+{
+	float4 vWBasisScale = float4(WPos.x, WPos.y, 1, 1);
+	vWBasisScale.xyz *= SceneDepth;
+	float4 HPos = mul(mScreenToShadow, vWBasisScale);
+  return HPos;
+}
+
+float4 CalcShadowSpace(float4 HPos)
+{
+  float4 P0 = HPos;
+	P0.xy /= P0.w;
+	P0.z -= 0.0000001;//fDepthTestBias.x; 
+  return P0;
+}
+
+bool LinePlaneClip( float4 v0, float4 v1, float4 vPlane, inout float t0,  inout float t1)
+{
+	float dp0 = dot( v0, vPlane );
+	float dp1 = dot( v1, vPlane );
+	bool neg_dp0 = (dp0<0.0f);
+	bool neg_dp1 = (dp1<0.0f);
+
+	if (neg_dp0 && neg_dp1)
+		return false; // both vertices outside clip plane: discard
+
+	if (neg_dp1)
+	{
+		float t = dp1 / (dp1 - dp0);
+		if (t > t1) t1 = t;
+	}
+	else if (neg_dp0)
+	{
+		float t = dp0 / (dp0 - dp1);
+		if (t > t0) t0 = t;
+	}
+
+	if (t0 + t1 >= 1.0)
+		return false; // discard
+
+	return true;
+}
+
+bool ClipLine(float4 v0, float4 v1, inout float4 newvert0, inout float4 newvert1, float2 clipMin, float2 clipMax, inout float t0,  inout float t1)
+{
+	t0 = 0;
+	t1 = 0;
+
+	bool bVisGl = false;
+
+	bool bVis = false;
+	bVis = LinePlaneClip( v0, v1, float4(-1.0,  0,  0, clipMax.x), t0, t1 );
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 1.0,  0,  0, -clipMin.x), t0, t1 );
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0, -1.0,  0, clipMax.y), t0, t1 ); 
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0,  1.0,  0, -clipMin.y), t0, t1 );
+	if (!bVis)
+		return false;
+
+	bVis = LinePlaneClip( v0, v1, float4( 0,  0, -1.0, 1), t0, t1 );
+	if (!bVis)
+		return false;
+	//Z pl
+	bVis = LinePlaneClip( v0, v1, float4( 0,  0,  1.0, 1), t0, t1 );
+	if (!bVis)
+		return false;
+
+	newvert0 = lerp(v0, v1, t0);
+	newvert1 = lerp(v1, v0, t1);
+
+	return true;
+}
+
+bool ClipLine(float4 v0, float4 v1, inout float4 newvert0, inout float4 newvert1, inout float t0,  inout float t1 ) //
+{
+	t0 = 0;
+	t1 = 0;
+
+	bool bVis = false;
+	bVis = LinePlaneClip( v0, v1, float4(-1,  0,  0, 1), t0, t1 ); //CLIP_RIGHT_BIT
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 1,  0,  0, 1), t0, t1 ); //CLIP_LEFT_BIT
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0, -1,  0, 1), t0, t1 ); //CLIP_TOP_BIT
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0,  1,  0, 1), t0, t1 ); //CLIP_BOTTOM_BIT
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0,  0, -1, 1), t0, t1 ); //CLIP_FAR_BIT
+	if (!bVis)
+		return false;
+	bVis = LinePlaneClip( v0, v1, float4( 0,  0,  1, 1), t0, t1 ); //CLIP_NEAR_BIT
+	if (!bVis)
+		return false;
+
+	//interpolation
+	newvert0 = lerp(v0, v1, t0);
+	//INTERP_4F( t0, coord[newvert], coord[v0], coord[v1] );
+
+	//USE t1 !!!
+	newvert1 = lerp(v1, v0, t1);
+	//INTERP_4F( t1, coord[newvert], coord[v1], coord[v0_orig] );
+
+	return true;
+}
+
+#define CLIP_OFFSET 0.00001f
+float SingleGSMShadowedFog(Texture2D depthMap, SamplerComparisonState comparisonSampler, float4x4 mTexGen, float2 WPos, inout float StartDepth, float EndDepth, float RayStep)
+{
+	float2 clipMin = float2(CLIP_OFFSET, CLIP_OFFSET);
+	float2 clipMax = float2(1.0f-CLIP_OFFSET,1.0f-CLIP_OFFSET);
+
+	//TD some temp variables can be shared for CalcHomogeneousPos math
+	float4 P0 = 0.0f;
+	float4 P1 = 0.0f;
+	P0 = CalcHomogeneousPos(WPos.xy, StartDepth, mTexGen);
+	P0 = CalcShadowSpace(P0);
+
+	P1 = CalcHomogeneousPos(WPos.xy, EndDepth, mTexGen);
+	P1 = CalcShadowSpace(P1);
+
+	float4 clP0, clP1;
+	float t0, t1;
+	bool bVis = ClipLine(P0, P1, clP0, clP1, clipMin, clipMax, t0, t1);
+
+	float StartDepthNew = StartDepth;//lerp(StartDepth, EndDepth, t0); //don't clip start position
+	float EndDepthFr = lerp(EndDepth, StartDepth, t1);
+
+	float curLen = (EndDepthFr - StartDepthNew);
+
+	float3 rayDir = (clP1.xyz-P0.xyz); //clP0.xyz //don't clip start position
+	float fFogShadow = 0.0f;
+	float SamplNum = 0.0f;
+
+	float3 rayDirStep = (RayStep/curLen) * rayDir;
+
+	float3 rayCur = P0.xyz;
+
+	float curDepth = StartDepthNew;
+	float fSample = 0;
+	[loop]
+	for (; curDepth<=EndDepthFr; curDepth+=RayStep)
+	{
+		shadow_sample(depthMap, comparisonSampler, rayCur, fSample);
+
+		fFogShadow += fSample;
+
+		rayCur += rayDirStep;
+		SamplNum += 1.0f;
+	}
+
+	float fShadow = 0.0f;
+	if (bVis)
+	{
+		fShadow = fFogShadow;
+		StartDepth = curDepth;
+	}
+	//StartDepth = curDepth;
+
+	return fShadow;
+
+}
+
+float2 MultiGSMShadowedFogPS(fragInShadowFog IN) : SV_Target
+{
+    SShadowSamplingParams ss = GetShadowSamplingParams();
+
+	//jitter
+	const float2 oj = fogShadowInterleaveTex.Sample(fogShadowPointWrapSS, IN.WPos.xy / 64.0f).xw;
+	const float offset = oj.x;
+	const float jitter = oj.y;
+
+	// Todo: bilateral upscale pass. Measure performance vs rendering shadows to multisampled target+sample freq passes
+	float SceneDepth = fogShadowDepthTex.SampleLevel(fogShadowPointWrapSS, IN.ScreenTC.xy, 0.0f);
+	SceneDepth = min( SceneDepth, volFogShadowRange.x );
+	//SceneDepth = min( SceneDepth, 0.3 );
+	//SceneDepth = max( SceneDepth, 0.000001 );
+	float StartDepth = 0.0000f;
+	//for bilateral upcale
+	const float refDepth = SceneDepth * volFogShadowRange.y;
+
+	const int numShadowSamples = 16;
+	const int numTotalShadowSamples = 8 * 8 * numShadowSamples;
+
+	StartDepth = SceneDepth * (((float)0 + offset) / (float)numShadowSamples + jitter / (float)numTotalShadowSamples);
+	SceneDepth = SceneDepth * (((float)numShadowSamples + offset) / (float)numShadowSamples + jitter / (float)numTotalShadowSamples);
+
+	float RayStep = (SceneDepth - StartDepth) / numShadowSamples;
+
+	float sampleCount = 0.0;
+	float fogOccl = 0.0;
+    float fFogGsm = SingleGSMShadowedFog(fogShadowMap0Tex, fogShadowLinearClampCompSS, ss.TexGen0, IN.WPos.xy, StartDepth, SceneDepth, RayStep); //updates StartDepth
+	fogOccl += fFogGsm;
+
+    const uint nCascadeMask = GetForwardShadowsCascadeMask(ss);
+
+	////		second cascade
+	if(nCascadeMask & FORWARD_SHADOWS_CASCADE_1)
+	{
+        fFogGsm = SingleGSMShadowedFog(fogShadowMap1Tex, fogShadowLinearClampCompSS, ss.TexGen1, IN.WPos.xy, StartDepth, SceneDepth, RayStep); //updates StartDepth
+		fogOccl += fFogGsm;
+	}
+
+	//////		3d cascade
+	if(nCascadeMask & FORWARD_SHADOWS_CASCADE_2)
+	{
+        fFogGsm = SingleGSMShadowedFog(fogShadowMap2Tex, fogShadowLinearClampCompSS, ss.TexGen2, IN.WPos.xy, StartDepth, SceneDepth, RayStep); //updates StartDepth
+		fogOccl += fFogGsm;
+	}
+
+	//////		4th cascade
+	if(nCascadeMask & FORWARD_SHADOWS_CASCADE_3)
+	{
+        fFogGsm = SingleGSMShadowedFog(fogShadowMap3Tex, fogShadowLinearClampCompSS, ss.TexGen3, IN.WPos.xy, StartDepth, SceneDepth, RayStep); //updates StartDepth
+		fogOccl += fFogGsm;
+	}
+
+	for (float curDepth = StartDepth; curDepth<=SceneDepth; curDepth+=RayStep)
+	{
+		fogOccl += 1.0f;
+	}
+
+	fogOccl /= (numShadowSamples);
+
+	return float2(refDepth, fogOccl);
+	////////////////////////////////////////////////////////////////////////////////
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===================================================================================
+
+float2 FogPassVolShadowsInterleavePassPS(vert2fragFog IN) : SV_Target
+{
+	float2 sampleUV = MapViewportToRaster(IN.baseTC.xy);
+
+	const float sceneDepth = min(fogShadowDepthTex.SampleLevel(fogShadowPointWrapSS, sampleUV, 0.0f), volFogShadowRange.x);
+
+	const float2 oj = fogShadowInterleaveTex.Sample(fogShadowPointWrapSS, IN.WPos.xy / 64.0f).xw;
+	const float offset = oj.x;
+	const float jitter = oj.y;
+
+	const int numShadowSamples = 16;
+	const int numTotalShadowSamples = 8 * 8 * numShadowSamples;
+
+#if %_RT_SAMPLE4
+	const bool bSampleCloudShadows = false;
+#elif %_RT_SAMPLE5
+	const bool bSampleCloudShadows = true;
+#else
+	const bool bSampleCloudShadows = false;
+#endif
+
+	ShadowCascades cascades;
+	cascades.shadowMap0 = fogShadowMap0Tex;
+	cascades.shadowMap1 = fogShadowMap1Tex;
+	cascades.shadowMap2 = fogShadowMap2Tex;
+	cascades.shadowMap3 = fogShadowMap3Tex;
+	cascades.cloudShadowTex = fogCloudShadowTex;
+
+	ShadowSamplingContext shadowContext;
+	shadowContext.comparisonSampler = fogShadowLinearClampCompSS;
+	shadowContext.pointSamplerWrap = fogShadowPointWrapSS;
+	shadowContext.pointSamplerClamp = fogShadowPointClampSS;
+	shadowContext.bilinearSamplerWrap = fogShadowBilinearWrapSS;
+	shadowContext.noiseTex = fogShadowRotTex;
+	
+	const float3 cameraToWorldPos = ReconstructWorldPos(IN.WPos.xy, sceneDepth, true);
+
+	half shadowOccl = 0;
+	for (int i=0; i<numShadowSamples; i++)
+	{
+		const float ratio = (((float)i + offset) / (float)numShadowSamples + jitter / (float)numTotalShadowSamples);
+		const float4 worldPos = float4(ratio * cameraToWorldPos.xyz + vfViewPos.xyz, 1);
+        float shadowSample = ShadowDepthTest(GetShadowSamplingParams(), cascades, shadowContext, worldPos, bSampleCloudShadows, true).r;
+
+#if %_RT_SAMPLE4
+		shadowSample = min(shadowSample, GetVolumetricCloudShadow(fogShadowVolCloudTex, fogShadowBilinearClampSS, worldPos.xyz, CV_SunLightDir.xyz, CloudShadowParams, CloudShadowAnimParams));
+#endif
+
+		shadowOccl += shadowSample;
+	}
+
+	const float refDepth = sceneDepth * volFogShadowRange.y;
+	shadowOccl /= (float)numShadowSamples;
+
+	return float2(refDepth, shadowOccl);
+}
+
+float4 volFogShadowBufSampleOffsets[8];
+
+float VolFogShadowBilateralFilter(in Texture2D<float2> tex, in SamplerState pointClampSS, in const int numSamples, in const float2 baseTC, in const float refDepth, in const float similarity)
+{
+	float accumVal = 0.0;
+	float accumWeight = 0.0;
+
+	for(int i=0; i<numSamples; i++)
+	{
+		const float2 coord = baseTC.xy + volFogShadowBufSampleOffsets[i].xy;
+		const float2 sampleXYZW = tex.Sample(pointClampSS, coord).xy;
+
+		const float sampleVal = sampleXYZW.y;
+		const float sampleDepth = sampleXYZW.x;
+
+		const float s = exp2(abs(sampleDepth - refDepth) * -similarity);
+		accumVal += sampleVal * s;
+		accumWeight += s;
+	}
+
+	return accumVal / accumWeight;
+}
+
+Texture2D<float2> volFogShadowGatherTex : register(t0);
+SamplerState volFogPointSamplerState : register(s0);
+
+float2 FogPassVolShadowsGatherPassPS(vert2fragFog IN) : SV_Target
+{
+	float2 sampleUV = MapViewportToRaster(IN.baseTC.xy);
+
+	const float refDepth = volFogShadowGatherTex.Sample(volFogPointSamplerState, sampleUV + volFogShadowBufSampleOffsets[4].xy).x;
+	const float value = VolFogShadowBilateralFilter(volFogShadowGatherTex, volFogPointSamplerState, 8, sampleUV, refDepth, 50.0);
+
+	return float2(refDepth, value);
+}
+
+Texture2D<float2> volFogShadowTex : register(t1);
+
+float4 volFogShadowDarkening;
+float4 volFogShadowDarkeningSunAmb;
+
+void FogPassCommon(
+	in vert2fragFog IN,
+	in float4 WPos,
+	out float sceneDepth,
+	out float4 localFogColor,
+	out float3 worldPos,
+	out float3 cameraToWorldPos)
+{
+	float2 sampleUV = MapViewportToRaster(IN.baseTC.xy);
+
+	#if %_RT_MSAA_QUALITY || %_RT_MSAA_QUALITY1 
+			uint uSample = 0;
+		#if %_RT_MSAA_SAMPLEFREQ_PASS
+			uSample = IN.uSample;
+		#endif
+		sceneDepth = GetLinearDepth(GetZTargetMS(sampleUV, GetMSAASampleNum(), uSample).x);
+	#else
+		sceneDepth = GetLinearDepth(zMap, sampleUV);
+	#endif
+
+	cameraToWorldPos = ReconstructWorldPos(WPos.xy, sceneDepth, true);
+	worldPos = cameraToWorldPos + vfViewPos.xyz;
+
+#if %_RT_SAMPLE0
+	const float refDepth = min(sceneDepth, volFogShadowRange.x) * volFogShadowRange.y;
+	const float volFogShadowContrib = VolFogShadowBilateralFilter(volFogShadowTex, volFogPointSamplerState, 5, sampleUV, refDepth, 100.0);
+
+	const float2 volFogShadowContribSunAmb = saturate(volFogShadowContrib * volFogShadowDarkeningSunAmb.xz + volFogShadowDarkeningSunAmb.yw);
+	localFogColor = GetVolumetricFogColor(worldPos, cameraToWorldPos, volFogShadowContribSunAmb.x, volFogShadowContribSunAmb.y);
+	localFogColor.rgb = lerp(localFogColor.rgb * volFogShadowDarkening.x, localFogColor.rgb, volFogShadowContrib);
+#else
+	localFogColor = GetVolumetricFogColor(worldPos, cameraToWorldPos);
+#endif
+}
+
+float4 SVO_AirTextureScale;
+
+Texture2D FOG_smp_Air_RGBA_Min    : register(t12);
+Texture2D FOG_smp_Air_Depths      : register(t13);
+Texture2D FOG_smp_Air_RGBA_Max    : register(t14);
+SamplerState FOG_SStatePC         : register(s0);
+
+pixout GetSvoGiFog(vert2fragFog IN, pixout OUT)
+{
+	// Blend in SVO atmospheric effects (with upscale)
+	int nRange = 1;
+
+	float fDepthRange = 0.2f;
+	float fDepth0 = GetLinearDepth( zMap, IN.baseTC.xy );
+
+	float2 vSrcPixSize = 1.f/PS_ScreenSize.xy*SVO_AirTextureScale.xy;
+
+	float4 vAir = 0;
+	float fSumm = 0;
+	for(int x=-nRange; x<=nRange; x+=1) for(int y=-nRange; y<=nRange; y+=1)
+	{
+		float fLen = max(0, 1 + nRange - sqrt(x*x+y*y));
+
+		float2 tc1 = IN.baseTC.xy + float2(x,y)*vSrcPixSize;
+
+		{
+			float fDepth1 = GetTexture2D(FOG_smp_Air_Depths, FOG_SStatePC, tc1).r;
+			float fW = fLen*( abs(1.f-fDepth1/fDepth0) < fDepthRange ) + 0.001f;	
+			vAir += GetTexture2D(FOG_smp_Air_RGBA_Min, FOG_SStatePC, tc1)*fW;
+			fSumm += fW;
+		}
+
+		{
+			float fDepth1 = GetTexture2D(FOG_smp_Air_Depths, FOG_SStatePC, tc1).g;
+			float fW = fLen*( abs(1.f-fDepth1/fDepth0) < fDepthRange ) + 0.001f;	
+			vAir += GetTexture2D(FOG_smp_Air_RGBA_Max, FOG_SStatePC, tc1)*fW;
+			fSumm += fW;
+		}
+
+	}
+	vAir /= fSumm;
+
+	OUT.Color = vAir * vAir.a;
+	OUT.Color.a = vAir.a;
+
+	OUT.Color.a = saturate(1.0f - OUT.Color.a);
+
+	return OUT;
+}
+
+Texture3D<float4> volFogSamplingTex : register(t1) = TS_VolumetricFog;
+TextureCube<float4> volFogGlobalEnvProbeTex0 : register(t2) = TS_VolumetricFogGlobalEnvProbe0;
+TextureCube<float4> volFogGlobalEnvProbeTex1 : register(t3) = TS_VolumetricFogGlobalEnvProbe1;
+SamplerState volFogTrilinearClampSState : register(s0) = SS_TrilinearClamp;
+
+float4 GetVolumetricFog(in vert2fragFog IN, in float4 WPos)
+{
+	float sceneDepth;
+
+	#if %_RT_MSAA_QUALITY || %_RT_MSAA_QUALITY1 
+			uint uSample = 0;
+		#if %_RT_MSAA_SAMPLEFREQ_PASS
+			uSample = IN.uSample;
+		#endif
+		sceneDepth = GetLinearDepth(GetZTargetMS(IN.baseTC.xy, GetMSAASampleNum(), uSample).x);
+	#else
+		sceneDepth = GetLinearDepth(zMap, IN.baseTC.xy);
+	#endif
+
+	float linearDepth = sceneDepth * PS_NearFarClipDist.y;
+	float3 cameraToWorldPos = ReconstructWorldPos(WPos.xy, sceneDepth, true);
+
+	VolumetricFogSampling vfs;
+	vfs.volumetricFogTex = volFogSamplingTex;
+	vfs.globalEnvProbeTex0 = volFogGlobalEnvProbeTex0;
+	vfs.globalEnvProbeTex1 = volFogGlobalEnvProbeTex1;
+	vfs.trilinearClampSState = volFogTrilinearClampSState;
+
+	// blend volumetric fog with global fog.
+	float len = length(cameraToWorldPos);
+	VolumetricFogTexcoord vtc = GetVolumetricFogTexcoordParamByScreenTexcoordAndDepth(IN.baseTC.xy, linearDepth, false, len);
+	float4 vf = GetVolumetricFogValueJittered(vfs, vtc);
+	float4 localFogColor = GetVolumetricFogAnalyticalColor(vfs, cameraToWorldPos, len);
+	localFogColor = BlendVolumetricFogWithGlobalFog(vf, localFogColor, vtc);
+	localFogColor = ClampFinalFogDensity(localFogColor);
+
+	return localFogColor;
+}
+
+pixout FogPassPS(vert2fragFog IN)
+{
+	pixout OUT;
+
+#if FEATURE_SVO_GI
+#if %_RT_SAMPLE2
+	return GetSvoGiFog(IN, OUT);
+#endif
+#endif
+
+#if %_RT_DEBUG0 && %_RT_DEBUG1 && %_RT_DEBUG2 && %_RT_DEBUG3
+    OUT.Color = NumInstructions;
+    return OUT;
+#endif
+
+	float4 localFogColor;
+
+#if %_RT_VOLUMETRIC_FOG
+	localFogColor = GetVolumetricFog(IN, IN.WPos);
+
+	localFogColor.a = saturate(localFogColor.a);
+#else
+	float sceneDepth;
+	float3 worldPos, cameraToWorldPos;
+
+	FogPassCommon(IN, IN.WPos, sceneDepth, localFogColor, worldPos, cameraToWorldPos);
+
+	localFogColor.a = saturate(1.0 - localFogColor.a);
+
+	// Premultiply alpha
+	localFogColor.xyz *= localFogColor.a;
+
+	localFogColor.a = saturate(1.0 - localFogColor.a);
+#endif
+
+	HDROutput(OUT, localFogColor, 1);
+
+	return OUT;
+}
+
+float4 LightningPos;
+float4 LightningColSize;
+
+pixout FogPassWithLightningPS(vert2fragFog IN)
+{
+  pixout OUT;
+
+#if %_RT_DEBUG0 && %_RT_DEBUG1 && %_RT_DEBUG2 && %_RT_DEBUG3
+    OUT.Color = NumInstructions;
+    return OUT;
+#endif
+
+	half sceneDepth;
+	half3 cameraToWorldPos;
+
+	sceneDepth = GetLinearDepth(zMap, IN.baseTC.xy);
+
+	cameraToWorldPos = ReconstructWorldPos(IN.WPos.xy, sceneDepth, true);
+
+
+	/////////////////////////////////////////////////////////////
+	// lightning computation... 
+
+	float atten = LightningColSize.w;	
+	float3 c = atten * ( LightningPos.xyz - vfViewPos.xyz );
+	float3 d = atten * cameraToWorldPos;
+
+	float u = dot( c, c ) + 1;
+	float v = -2 * dot( c, d );
+	float w =  dot( d, d );
+	float div = rsqrt( 4 * u * w - v * v );	
+	//float lightning = sqrt( w ) * 2 * ( atan( ( v + 2 * w ) * div ) - atan( v * div ) ) * div; 
+	float2 atan_res = atan( float2( v + 2 * w, v ) * div );
+	float lightning = sqrt( w ) * 2 * ( atan_res.x - atan_res.y ) * div; 
+
+  /////////////////////////////////////////////////////////////
+
+  OUT.Color = half4(LightningColSize.xyz * lightning, 1);
+
+  return OUT;
+}
+
+//=======================================================
+// HDR post-processing techniques
+
+technique HDRSampleLumInitial
+{
+  pass p0
+  {
+    VertexShader = FullscreenTriVS() HDRPostProcessVS;
+    PixelShader = HDRSampleLumInitialPS() HDRPostProcessPS;
+  }
+}
+
+technique HDRSampleLumIterative
+{
+  pass p0
+  {
+    VertexShader = FullscreenTriVS() HDRPostProcessVS;
+    PixelShader = HDRSampleLumIterativePS() HDRPostProcessPS;
+  }
+}
+
+technique HDRCalculateAdaptedLum
+{
+  pass p0
+  {
+    VertexShader = FullscreenTriVS() HDRPostProcessVS;
+    PixelShader = HDRCalculateAdaptedLumPS() HDRPostProcessPS;
+  }
+}
+
+technique HDRBloomGaussian
+{
+  pass p0
+  {
+    VertexShader = FullscreenTriVS() HDRPostProcessVS;
+    PixelShader = HDRBloomGaussianPS() HDRPostProcessPS;
+  }
+}
+
+technique HDRFinalPass
+{
+  pass p0
+  {
+    VertexShader = TransformedVS() HDRPostProcessVS;
+    PixelShader = HDRFinalScenePS() HDRPostProcessPS;
+  }
+}
+
+technique HDRFinalDebugPass
+{
+  pass p0
+  {
+		VertexShader = TransformedVS() HDRPostProcessVS;
+		PixelShader = HDRFinalSceneDebugPS() HDRPostProcessPS;
+  }
+}
+
+technique HDRFinalPassFixedExposure
+{
+  pass p0
+  {
+    VertexShader = TransformedVS() HDRPostProcessVS;
+    PixelShader = HDRFinalSceneFixedExposurePS() HDRPostProcessPS;
+  }
+}
+
+//======================================================================
+
+technique MultiGSMShadowedFog
+{
+  pass p0
+  {
+    VertexShader = PreTransformedFogVS() FogPostProcessVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = MultiGSMShadowedFogPS() FogPassVolShadowsInterleavePassPS;
+  }
+}
+
+technique FogPass
+{
+  pass p0
+  {
+    VertexShader = PreTransformedFogVS() FogPostProcessVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = FogPassPS() FogPostProcessPS;
+  }
+}
+
+technique FogPassWithLightning
+{
+  pass p0
+  {    
+    VertexShader = PreTransformedFogVS() FogPostProcessVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = FogPassWithLightningPS() FogPostProcessPS;
+  }
+}
+
+technique FogPassVolShadowsInterleavePass
+{
+  pass p0
+  {
+    VertexShader = PreTransformedFogVS() FogPostProcessVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = FogPassVolShadowsInterleavePassPS() FogPassVolShadowsInterleavePassPS;
+  }
+}
+
+technique FogPassVolShadowsGatherPass
+{
+  pass p0
+  {
+    VertexShader = PreTransformedFogVS() FogPostProcessVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = FogPassVolShadowsGatherPassPS() FogPassVolShadowsGatherPass;
+  }
+}

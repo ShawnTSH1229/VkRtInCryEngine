@@ -1,0 +1,12 @@
+<AssetMetadata version="0" type="Material" guid="284499cd-317b-8e50-912d-d0e9d1cd143c">
+ <Files>
+  <File path="waves.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">1</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./wave1.dds</Path>
+ </Dependencies>
+</AssetMetadata>

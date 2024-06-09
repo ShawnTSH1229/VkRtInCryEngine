@@ -1,0 +1,12 @@
+<AssetMetadata version="0" type="Material" guid="60ad8819-358d-6ccf-be80-562ae0047f1c" timestamp="1633611397">
+ <Files>
+  <File path="sky1.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">1</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./skyhdr.dds</Path>
+ </Dependencies>
+</AssetMetadata>

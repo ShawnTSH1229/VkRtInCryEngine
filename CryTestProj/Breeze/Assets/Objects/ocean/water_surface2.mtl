@@ -1,0 +1,11 @@
+<Material MtlFlags="524288" Shader="Illum" GenMask="80000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="" MatTemplate="" Diffuse="1,1,1" Specular="0.21176471,0.21176471,0.21176471" Opacity="1" Shininess="255" CloakAmount="0" vertModifType="2" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="./water.dds">
+   <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0" TexMod_UOscillatorRate="0.0099999998" TexMod_UOscillatorAmplitude="0.0099999998"/>
+  </Texture>
+ </Textures>
+ <VertexDeform Type="2" DividerX="0.0099999998" DividerY="0.0099999998" NoiseScale="1,1,1">
+  <WaveX Type="1" Amp="0.029999999" Level="0" Phase="0" Freq="0.2"/>
+ </VertexDeform>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="8941cc06-fc98-3f8c-29d0-8f35cbfbac74" source="grass2_2.fbx">
+ <Files>
+  <File path="grass2_2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">69</Detail>
+  <Detail name="vertexCount">141</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./ground1.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

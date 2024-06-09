@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="961dddee-52ac-700d-84c1-3169411aa373" source="zdm2.fbx">
+ <Files>
+  <File path="zdm2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">58770</Detail>
+  <Detail name="vertexCount">89963</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./zdm2.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

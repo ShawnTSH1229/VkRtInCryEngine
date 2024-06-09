@@ -1,0 +1,46 @@
+// Copyright 2009-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+#include "vertexLib.cfi"
+
+float Script : STANDARDSGLOBAL
+<
+  string Script =        
+				"Public;"
+				"ShaderType = General;"
+				"ShaderDrawType = General;"
+				"AfterHDRPostProcess;"
+				"ForceDrawLast;"
+>;
+
+vert2FragGeneral ReferenceImageVS(app2vertGeneral IN)
+{
+  vert2FragGeneral OUT = (vert2FragGeneral) 0;
+
+	streamPos vertPassPos = (streamPos)0;
+  vs_shared_output(IN, OUT, vertPassPos, false);
+  
+  return OUT;
+}
+
+float4 ReferenceImagePS(in vert2FragGeneral IN) : SV_Target0
+{ 
+  float4 cColor = GetDiffuseTex(diffuseTex, IN.baseTC);
+
+	cColor.xyz = select((cColor.xyz < 0.0031308), 12.9200001F * cColor.xyz, 1.05499995F * pow(cColor.xyz, 1.F / 2.4000001F) - half3(0.0549999997F, 0.0549999997F, 0.0549999997F));
+
+  cColor.w *= MatDifColor.w;
+
+	return cColor;
+}
+
+technique General
+{
+  pass p0
+  {     
+    VertexShader = ReferenceImageVS();
+    PixelShader = ReferenceImagePS();
+  }
+}
+

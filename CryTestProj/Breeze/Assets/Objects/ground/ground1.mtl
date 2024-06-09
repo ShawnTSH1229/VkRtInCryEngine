@@ -1,0 +1,7 @@
+<Material MtlFlags="524288" Shader="Vegetation" GenMask="2400C01000" StringGenMask="%DETAIL_BENDING%LEAVES%NORMAL_MAP%TEMP_VEGETATION%VERTCOLORS" SurfaceType="" MatTemplate="" Diffuse="0.71764708,0.73333335,0.66666669" Specular="0.074509807,0.074509807,0.074509807" Opacity="1" Shininess="147.93709" AlphaTest="0.37060747" CloakAmount="0" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="./grass1.dds"/>
+  <Texture Map="Bumpmap" File="./grass1_ddn.dds"/>
+ </Textures>
+ <PublicParams bendDetailLeafAmplitude="0.2" bendDetailFrequency="0.30000001" bendDetailBranchAmplitude="-0.5" BlendTerrainCol="0" VertexAlphaBlendFactor="1" NormalViewDependency="0.5" TransmittanceColor="0.94117647,0.86274511,0.41176471" CapOpacityFalloff="1" BackDiffuseMultiplier="1" BlendTerrainColDist="0.69999999"/>
+</Material>

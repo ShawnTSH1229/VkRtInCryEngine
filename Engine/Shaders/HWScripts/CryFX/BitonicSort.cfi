@@ -1,0 +1,12 @@
+// Copyright 2015-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#define BITONIC_BLOCK_SIZE 1024
+#define TRANSPOSE_BLOCK_SIZE 32
+
+
+struct BitonicSortItem 
+{
+	uint key;
+	uint payload;
+};
+

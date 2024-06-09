@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="8d05d76b-28ad-9415-db85-6ead5e43250e">
+ <Files>
+  <File path="bush.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./bush.dds</Path>
+  <Path usageCount="1">./bush_ddn.dds</Path>
+  <Path usageCount="1">./bush_displ.dds</Path>
+ </Dependencies>
+</AssetMetadata>

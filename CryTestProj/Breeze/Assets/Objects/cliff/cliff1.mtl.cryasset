@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="b34abb71-9989-da75-2cd7-9e594b0da63a">
+ <Files>
+  <File path="cliff1.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">2</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./rock2.dds</Path>
+  <Path usageCount="1">./rock2_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

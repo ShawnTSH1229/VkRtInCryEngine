@@ -1,0 +1,72 @@
+set(FMOD_DIR "${SDK_DIR}/Audio/fmod")
+
+if(WINDOWS)
+	add_library(fmod SHARED IMPORTED GLOBAL)
+	set(FMOD_DLL "${FMOD_DIR}/windows/api/core/lib/x64/fmod.dll")
+	set_target_properties(fmod PROPERTIES IMPORTED_LOCATION "${FMOD_DLL}")
+	set_target_properties(fmod PROPERTIES IMPORTED_IMPLIB "${FMOD_DIR}/windows/api/core/lib/x64/fmod_vc.lib")
+	set_target_properties(fmod PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/windows/api/core/inc")
+
+	add_library(fmodstudio SHARED IMPORTED GLOBAL)
+	set(FMODSTUDIO_DLL "${FMOD_DIR}/windows/api/studio/lib/x64/fmodstudio.dll")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_LOCATION "${FMODSTUDIO_DLL}")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_IMPLIB "${FMOD_DIR}/windows/api/studio/lib/x64/fmodstudio_vc.lib")
+	set_target_properties(fmodstudio PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/windows/api/studio/inc")
+
+elseif(DURANGO)
+	add_library(fmod SHARED IMPORTED GLOBAL)
+	set(FMOD_DLL "${FMOD_DIR}/xboxone/api/core/lib/fmod.dll")
+	set_target_properties(fmod PROPERTIES IMPORTED_LOCATION "${FMOD_DLL}")
+	set_target_properties(fmod PROPERTIES IMPORTED_IMPLIB "${FMOD_DIR}/xboxone/api/core/lib/fmod_vc.lib")
+	set_target_properties(fmod PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/xboxone/api/core/inc")
+
+	add_library(fmodstudio SHARED IMPORTED GLOBAL)
+	set(FMODSTUDIO_DLL "${FMOD_DIR}/xboxone/api/studio/lib/fmodstudio.dll")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_LOCATION "${FMODSTUDIO_DLL}")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_IMPLIB "${FMOD_DIR}/xboxone/api/studio/lib/fmodstudio_vc.lib")
+	set_target_properties(fmodstudio PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/xboxone/api/studio/inc")
+
+elseif(ORBIS)
+	add_library(fmod INTERFACE IMPORTED GLOBAL)
+	set(FMOD_DLL "${FMOD_DIR}/ps4/api/core/lib/libfmod.prx")
+	target_link_libraries(fmod INTERFACE "${FMOD_DIR}/ps4/api/core/lib/libfmod_stub_weak.a")
+	set_target_properties(fmod PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/ps4/api/core/inc")
+
+	add_library(fmodstudio INTERFACE IMPORTED GLOBAL)
+	set(FMODSTUDIO_DLL "${FMOD_DIR}/ps4/api/studio/lib/libfmodstudio.prx")
+	target_link_libraries(fmodstudio INTERFACE "${FMOD_DIR}/ps4/api/studio/lib/libfmodstudio_stub_weak.a")
+	set_target_properties(fmodstudio PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/ps4/api/studio/inc")
+
+elseif(LINUX)
+	add_library(fmod SHARED IMPORTED GLOBAL)
+	set(FMOD_DLL "${FMOD_DIR}/linux/api/core/lib/x86_64/libfmod.so")
+	set_target_properties(fmod PROPERTIES IMPORTED_LOCATION "${FMOD_DLL}")
+	set_target_properties(fmod PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/linux/api/core/inc")
+
+	add_library(fmodstudio SHARED IMPORTED GLOBAL)
+	set(FMODSTUDIO_DLL "${FMOD_DIR}/linux/api/studio/lib/x86_64/libfmodstudio.so")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_LOCATION "${FMODSTUDIO_DLL}")
+	set_target_properties(fmodstudio PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/linux/api/studio/inc")
+
+elseif(ANDROID)
+	add_library(fmod SHARED IMPORTED GLOBAL)
+	set(FMOD_DLL "${FMOD_DIR}/android/api/core/lib/${CMAKE_ANDROID_ARCH_ABI}/libfmod.so")
+	set_target_properties(fmod PROPERTIES IMPORTED_LOCATION "${FMOD_DLL}")
+	set_target_properties(fmod PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/android/api/core/inc")
+
+	add_library(fmodstudio SHARED IMPORTED GLOBAL)
+	set(FMODSTUDIO_DLL "${FMOD_DIR}/android/api/studio/lib/${CMAKE_ANDROID_ARCH_ABI}/libfmodstudio.so")
+	set_target_properties(fmodstudio PROPERTIES IMPORTED_LOCATION "${FMODSTUDIO_DLL}")
+	set_target_properties(fmodstudio PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FMOD_DIR}/android/api/studio/inc")
+
+endif()
+
+if(AUDIO_FMOD AND (NOT OPTION_STATIC_LINKING OR ORBIS OR ANDROID))
+	if(FMOD_DLL)
+		deploy_runtime_files("${FMOD_DLL}")
+	endif()
+	
+	if(FMODSTUDIO_DLL)
+		deploy_runtime_files("${FMODSTUDIO_DLL}")
+	endif()
+endif()

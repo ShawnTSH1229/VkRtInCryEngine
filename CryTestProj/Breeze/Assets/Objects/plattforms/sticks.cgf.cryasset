@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="66ef73bc-8e92-ee33-cca2-25519fa5db53">
+ <Files>
+  <File path="sticks.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">1</Detail>
+  <Detail name="triangleCount">108</Detail>
+  <Detail name="vertexCount">168</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">Objects/plattforms/plattforms.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

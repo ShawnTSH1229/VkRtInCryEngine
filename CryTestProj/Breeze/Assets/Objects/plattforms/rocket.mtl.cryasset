@@ -1,0 +1,12 @@
+<AssetMetadata version="0" type="Material" guid="a9648494-bd82-5075-2bec-6f0cad5140f2" timestamp="1623423777">
+ <Files>
+  <File path="rocket.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">5</Detail>
+  <Detail name="textureCount">1</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="4">./white.dds</Path>
+ </Dependencies>
+</AssetMetadata>

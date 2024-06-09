@@ -1,0 +1,90 @@
+
+#define RAY_TRACING_MASK_OPAQUE				0x01
+#define RAY_TRACING_SHADER_SLOT_MATERIAL	0
+#define RAY_TRACING_SHADER_SLOT_SHADOW		1
+#define RAY_TRACING_NUM_SHADER_SLOTS		2
+
+cbuffer cbRayTracingParams : register(b0)
+{
+    struct
+    {
+        float4 lightdirection;
+    }rayTracingParams;
+};
+
+RaytracingAccelerationStructure             topLevelAS: register(t1); 
+Texture2D<float4>                           gBufferWorldPos: register(t2);
+
+RWTexture2D<float4>                         outputLightMap: register(u3); 
+
+struct SHitPayload
+{
+  bool bHit;
+};
+
+struct SRayTracingIntersectionAttributes
+{
+    float x;
+    float y;
+};
+
+[shader("raygeneration")] 
+void RayGenMain()
+{
+    const uint2 rayIndex = DispatchRaysIndex().xy;
+    float3 worldPosition = gBufferWorldPos[rayIndex].xyz;
+    if(all(abs(worldPosition)) < 0.01)
+    {
+        outputLightMap[rayIndex] = float4(0.0,0.0,1.0,0.0);
+        return;
+    }
+
+    RayDesc ray;
+	ray.Origin = worldPosition;
+	ray.Direction = rayTracingParams.lightdirection;
+	ray.TMin = 0.01f;
+	ray.TMax = 10000.0;
+
+    SHitPayload payload = (SHitPayload)0;
+    TraceRay(
+		topLevelAS,   // AccelerationStructure
+		RAY_FLAG_FORCE_OPAQUE,
+		RAY_TRACING_MASK_OPAQUE,
+		RAY_TRACING_SHADER_SLOT_MATERIAL, // RayContributionToHitGroupIndex
+		RAY_TRACING_NUM_SHADER_SLOTS,     // MultiplierForGeometryContributionToShaderIndex
+		1,      // MissShaderIndex
+		ray,    // RayDesc
+		payload // Payload
+	);
+
+    if(payload.bHit)
+    {
+        outputLightMap[rayIndex] = float4(0.0,1.0,0.0,0.0);
+    }
+    else
+    {
+        outputLightMap[rayIndex] = float4(1.0,0.0,0.0,0.0);
+    }
+}
+
+[shader("closesthit")] 
+void ClostHitMain(inout SHitPayload payload, in SRayTracingIntersectionAttributes attributes)
+{
+    payload.bHit = false;
+}
+
+[shader("miss")] 
+void RayMiassMain(inout SHitPayload payload)
+{
+	payload.bHit = true;
+}
+
+technique LightMapRayTracing
+{
+  pass p0
+  {
+    RayGenShaders = {RayGenMain()};
+    HitGroupShaders = {ClostHitMain()};
+    MissShaders = {RayMiassMain()};
+  }
+}

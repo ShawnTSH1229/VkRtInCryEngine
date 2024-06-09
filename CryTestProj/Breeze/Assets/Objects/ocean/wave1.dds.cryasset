@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="1858f660-6ec1-29a8-b2e7-d2b6474f6d8a" source="wave1.tif">
+ <Files>
+  <File path="wave1.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

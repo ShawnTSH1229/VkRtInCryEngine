@@ -1,0 +1,6 @@
+<download name="gi_test" type="Map">
+ <index src="filelist.xml" dest="filelist.xml"/>
+ <files>
+  <file src="level.pak" dest="level.pak" size="3972" md5="76628f860665af70e7ffe5a045102560"/>
+ </files>
+</download>

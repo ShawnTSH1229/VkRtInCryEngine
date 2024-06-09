@@ -1,0 +1,10 @@
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/Impl")
+	add_subdirectory(Impl)
+else()
+	CryInterfaceProject(CryScaleformInterface)
+	set(SF_INTERFACE_PROJECT ${THIS_PROJECT})
+
+	if (OPTION_SCALEFORM3)
+		target_compile_definitions(${SF_INTERFACE_PROJECT} INTERFACE -DCRY_FEATURE_SCALEFORM_HELPER)
+	endif()
+endif()

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="8823951b-b1e3-aa05-e27e-324f1319ac39">
+ <Files>
+  <File path="jumping_plattform.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">8</Detail>
+  <Detail name="triangleCount">2496</Detail>
+  <Detail name="vertexCount">1584</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./plattforms.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

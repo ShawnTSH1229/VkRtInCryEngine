@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="9a9eef4a-438c-2551-dcad-d5403722196d" source="rock_beach_l.fbx">
+ <Files>
+  <File path="rock_beach_l.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">3</Detail>
+  <Detail name="triangleCount">560</Detail>
+  <Detail name="vertexCount">353</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./rock_beach.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

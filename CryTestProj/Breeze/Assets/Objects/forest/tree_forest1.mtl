@@ -1,0 +1,22 @@
+<Material MtlFlags="524544" vertModifType="0">
+ <SubMaterials>
+  <Material Name="tree_forest" MtlFlags="524416" Shader="Vegetation" GenMask="2400800020" StringGenMask="%LEAVES%NORMAL_MAP%TEMP_VEGETATION%VERTCOLORS" SurfaceType="mat_canopy" MatTemplate="" Diffuse="0.80000001,0.80000001,0.80000001" Specular="0.046665091,0.046665091,0.046665091" Opacity="1" Shininess="90" AlphaTest="0.2" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./tree_forest_diff.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Bumpmap" File="./tree_forest_ddn.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Opacity" File="./tree_forest_sss.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams bendDetailLeafAmplitude="0.2" bendDetailFrequency="1" bendDetailBranchAmplitude="-0.5" VertexAlphaBlendFactor="1" NormalViewDependency="0.5" TransmittanceColor="1,1,0.60000002" CapOpacityFalloff="1" BackDiffuseMultiplier="1"/>
+  </Material>
+  <Material Name="proxy" MtlFlags="524416" Shader="Nodraw" GenMask="0" StringGenMask="" SurfaceType="mat_canopy" MatTemplate="" Diffuse="1,0,0" Specular="0,0,0" Opacity="1" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures />
+  </Material>
+ </SubMaterials>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

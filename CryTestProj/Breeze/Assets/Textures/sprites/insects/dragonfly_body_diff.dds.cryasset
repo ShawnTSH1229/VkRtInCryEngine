@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="d56d93f3-c05e-bfd6-f4b6-f0537df285d3" source="dragonfly_body_diff.tif">
+ <Files>
+  <File path="dragonfly_body_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">256</Detail>
+  <Detail name="height">128</Detail>
+  <Detail name="mipCount">6</Detail>
+ </Details>
+</AssetMetadata>

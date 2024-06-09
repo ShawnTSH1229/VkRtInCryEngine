@@ -1,0 +1,229 @@
+// Copyright 2009-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#include "Common.cfi"
+#include "shadelib.cfi"
+#include "PostEffectsLib.cfi"
+
+// Shader global descriptions
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "NoPreview;"
+           "LocalConstants;"
+           "ShaderDrawType = Custom;"
+           "ShaderType = PostProcess;"
+>; 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// OcclusionCheckQuad technique ///////////////////////////////////////////////////////////////////
+
+struct vtxOcclCheck
+{
+  float4 HPosition  : POSITION;
+};
+
+float4 OcclCheckParams;
+
+vtxOcclCheck OcclCheckVS(vtxInWPOS IN)
+{
+
+  vtxOcclCheck OUT = (vtxOcclCheck)0; 
+
+  float4 vPos = IN.Position;
+  vPos.y = 1 -vPos.y;
+  OUT.HPosition = float4(vPos.xy*2-1, vPos.z, 1.0);
+
+  return OUT;
+
+}
+
+pixout OcclCheckPS(vtxOcclCheck IN)
+{
+
+  pixout OUT = (pixout) 0;
+  OUT.Color = float4(1,0,0,1);
+  return OUT;
+
+}
+
+technique OcclCheckTechnique
+{
+  pass p0
+  {
+    VertexShader = OcclCheckVS();            
+    PixelShader = OcclCheckPS();
+    CullMode = None;        
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// For merged edgeAA + SunShafts technique ////////////////////////////////////////////////////////
+
+float4 texToTexParams0;
+float4 texToTexParams1;
+
+struct vtxOutAAOpt
+{
+  float4 HPosition : POSITION;
+  float2 baseTC    : TEXCOORD0;
+#if %_RT_SAMPLE4
+  float4 baseTC1   : TEXCOORD1;
+  float4 baseTC2   : TEXCOORD2;
+#endif
+};
+
+vtxOutAAOpt EdgeAAOptVS(uint VertexID : SV_VertexID)
+{
+  vtxOutAAOpt OUT = (vtxOutAAOpt)0; 
+  OUT.HPosition = GetHPos_FromTriVertexID(VertexID);
+  float2 baseTC = GetBaseTC_FromTriVertexID(VertexID);
+  OUT.baseTC = baseTC;
+
+#if %_RT_SAMPLE4
+	static const half3 vOffs = half3(0.h, -1.h, 1.h);
+	OUT.baseTC1 = baseTC.xyxy + vOffs.xyyx * g_VS_ScreenSize.zwzw * 2;
+	OUT.baseTC2 = baseTC.xyxy + vOffs.zxxz * g_VS_ScreenSize.zwzw * 2;
+#endif
+
+  return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// SunShafts technique //////////////////////////////////////////////////////////////////////////
+
+/// Constants ////////////////////////////
+
+float4x4 SunShafts_ViewProj;
+float4 SunShafts_SunPos;
+float4 SunShafts_SunCol;
+float4x4 mColorMatrix;
+float4 ScratchParams;
+
+cbuffer CBSunShafts : register(b0)
+{
+	struct
+	{
+		float4 sunPos;
+		float4 params;
+	} cbSunShafts;
+};
+
+struct vtxOutSunShaftsGen
+{
+  float4 HPosition  : SV_POSITION; 
+  float2 baseTC       : TEXCOORD0;
+};
+
+
+Texture2D<float4> SSHFTM_LDepth    : register(t0);
+Texture2D<float4> SSHFTM_Target    : register(t1);
+SamplerState  SSHFTM_PCSampler     : register(s0); //point clamp
+
+Texture2D<float4> SSHFTG_Target    : register(t0);
+SamplerState  SSHFTG_LCSampler     : register(s0); //linear clamp
+
+/// Samplers ////////////////////////////
+
+vtxOutSunShaftsGen SunShaftsGenVS(uint VertexID : SV_VertexID)
+{
+  vtxOutSunShaftsGen OUT = (vtxOutSunShaftsGen)0; 
+  OUT.HPosition = GetHPos_FromTriVertexID(VertexID);
+  OUT.baseTC.xy = GetBaseTC_FromTriVertexID(VertexID);
+  return OUT;
+}
+
+///////////////// pixel shader //////////////////
+pixout SunShaftsMaskGenPS(vtxOut IN)
+{
+    pixout OUT = (pixout) 0;
+
+    half sceneDepth = GetLinearDepth(SSHFTM_LDepth, int2(IN.WPos.xy));
+    OUT.Color = half4(sceneDepth, sceneDepth, sceneDepth, 1 - sceneDepth.x);
+    
+    float2 sampleUV = MapViewportToRaster(IN.baseTC.xy);
+    half3 sceneCol = GetTexture2D(SSHFTM_Target, SSHFTM_PCSampler, sampleUV); // comes straight from hdr scaled target
+	
+    // cheaper and looks nicer
+    OUT.Color.xyz *= dot(sceneCol, 0.33 * 4);
+
+    return OUT;
+}
+
+pixout SunShaftsGenPS(vtxOutSunShaftsGen IN)
+{
+  pixout OUT;
+
+  float2 sunPosProj = cbSunShafts.sunPos.xy;
+
+	float fSign = cbSunShafts.sunPos.w;
+  
+  float2 sunVec = ( GetScaledScreenTC(sunPosProj.xy) - IN.baseTC.xy)/CV_HPosScale.xy;
+  
+  float fAspectRatio =  1.333 * (CV_ScreenSize.y*CV_HPosScale.x) /(CV_ScreenSize.x*CV_HPosScale.y);
+  
+  float sunDist = saturate(fSign) * saturate( 1 - saturate(length(sunVec * float2(1, fAspectRatio))*cbSunShafts.params.y));// * 
+                            //saturate(saturate(fSign)*0.6+0.4  ) );
+                            // *(1.0 - 0.2*(1- sin(AnimGenParams) ) pass variation per constant
+  float2 sunDir =  ( GetScaledScreenTC(sunPosProj.xy) - IN.baseTC.xy);
+   
+  half4 accum = 0; 
+  sunDir.xy *= cbSunShafts.params.x * (fSign);
+  
+  half4 depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy) );      
+  accum += depth;
+
+  depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 1.0));      
+  accum += depth * (1.0-1.0/8.0);
+
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 2.0));      
+  accum += depth * (1.0-2.0/8.0);
+  
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 3.0));      
+  accum += depth * (1.0-3.0/8.0);
+  
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 4.0));      
+  accum += depth * (1.0-4.0/8.0);
+  
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 5.0));      
+  accum += depth * (1.0-5.0/8.0);
+  
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 6.0));      
+  accum += depth * (1.0-6.0/8.0);
+
+	depth = GetTexture2D(SSHFTG_Target, SSHFTG_LCSampler, MapViewportToRaster(IN.baseTC.xy + sunDir.xy * 7.0));      
+  accum += depth * (1.0-7.0/8.0);
+
+  accum /= 8.0;
+
+  OUT.Color = accum * 2  * float4(sunDist.xxx, 1);
+  OUT.Color.w += 1.0 - saturate( saturate( fSign * 0.1 + 0.9 ) );
+
+    
+  return OUT;
+}
+
+
+////////////////// technique /////////////////////
+
+technique SunShaftsMaskGen
+{
+  pass p0
+  {
+    VertexShader = BaseVS() PostSunShaftsVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = SunShaftsMaskGenPS() PostSunShaftsPS;  
+    CullMode = None;        
+  }
+}
+
+technique SunShaftsGen
+{
+  pass p0
+  {
+    VertexShader = SunShaftsGenVS() PostSunShaftsVS;
+    GeometryShader = $AutoGS_MultiRes();
+    PixelShader = SunShaftsGenPS() PostSunShaftsPS;    
+    CullMode = None;        
+  }
+}
+/////////////////////// eof ///

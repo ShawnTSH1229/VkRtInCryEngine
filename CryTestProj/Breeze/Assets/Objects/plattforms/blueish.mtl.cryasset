@@ -1,0 +1,12 @@
+<AssetMetadata version="0" type="Material" guid="9d9d7680-037e-6b96-04d9-56e170953137" source="" timestamp="1597656355">
+ <Files>
+  <File path="blueish.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">1</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">%engine%/engineassets/texturemsg/color_White.dds</Path>
+ </Dependencies>
+</AssetMetadata>

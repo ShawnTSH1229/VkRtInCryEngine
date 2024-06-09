@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="7ff8f3f3-a957-c4a9-a463-6fa95ed5cb57" source="cliff1.fbx">
+ <Files>
+  <File path="cliff1.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">3</Detail>
+  <Detail name="triangleCount">1308</Detail>
+  <Detail name="vertexCount">715</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./cliff1.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

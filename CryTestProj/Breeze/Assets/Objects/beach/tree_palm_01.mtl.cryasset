@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="8637f394-97c0-fafb-e8f9-d6c299ad515f">
+ <Files>
+  <File path="tree_palm_01.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">2</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./tree_palm1.dds</Path>
+  <Path usageCount="1">./tree_palm1_ddn.dds</Path>
+  <Path usageCount="1">./tree_palm1_sss.dds</Path>
+ </Dependencies>
+</AssetMetadata>

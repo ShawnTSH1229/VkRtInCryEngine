@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="8f0d1df0-da08-4fea-f8d2-9e76e7803cfd" source="tree_palm1_ddn.tif">
+ <Files>
+  <File path="tree_palm1_ddn.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">2048</Detail>
+  <Detail name="height">2048</Detail>
+  <Detail name="mipCount">10</Detail>
+ </Details>
+</AssetMetadata>

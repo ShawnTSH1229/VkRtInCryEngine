@@ -1,0 +1,8 @@
+<Material MtlFlags="524288" Shader="Illum" GenMask="80000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="" MatTemplate="" Diffuse="1,1,1" Specular="0.046662088,0.046662088,0.046662088" Opacity="1" Shininess="255" AlphaTest="0.54316545" CloakAmount="0" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="./wave1.dds">
+   <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0" TexMod_VOscillatorType="2" TexMod_VOscillatorRate="1" TexMod_VOscillatorAmplitude="0.15000001"/>
+  </Texture>
+ </Textures>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

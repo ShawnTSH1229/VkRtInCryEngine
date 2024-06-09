@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="d272398e-76d0-7404-07a3-f633c2a92ae9" source="soil_displ.tif">
+ <Files>
+  <File path="soil_displ.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

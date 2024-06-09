@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="c81147b7-0d9f-a1be-0753-c8f8ce74d30a" source="glow_a_alpha.tif">
+ <Files>
+  <File path="glow_a_alpha.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">256</Detail>
+  <Detail name="height">256</Detail>
+  <Detail name="mipCount">7</Detail>
+ </Details>
+</AssetMetadata>

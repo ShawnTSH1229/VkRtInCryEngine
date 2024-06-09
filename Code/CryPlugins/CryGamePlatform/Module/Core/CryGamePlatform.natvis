@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Cry::GamePlatform::Identifier&lt;*&gt;">
+    <DisplayString Condition="strcmp(&quot;$T1&quot;, &quot;Cry::GamePlatform::Detail::SAccountTraits&quot;) == 0">~ AccountIdentifier</DisplayString>
+    <DisplayString Condition="strcmp(&quot;$T1&quot;, &quot;Cry::GamePlatform::Detail::SLobbyTraits&quot;) == 0">~ LobbyIdentifier</DisplayString>
+    <DisplayString Condition="strcmp(&quot;$T1&quot;, &quot;Cry::GamePlatform::Detail::SApplicationTraits&quot;) == 0">~ ApplicationIdentifier</DisplayString>
+    <DisplayString Condition="strcmp(&quot;$T1&quot;, &quot;Cry::GamePlatform::Detail::SInventoryItemTraits&quot;) == 0">~ InventoryItemIdentifier</DisplayString>
+    <DisplayString Condition="strcmp(&quot;$T1&quot;, &quot;Cry::GamePlatform::Detail::STransactionTraits&quot;) == 0">~ TransactionIdentifier</DisplayString>
+    <DisplayString>~ GamePlatform Identifier</DisplayString>
+    <Expand>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x0 &amp;&amp; m_svcId.lopart == 0x0">"Null"</Item>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x42e599854dfcdce3 &amp;&amp; m_svcId.lopart == 0x8fdc49d8645a02a7">"Steam"</Item>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x4be9464ff7729e26 &amp;&amp; m_svcId.lopart == 0xe1ea032cc7068ea5">"PSN"</Item>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x4c0caa88d68238fe &amp;&amp; m_svcId.lopart == 0x370fae48a8569c9e">"Discord"</Item>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x4765e363b536b2ae &amp;&amp; m_svcId.lopart == 0x9c6e351c027b158e">"Rail"</Item>
+      <Item Name="[Service]" Condition="m_svcId.hipart == 0x419f8843be28931b &amp;&amp; m_svcId.lopart == 0xbaafeaf367c1e4bd">"Xbox"</Item>
+      <Item Name="[ID]" Condition="m_value.m_index == 0">(*(Cry::GamePlatform::Detail::StringIdentifierValue*)m_value.m_data.c).m_str, s</Item>
+      <Item Name="[ID]" Condition="m_value.m_index == 1">*(Cry::GamePlatform::Detail::NumericIdentifierValue*)m_value.m_data.c</Item>
+    </Expand>
+  </Type>
+</AutoVisualizer>

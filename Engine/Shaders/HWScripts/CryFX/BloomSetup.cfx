@@ -1,0 +1,345 @@
+//TanGram: TiledBloom:BloomSetup
+
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+
+#define GROUP_SIZE_X    8
+#define GROUP_SIZE_Y    8
+
+#define GROUP_TILE_SIZE 8
+
+RWTexture2D<float4> 	BloomOuputUAV 	: register(u0);
+RWBuffer<uint> 			BloomMaskOutUAV : register(u1);
+
+Texture2D<float4> 		Tx2Tx_Source  	: register(t0); 
+SamplerState 			Tx2Tx_Sampler	: register(s0);
+
+cbuffer BloomCB : register(b0)
+{
+	struct
+	{
+		float4 TexSize;
+		int4 BufferSize;
+	} bloomCB;
+};
+
+groupshared uint MaskInfo[GROUP_SIZE_X*GROUP_SIZE_Y*1];
+
+[numthreads(GROUP_SIZE_X, GROUP_SIZE_Y, 1)]
+void BloomSetupCS(
+    uint3 GroupID : SV_GroupID,
+    uint3 GroupThreadID : SV_GroupThreadID,
+	uint GroupThreadIndex : SV_GroupIndex,
+    uint3 DispatchThreadID : SV_DispatchThreadID
+	)
+{
+	const float4 TexSize = bloomCB.TexSize.xyzw;
+
+    const uint2 pixelCoord = GroupID.xy * uint2(GROUP_SIZE_X, GROUP_SIZE_Y) + GroupThreadID.xy;
+    float2 pixelUV = float2((pixelCoord.x + 0.5) * TexSize.z, (pixelCoord.y + 0.5) * TexSize.w );
+
+    if(all(pixelUV)<=1.0)
+    {
+        float4 BloomOUT = (float4)0;
+    	const bool bKillFireflies = true;
+    
+    	half3 blockTL = 0, blockTR = 0, blockBR = 0, blockBL = 0;
+    	half3 tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2(-2, -2) * TexSize.zw * 0.5,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTL += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 0, -2) * TexSize.zw * 0.5,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTL += tex; blockTR += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 2, -2) * TexSize.zw * 0.5,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTR += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2(-2,  0) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTL += tex; blockBL += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 0,  0) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTL += tex; blockTR += tex; blockBR += tex; blockBL += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 2,  0) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockTR += tex; blockBR += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2(-2,  2) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockBL += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 0,  2) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockBL += tex; blockBR += tex;
+    
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 2,  2) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockBR += tex;
+    
+    	half3 blockCC = 0;
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2(-1, -1) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockCC += tex;
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 1, -1) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockCC += tex;
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2( 1,  1) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockCC += tex;
+    	tex = GetTexture2DLod(Tx2Tx_Source, Tx2Tx_Sampler, pixelUV + float2(-1,  1) * TexSize.zw,0.0).rgb;
+    	if (bKillFireflies) tex /= 1 + GetLuminance(tex);
+    	blockCC += tex;
+    
+    	blockTL /= 4; blockTR /= 4; blockBR /= 4; blockBL /= 4; blockCC /= 4;
+    
+    	if (bKillFireflies) 
+    	{
+    		blockTL /= (1 - GetLuminance(blockTL));
+    		blockTR /= (1 - GetLuminance(blockTR));
+    		blockBR /= (1 - GetLuminance(blockBR));
+    		blockBL /= (1 - GetLuminance(blockBL));
+    		blockCC /= (1 - GetLuminance(blockCC));
+    	}
+    
+    	BloomOUT.rgb = 0.5 * blockCC + 0.125 * (blockTL + blockTR + blockBR + blockBL);
+    
+    	BloomOUT.rgb = all(isfinite(BloomOUT.rgb)) ? BloomOUT.rgb : float3(0, 0, 0);
+
+		const float BloomThreshlod = 0.4f;
+		float Luminance = GetLuminance(BloomOUT.rgb);
+		float4 Result = (float4)0;
+
+		MaskInfo[GroupThreadID.y * GROUP_SIZE_X + GroupThreadID.x] = 0;
+
+		if(Luminance > BloomThreshlod)
+		{
+			Result.rgb = BloomOUT.rgb;
+			MaskInfo[GroupThreadID.y * GROUP_SIZE_X + GroupThreadID.x] = 1;
+		}
+
+        BloomOuputUAV[pixelCoord] = float4(Result.rgb,1.0);
+
+		GroupMemoryBarrierWithGroupSync();
+
+		
+		[unroll]
+		for (uint MipLevel = 1; MipLevel < 4; MipLevel++)
+		{
+			const uint TileSize = uint(GROUP_TILE_SIZE) >> MipLevel;
+			const uint ReduceBankSize = TileSize * TileSize;
+
+			[branch]
+			if (GroupThreadIndex < ReduceBankSize)
+			{
+				uint RawMask[4];
+				[unroll]
+				for (uint i = 0; i < 4; i++)
+				{
+					uint LDSIndex = GroupThreadIndex + i * ReduceBankSize;
+					RawMask[i] = MaskInfo[LDSIndex];
+				}
+
+				uint MaskCombine = RawMask[0] || RawMask[1] || RawMask[2] || RawMask[3];
+				MaskInfo[GroupThreadIndex] = MaskCombine;
+			}
+		}
+
+		if(GroupThreadIndex == 0)
+		{
+			BloomMaskOutUAV[GroupID.y * bloomCB.BufferSize.x + GroupID.x] = MaskInfo[0];
+		}
+
+    }
+}
+
+RWStructuredBuffer<uint>		IndexGen_TileIndexUAV 			: register(u0);
+RWByteAddressBuffer 			IndexGen_DispatchIndirectCount	: register(u1);
+RWBuffer<uint> 					IndexGen_MaskOutputUAV			: register(u2);
+Buffer<uint>					IndexGen_MaskBuffer				: register(t0); 
+
+float4 MaskBufferSize;
+groupshared uint IndexGen_TileMask[GROUP_SIZE_X*GROUP_SIZE_Y*1];
+
+[numthreads(GROUP_SIZE_X, GROUP_SIZE_Y, 1)]
+void BloomTileIndexGenCS(
+	uint3 GroupID : SV_GroupID,
+    uint3 GroupThreadID : SV_GroupThreadID,
+	uint GroupThreadIndex : SV_GroupIndex,
+    uint3 DispatchThreadID : SV_DispatchThreadID
+)
+{
+	if(all(DispatchThreadID == 0))
+	{
+		IndexGen_DispatchIndirectCount.Store3(0,uint3(0,1,1));
+	}
+
+#if %_RT_SAMPLE0
+	IndexGen_TileMask[GroupThreadID.y * GROUP_SIZE_X + GroupThreadID.x] = 0;
+#endif
+
+	if(DispatchThreadID.y < (MaskBufferSize.y - 1) &&
+		DispatchThreadID.x < (MaskBufferSize.x - 1) &&
+		DispatchThreadID.y > 0 && DispatchThreadID.x > 0)
+	{
+		uint CIndex = DispatchThreadID.y * MaskBufferSize.x + DispatchThreadID.x;
+		uint LCIndex = CIndex - 1;
+		uint RCIndex = CIndex + 1;
+		
+		uint TIndex = (DispatchThreadID.y - 1) * MaskBufferSize.x + DispatchThreadID.x;
+		uint LTIndex = TIndex - 1;
+		uint RTIndex = TIndex + 1;
+
+		uint BIndex = (DispatchThreadID.y +1 ) * MaskBufferSize.x + DispatchThreadID.x;
+		uint LBIndex = BIndex - 1;
+		uint RBIndex = BIndex + 1;
+
+		uint CValue = IndexGen_MaskBuffer[CIndex].x;
+		uint LCValue = IndexGen_MaskBuffer[LCIndex].x;
+		uint RCValue = IndexGen_MaskBuffer[RCIndex].x;
+
+		uint TValue = IndexGen_MaskBuffer[TIndex].x;
+		uint LTValue = IndexGen_MaskBuffer[LTIndex].x;
+		uint RTValue = IndexGen_MaskBuffer[RTIndex].x;
+
+		uint BValue = IndexGen_MaskBuffer[BIndex].x;
+		uint LBValue = IndexGen_MaskBuffer[LBIndex].x;
+		uint RBValue = IndexGen_MaskBuffer[RBIndex].x;
+
+		uint CMaskValue = CValue || LCValue || RCValue;
+		uint TMaskValue = TValue || LTValue || RTValue;
+		uint BMaskValue = BValue || LBValue || RBValue;
+
+		uint MaskValue = CMaskValue || TMaskValue || BMaskValue;
+
+		if(MaskValue)
+		{
+			uint PreCountOut;
+			IndexGen_DispatchIndirectCount.InterlockedAdd(0, uint(1), PreCountOut);
+			const uint TileIndex = (DispatchThreadID.x & 0xFFFF) | ((DispatchThreadID.y & 0xFFFF) << 16);
+			IndexGen_TileIndexUAV[PreCountOut] = TileIndex;
+#if %_RT_SAMPLE0
+			IndexGen_TileMask[GroupThreadID.y * GROUP_SIZE_X + GroupThreadID.x] = 1;
+#endif
+		}
+
+#if %_RT_SAMPLE0
+		if(GroupThreadIndex % 4 == 0)
+		{
+			uint RawMask[4];
+			[unroll]
+			for (uint i = 0; i < 4; i++)
+			{
+				uint LDSIndex = GroupThreadIndex + i;
+				RawMask[i] = IndexGen_TileMask[LDSIndex];
+			}
+			uint MaskCombine = RawMask[0] || RawMask[1] || RawMask[2] || RawMask[3];
+
+			IndexGen_MaskOutputUAV[(DispatchThreadID.y / 2) * (MaskBufferSize.x / 2) + DispatchThreadID.x / 2] = MaskCombine;
+		}
+#endif
+	}
+}
+
+
+RWTexture2D<float4>	BloomFinal_OutputUAV 				: register(u0);
+RWStructuredBuffer<uint>		BloomFinal_TileInfoUAV 			: register(u1);
+
+Texture2D<float4> 	BloomFinal_Tx2Tx_Source  			: register(t0); 
+SamplerState 		BloomFinal_Tx2Tx_Sampler			: register(s0);
+
+float4 bloomParams;
+float4 bloomTexSize;
+
+[numthreads(GROUP_SIZE_X * GROUP_SIZE_Y, 1 , 1)]
+void BloomFinalCS(
+	uint3 GroupID : SV_GroupID,
+    uint3 GroupThreadID : SV_GroupThreadID,
+	uint GroupThreadIndex : SV_GroupIndex,
+    uint3 DispatchThreadID : SV_DispatchThreadID
+)
+{
+	uint TileIndex = BloomFinal_TileInfoUAV.Load(GroupID.x).x;
+	uint2 TileIndexXY = uint2(TileIndex & 0xFFFF,(TileIndex >> 16) & 0xFFFF);
+	uint2 UVCoord = TileIndexXY * uint2(GROUP_SIZE_X ,GROUP_SIZE_Y) + uint2(GroupThreadIndex % GROUP_SIZE_Y , GroupThreadIndex / GROUP_SIZE_X);
+	
+	const float weights[15] = { 153, 816, 3060, 8568, 18564, 31824, 43758, 48620, 43758, 31824, 18564, 8568, 3060, 816, 153 };
+	const float weightSum = 262106.0;
+	
+	float2 coords = float2(UVCoord) * bloomTexSize.zw - bloomParams.xy * 7.0;
+	half3 vColor = 0;
+
+	[unroll]
+	for (int i = 0; i < 15; ++i)
+	{
+		vColor += GetTexture2DLod(BloomFinal_Tx2Tx_Source, BloomFinal_Tx2Tx_Sampler, coords,0.0).rgb * (weights[i] / weightSum);
+		coords += bloomParams.xy;
+	}
+
+	BloomFinal_OutputUAV[UVCoord] = float4(vColor,1.0);
+}
+
+[numthreads(GROUP_SIZE_X * GROUP_SIZE_Y * 2 * 2, 1 , 1)]
+void BloomCombine(
+	uint3 GroupID : SV_GroupID,
+    uint3 GroupThreadID : SV_GroupThreadID,
+	uint GroupThreadIndex : SV_GroupIndex,
+    uint3 DispatchThreadID : SV_DispatchThreadID
+)
+{
+	uint TileIndex = BloomFinal_TileInfoUAV.Load(GroupID.x).x;
+	uint2 TileIndexXY = uint2(TileIndex & 0xFFFF,(TileIndex >> 16) & 0xFFFF);
+	uint2 UVCoord = TileIndexXY * uint2(GROUP_SIZE_X * 2,GROUP_SIZE_Y * 2) + uint2(GroupThreadIndex % (GROUP_SIZE_Y * 2), GroupThreadIndex / (GROUP_SIZE_X * 2));
+	
+	const float weights[15] = { 153, 816, 3060, 8568, 18564, 31824, 43758, 48620, 43758, 31824, 18564, 8568, 3060, 816, 153 };
+	const float weightSum = 262106.0;
+	
+	float2 coords = float2(UVCoord) * bloomTexSize.zw - bloomParams.xy * 7.0;
+	half3 vColor = 0;
+
+	[unroll]
+	for (int i = 0; i < 15; ++i)
+	{
+		vColor += GetTexture2DLod(BloomFinal_Tx2Tx_Source, BloomFinal_Tx2Tx_Sampler, coords,0.0).rgb * (weights[i] / weightSum);
+		coords += bloomParams.xy;
+	}
+
+	BloomFinal_OutputUAV[UVCoord] = float4(vColor,1.0);
+}
+
+technique BloomSetup
+{
+	pass p0
+	{
+		ComputeShader = BloomSetupCS();
+	}
+};
+
+technique BloomTileIndexGen
+{
+	pass p0
+	{
+		ComputeShader = BloomTileIndexGenCS();
+	}
+};
+
+technique BloomFinal
+{
+	pass p0
+	{
+		ComputeShader = BloomFinalCS();
+	}
+};
+
+technique BloomCombine
+{
+	pass p0
+	{
+		ComputeShader = BloomCombine();
+	}
+};

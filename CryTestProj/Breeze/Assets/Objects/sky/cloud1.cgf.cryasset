@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="0d2ac0c3-72b6-c773-88d9-e3fe8516690a" source="cloud1.fbx">
+ <Files>
+  <File path="cloud1.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">1946</Detail>
+  <Detail name="vertexCount">1987</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./cloud.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

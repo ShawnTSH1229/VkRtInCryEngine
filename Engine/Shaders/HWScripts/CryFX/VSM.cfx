@@ -1,0 +1,172 @@
+#include "Common.cfi"
+#include "ShadeLib.cfi"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// vsm tile flag generation technique /////////////////////////////////////////////////////////////
+
+Texture2D           p1_deviceZTex          : register(t0); 
+RWBuffer<uint>      p1_vsmTileFlags        : register(u0);
+
+cbuffer cbTileFlagGen : register(b0)
+{
+	struct 
+	{
+		float4x4 invViewProj;
+        float4x4 lightViewProj;
+        float4 deviceZTexSize;
+        int4 vsmVirtualTileNum;
+	} c_tileFlagGenConstants;
+};
+
+
+[numthreads(16, 16, 1)]
+void VSMTileFlagGenCS(uint2 DispatchThreadID :SV_DispatchThreadID)
+{
+    float2 uvdeviceZ = DispatchThreadID * c_tileFlagGenConstants.deviceZTexSize.zw;
+
+    if(uvdeviceZ.x > 1.0f || uvdeviceZ.y > 1.0f)
+    {
+        return;
+    }
+
+    float deviceZ = p1_deviceZTex.Load(int3(DispatchThreadID,0));
+
+    float2 screenPos = uvdeviceZ * 2.0f - 1.0f; 
+    screenPos.y *= -1.0f;
+
+    float4 ndcPos = float4(screenPos, deviceZ, 1.0);
+    
+    float4 worldPosition = mul(c_tileFlagGenConstants.invViewProj, ndcPos);
+    //float4 worldPosition = mul(ndcPos,c_tileFlagGenConstants.invViewProj);
+    worldPosition.xyz /= worldPosition.w;
+
+    float4 shadowScreenPOS = mul(worldPosition,c_tileFlagGenConstants.lightViewProj);
+    //float4 shadowScreenPOS = mul(c_tileFlagGenConstants.lightViewProj,worldPosition);
+    shadowScreenPOS.xyz /= shadowScreenPOS.w;
+
+    float2 uvVSM = shadowScreenPOS.xy; 
+    uvVSM.y *= -1.0;
+    uvVSM = uvVSM * 0.5 + 0.5f;
+
+    if(all(abs(uvVSM) < 1.0f))
+    {
+        uint2 uvBuffer = uvVSM * c_tileFlagGenConstants.vsmVirtualTileNum.xy;
+        uint bufferIndex = uvBuffer.y * c_tileFlagGenConstants.vsmVirtualTileNum.x + uvBuffer.x;
+
+        p1_vsmTileFlags[bufferIndex] = 1;
+    }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// vsm projection technique ////////////////////////////////////////////////////////////////////////
+
+struct vtxOut
+{
+  OUT_HPOS_IN_WPOS
+  float4 baseTC     : TEXCOORD0;
+};
+
+v2f_sh VSMProjectVS(app2vertSGGeneral IN_common)
+{
+    v2f_sh OUT = (v2f_sh)0; 
+    return OUT;
+}
+
+struct perdrawCbPointer
+{
+   uint64_t Address;
+};
+
+//https://community.khronos.org/t/hlsl-push-constant-offset/106971
+//https://vkguide.dev/docs/chapter-3/push_constants/
+
+#vkextbegin
+[[vk::push_constant]]
+perdrawCbPointer cbPointer;
+#vkextend
+
+struct pixout_vsm
+{
+    float Depth    : SV_Depth;
+}
+
+pixout_vsm VSMProjectPS(vtxOut IN)
+{
+    pixout_vsm OUT = (pixout_vsm)0;
+#vkextbegin
+    float4x4 cdWorldMatrix = vk::RawBufferLoad<float4x4>(cbPointer.Address,4);
+#vkextend
+
+    OUT.Depth = cdWorldMatrix[0].x;
+    return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// vsm visualize technique ////////////////////////////////////////////////////////////////////////
+
+vtxOut FullscreenTriVS(uint VertexID : SV_VertexID)
+{
+	vtxOut OUT = (vtxOut)0;
+	OUT.HPosition = GetHPos_FromTriVertexID(VertexID);
+	OUT.baseTC.xy = GetBaseTC_FromTriVertexID(VertexID);
+	return OUT;
+}
+
+Buffer<uint>    visualizeBuffer    : register(t0);
+//RWStructuredBuffer<int> visualizeBuffer : register(u0);
+float4 visualizeBufferSize;
+
+pixout VisualizeBufferPS(vtxOut IN)
+{
+    pixout OUT;
+    uint2 uvCoord = IN.baseTC.xy * visualizeBufferSize.xy;
+    OUT.Color = float4(visualizeBuffer[uvCoord.y * visualizeBufferSize.x + uvCoord.x],0.0,0.0,1.0);
+    return OUT;
+}
+
+technique VSMTileFlagGen
+{
+	pass p0
+	{
+		ComputeShader = VSMTileFlagGenCS();
+	}
+};
+
+technique VSMCmdBuild
+{
+	pass p0
+	{
+		ComputeShader = VSMCmdBuild();
+	}
+};
+
+//CryFX\CommonShadowGenPass.cfi
+technique VSMProjecttion
+{
+	pass p0
+	{
+		VertexShader = VSMProjectVS() VSMProjecttionVS;
+		
+        ZEnable = true;
+		ZWriteEnable = true;
+		CullMode = Back;
+
+		PixelShader = VSMProjectPS() VSMProjecttionPS;
+
+        #if %GRASS || %LEAVES || %HAIR_PASS || %TEMP_SKIN
+        CullMode = None;
+        #endif
+  }
+}
+
+technique VSMVisualizeBuffer
+{
+	pass p0
+	{
+		VertexShader = FullscreenTriVS();
+		PixelShader = VisualizeBufferPS();
+	}
+};

@@ -1,0 +1,2 @@
+1. update the dxc version
+2. update the spirv version and fix crash

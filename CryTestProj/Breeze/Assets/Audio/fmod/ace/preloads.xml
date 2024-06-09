@@ -1,0 +1,16 @@
+<AudioSystemData name="Preloads" version="5" preloads="3" files="3">
+ <ImplData banks="3"/>
+ <Preloads>
+  <PreloadRequest name="Ambience" type="autoload">
+   <File name="Ambience.bank"/>
+  </PreloadRequest>
+  <PreloadRequest name="Player" type="autoload">
+   <File name="Player.bank"/>
+  </PreloadRequest>
+ </Preloads>
+ <EditorData>
+  <Library />
+  <Folders />
+  <Controls />
+ </EditorData>
+</AudioSystemData>

@@ -1,0 +1,44 @@
+<Material MtlFlags="524544" vertModifType="0">
+ <SubMaterials>
+  <Material Name="balloon_red" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="0.597202,0.0024282159,0.0024282159" Specular="0.13843162,0.13843162,0.13843162" Opacity="1" Shininess="90.015007" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./white.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="proxy" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="1,1,1" Specular="0,0,0" Opacity="1" Shininess="9.9450016" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures />
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="wood" MtlFlags="524416" Shader="Illum" GenMask="4000000000020" StringGenMask="%NORMAL_MAP%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="1,1,1" Specular="0.1169707,0.1169707,0.1169707" Opacity="1" Shininess="52.529999" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="Objects/house/house.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Bumpmap" File="Objects/house/house_ddn.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="balloon_blue" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="0.064803265,0.30946895,0.9911024" Specular="0.13843162,0.13843162,0.13843162" Opacity="1" Shininess="104.04001" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./white.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+  <Material Name="balloon_yellow" MtlFlags="524416" Shader="Illum" GenMask="4000000000000" StringGenMask="%SUBSURFACE_SCATTERING" SurfaceType="mat_concrete" MatTemplate="" Diffuse="0.9911024,0.73791069,0.0080231922" Specular="0.19806935,0.19806935,0.19806935" Opacity="1" Shininess="88.99501" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./white.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+  </Material>
+ </SubMaterials>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

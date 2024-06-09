@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="430fee91-6635-7d75-0776-c20672e20878">
+ <Files>
+  <File path="tree_palm.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">2</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./beach_bush1.dds</Path>
+  <Path usageCount="1">./beach_bush1_sss.dds</Path>
+ </Dependencies>
+</AssetMetadata>

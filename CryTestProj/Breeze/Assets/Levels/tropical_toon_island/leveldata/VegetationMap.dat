@@ -1,0 +1,186 @@
+ÿ}<VegetationMap Version="3">
+ <Objects>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="38" ElevationMax="44" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach_s01.cgf" Id="0" FileName="objects/beach/bush_beach_s01.cgf" GUID="fa1c145c-be36-7bb8-4cee-0d7916687620" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="38" ElevationMax="44" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach_s02.cgf" Id="1" FileName="objects/beach/bush_beach_s02.cgf" GUID="3735b436-3f8a-f957-dcf3-85b3a740fb9f" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="40" ElevationMax="42" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach01.cgf" Id="2" FileName="objects/beach/bush_beach01.cgf" GUID="ec386c84-1398-de9a-2a32-0ba35ad716f6" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="40" ElevationMax="42" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach02.cgf" Id="3" FileName="objects/beach/bush_beach02.cgf" GUID="991f757b-7c47-2f6b-3f52-29c181b5411f" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="40" ElevationMax="46" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_palm_01.cgf" Id="4" FileName="objects/beach/bush_palm_01.cgf" GUID="aa167865-dd83-2134-0f8f-02fa81d3acb0" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1.3" SizeVar="0.5" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="20" ElevationMin="35" ElevationMax="42" SlopeMin="20" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/rock_beach_l.cgf" Id="5" FileName="objects/beach/rock_beach_l.cgf" GUID="3785f924-879b-6609-9647-68dcc42fc1d3" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.3" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="35" ElevationMax="39" SlopeMin="20" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/rock_beach_m.cgf" Id="6" FileName="objects/beach/rock_beach_m.cgf" GUID="18973316-5b21-6096-d36d-4afe8898acf0" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.3" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="35" ElevationMax="39" SlopeMin="10" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/rock_beach_s.cgf" Id="7" FileName="objects/beach/rock_beach_s.cgf" GUID="cb13132d-1daa-9e5e-79f2-72cd8179a62f" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="20" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/tree_forest_1.cgf" Id="8" FileName="objects/forest/tree_forest_1.cgf" GUID="49bd0b55-4ba2-55c6-f477-7fdebe996113" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="30" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="20" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/bush_forest_2.cgf" Id="9" FileName="objects/forest/bush_forest_2.cgf" GUID="fce254dc-8737-27ee-f3b7-72d8411a2fac" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="0.8" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="30" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/tree_forest_2.cgf" Id="10" FileName="objects/forest/tree_forest_2.cgf" GUID="454dce01-aa77-ffe9-66b4-0a00526fe335" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="30" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="25" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/tree_forest_s_1.cgf" Id="11" FileName="objects/forest/tree_forest_s_1.cgf" GUID="47e883c8-407f-7580-a8d2-ba8b8c0aaee7" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="30" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="25" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/tree_forest_s_2.cgf" Id="12" FileName="objects/forest/tree_forest_s_2.cgf" GUID="b4b56a83-f9f7-9097-1d5b-477507f928c9" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="30" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="30" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/bush_forest_1.cgf" Id="13" FileName="objects/forest/bush_forest_1.cgf" GUID="a8243927-1cc5-dfb6-ce86-ff1c126e5a69" Hidden="0" Index="0" Category="forest">
+   <TerrainLayers>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="3" SizeVar="0.5" RandomRotation="0" RotationRangeToTerrainNormal="1" AlignToTerrainHeight="0" AlignToTerrainNormals="0" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="4" ElevationMin="36.3" ElevationMax="36.6" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="9" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ocean/wave1.cgf" Id="14" FileName="objects/ocean/wave1.cgf" GUID="8559e573-4ae4-395a-2e1e-27897ba7a508" Hidden="0" Index="0" Category="water">
+   <TerrainLayers>
+    <Layer Name="terrain/beach_wet.mtl"/>
+    <Layer Name="terrain/cliff_3d.mtl"/>
+    <Layer Name="terrain/beach.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="3" SizeVar="0.5" RandomRotation="0" RotationRangeToTerrainNormal="1" AlignToTerrainHeight="0" AlignToTerrainNormals="0" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="4" ElevationMin="36.3" ElevationMax="36.6" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="9" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ocean/wave2.cgf" Id="15" FileName="objects/ocean/wave2.cgf" GUID="88ebf1b9-03bc-5eba-b542-c6e48fcad792" Hidden="0" Index="0" Category="water">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/cliff_3d.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="3" SizeVar="0.5" RandomRotation="0" RotationRangeToTerrainNormal="1" AlignToTerrainHeight="0" AlignToTerrainNormals="0" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="4" ElevationMin="36.3" ElevationMax="36.6" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="9" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="1" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ocean/wave3.cgf" Id="16" FileName="objects/ocean/wave3.cgf" GUID="a513c387-5c54-f0e9-15fc-92c841bb6ceb" Hidden="0" Index="0" Category="water">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/cliff_3d.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="38" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/grass1_1.cgf" Id="17" FileName="objects/ground/grass1_1.cgf" GUID="85374dc3-0c4a-58a3-7741-3b5497bc789e" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+    <Layer Name="terrain/beach.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/grass1_2.cgf" Id="18" FileName="objects/ground/grass1_2.cgf" GUID="536d2f58-e6fb-bd81-570b-a33fbade2aaf" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="38" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/plants1_1.cgf" Id="19" FileName="objects/ground/plants1_1.cgf" GUID="bb6544d9-8420-77c4-14ce-eb045efa6a88" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+    <Layer Name="terrain/beach.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/plants1_2.cgf" Id="20" FileName="objects/ground/plants1_2.cgf" GUID="840d5a5e-e1b2-befb-da4a-c523b6ea5c06" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/plants2_1.cgf" Id="21" FileName="objects/ground/plants2_1.cgf" GUID="0fc73725-e9a7-c39a-5697-ac7453101a9a" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/plants2_2.cgf" Id="22" FileName="objects/ground/plants2_2.cgf" GUID="c49d06bb-9f30-87aa-cb73-edfb80c58dce" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/grass2_1.cgf" Id="23" FileName="objects/ground/grass2_1.cgf" GUID="40378488-16ac-b149-8b7f-9c139e3d64bb" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="2" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="1" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="15" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/ground/grass2_2.cgf" Id="24" FileName="objects/ground/grass2_2.cgf" GUID="08a79a70-7d14-d16f-d343-5cbd526728a3" Hidden="0" Index="0" Category="grass">
+   <TerrainLayers>
+    <Layer Name="terrain/grass.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/forest/bush_forest_1.cgf" Id="25" FileName="objects/forest/bush_forest_1.cgf" GUID="bc13bbbb-0514-ec5b-628e-ba52772b0871" Hidden="0" Index="0" Category="bush">
+   <TerrainLayers>
+    <Layer Name="terrain/bush.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach_s01.cgf" Id="26" FileName="objects/beach/bush_beach_s01.cgf" GUID="b35cfa97-0cca-b9ef-c7dd-0900a0b07d15" Hidden="0" Index="0" Category="bush">
+   <TerrainLayers>
+    <Layer Name="terrain/bush.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="100" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="10" ElevationMin="0" ElevationMax="4096" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="0" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/bush_beach02.cgf" Id="27" FileName="objects/beach/bush_beach02.cgf" GUID="cd2dcbe8-28fc-a6ee-bfd8-285f58b339e2" Hidden="0" Index="0" Category="bush">
+   <TerrainLayers>
+    <Layer Name="terrain/bush.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="40" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="20" ElevationMin="40" ElevationMax="65" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/tree_palm_03.cgf" Id="28" FileName="objects/beach/tree_palm_03.cgf" GUID="4e4f4aba-9381-4985-3bf4-0ecbe8b25989" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+    <Layer Name="terrain/forest.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="0" RotationRangeToTerrainNormal="1" AlignToTerrainHeight="0" AlignToTerrainNormals="40" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="18" ElevationMin="38" ElevationMax="44" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/tree_palm_04.cgf" Id="29" FileName="objects/beach/tree_palm_04.cgf" GUID="274b5bda-f43e-5d09-6dd3-d76c6d284827" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach.mtl"/>
+    <Layer Name="terrain/beach_wet.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="40" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="38" ElevationMax="65" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/tree_palm_02.cgf" Id="30" FileName="objects/beach/tree_palm_02.cgf" GUID="7a931d1b-a4c5-b8ba-cf25-ed93f638e1ab" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach_wet.mtl"/>
+    <Layer Name="terrain/beach.mtl"/>
+   </TerrainLayers>
+  </Object>
+  <Object Size="1" SizeVar="0.2" RandomRotation="1" RotationRangeToTerrainNormal="0" AlignToTerrainHeight="0" AlignToTerrainNormals="40" UseTerrainColor="0" AllowIndoor="0" Bending="0" Hideable="0" PlayerHideable="0" GroundDecalMaterial="" GrowOn="0" AutoMerged="0" Stiffness="0.5" Damping="2.5" Variance="0.6" AirResistance="1" Pickable="0" AIRadius="-1" Density="12" ElevationMin="40" ElevationMax="44" SlopeMin="0" SlopeMax="89.99" CastShadow="0" CastShadowMinSpec="1" DynamicDistanceShadows="0" GlobalIllumination="1" OfflineProcedural="0" Instancing="0" SpriteDistRatio="1" LodDistRatio="1" MaxViewDistRatio="1" Material="" UseSprites="1" MinSpec="0" IgnoreTerrainLayerBlend="1" Frozen="0" Layer_Wet="0" Object="objects/beach/tree_palm_01.cgf" Id="31" FileName="objects/beach/tree_palm_01.cgf" GUID="5e2f1150-f770-b585-691f-e3778430a373" Hidden="0" Index="0" Category="beach">
+   <TerrainLayers>
+    <Layer Name="terrain/beach_wet.mtl"/>
+    <Layer Name="terrain/beach.mtl"/>
+   </TerrainLayers>
+  </Object>
+ </Objects>
+</VegetationMap>
+    

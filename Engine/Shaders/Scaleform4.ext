@@ -1,0 +1,387 @@
+// Copyright 2019-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+Version (1.00)
+
+Property
+{
+    Name = %SF_INSTANCED
+    Mask = 0x1
+}
+
+Property
+{
+    Name = %SF_BATCH
+    Mask = 0x2
+}
+
+Property
+{
+    Name = %SF_POSITION2D
+    Mask = 0x4
+}
+
+Property
+{
+    Name = %SF_POSITION3D
+    Mask = 0x8
+}
+
+Property
+{
+    Name = %SF_TEXTG
+    Mask = 0x10
+}
+
+Property
+{
+    Name = %SF_ATEXTG
+    Mask = 0x20
+}
+
+Property
+{
+    Name = %SF_VERTEX
+    Mask = 0x40
+}
+
+Property
+{
+    Name = %SF_TEXTGTEXTG
+    Mask = 0x80
+}
+
+Property
+{
+    Name = %SF_ATEXTGATEXTG
+    Mask = 0x100
+}
+
+Property
+{
+    Name = %SF_TEXTGVERTEX
+    Mask = 0x200
+}
+
+Property
+{
+    Name = %SF_ATEXTGVERTEX
+    Mask = 0x400
+}
+
+Property
+{
+    Name = %SF_CXFORM
+    Mask = 0x800
+}
+
+Property
+{
+    Name = %SF_CXFORMAC
+    Mask = 0x1000
+}
+
+Property
+{
+    Name = %SF_EALPHA
+    Mask = 0x2000
+}
+
+Property
+{
+    Name = %SF_MUL
+    Mask = 0x4000
+}
+
+Property
+{
+    Name = %SF_INV
+    Mask = 0x8000
+}
+
+Property
+{
+    Name = %SF_INVERSEGAMMA
+    Mask = 0x10000
+}
+
+Property
+{
+    Name = %SF_TEXDENSITY
+    Mask = 0x20000
+}
+
+Property
+{
+    Name = %SF_TEXTGVERTEXONLY
+    Mask = 0x40000
+}
+
+Property
+{
+    Name = %SF_FACTORS
+    Mask = 0x80000
+}
+
+Property
+{
+    Name = %SF_SOLID
+    Mask = 0x100000
+}
+
+Property
+{
+    Name = %SF_TEXT
+    Mask = 0x200000
+}
+
+Property
+{
+    Name = %SF_TEXUV
+    Mask = 0x400000
+}
+
+Property
+{
+    Name = %SF_ATEXUV
+    Mask = 0x800000
+}
+
+Property
+{
+    Name = %SF_DEPTHMASKCLEAR
+    Mask = 0x1000000
+}
+
+Property
+{
+    Name = %SF_YUV
+    Mask = 0x2000000
+}
+
+Property
+{
+    Name = %SF_YUVA
+    Mask = 0x4000000
+}
+
+Property
+{
+    Name = %SF_YUY2
+    Mask = 0x8000000
+}
+
+Property
+{
+    Name = %SF_CMATRIXAC
+    Mask = 0x10000000
+}
+
+Property
+{
+    Name = %SF_BOX1
+    Mask = 0x20000000
+}
+
+Property
+{
+    Name = %SF_BOX2
+    Mask = 0x40000000
+}
+
+Property
+{
+    Name = %SF_BLUR
+    Mask = 0x80000000
+}
+
+Property
+{
+    Name = %SF_SHADOWBASE
+    Mask = 0x100000000
+}
+
+Property
+{
+    Name = %SF_BEVELBASE
+    Mask = 0x200000000
+}
+
+Property
+{
+    Name = %SF_SCOLOR
+    Mask = 0x400000000
+}
+
+Property
+{
+    Name = %SF_SCOLOR2
+    Mask = 0x800000000
+}
+
+Property
+{
+    Name = %SF_SGRAD
+    Mask = 0x1000000000
+}
+
+Property
+{
+    Name = %SF_SGRAD2
+    Mask = 0x2000000000
+}
+
+Property
+{
+    Name = %SF_BASE
+    Mask = 0x4000000000
+}
+
+Property
+{
+    Name = %SF_HIDEBASE
+    Mask = 0x8000000000
+}
+
+Property
+{
+    Name = %SF_OUTERBEVEL
+    Mask = 0x10000000000
+}
+
+Property
+{
+    Name = %SF_INNERBEVEL
+    Mask = 0x20000000000
+}
+
+Property
+{
+    Name = %SF_INNERSHADOW
+    Mask = 0x40000000000
+}
+
+Property
+{
+    Name = %SF_FULLBEVEL
+    Mask = 0x80000000000
+}
+
+Property
+{
+    Name = %SF_DISPLACEMENTMAP
+    Mask = 0x100000000000
+}
+
+Property
+{
+    Name = %SF_DMIGNORE
+    Mask = 0x200000000000
+}
+
+Property
+{
+    Name = %SF_DMCOLOR
+    Mask = 0x400000000000
+}
+
+Property
+{
+    Name = %SF_DRAWABLECOPYPIXELS
+    Mask = 0x800000000000
+}
+
+Property
+{
+    Name = %SF_DRAWABLECOPYPIXELSALPHA
+    Mask = 0x1000000000000
+}
+
+Property
+{
+    Name = %SF_INALPHA
+    Mask = 0x2000000000000
+}
+
+Property
+{
+    Name = %SF_MERGEALPHA
+    Mask = 0x4000000000000
+}
+
+Property
+{
+    Name = %SF_NODESTALPHA
+    Mask = 0x8000000000000
+}
+
+Property
+{
+    Name = %SF_COPYLERP
+    Mask = 0x10000000000000
+}
+
+Property
+{
+    Name = %SF_TEXTGTEXTGVERTEXONLY
+    Mask = 0x20000000000000
+}
+
+Property
+{
+    Name = %SF_TEXTGTEXTGTEXTGVERTEXONLY
+    Mask = 0x40000000000000
+}
+
+Property
+{
+    Name = %SF_DRAWABLEMERGE
+    Mask = 0x80000000000000
+}
+
+Property
+{
+    Name = %SF_DRAWABLECOMPARE
+    Mask = 0x100000000000000
+}
+
+Property
+{
+    Name = %SF_DRAWABLEPALETTEMAP
+    Mask = 0x200000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDLIGHTEN
+    Mask = 0x400000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDDARKEN
+    Mask = 0x800000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDOVERLAY
+    Mask = 0x1000000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDHARDLIGHT
+    Mask = 0x2000000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDDIFFERENCE
+    Mask = 0x4000000000000000
+}
+
+Property
+{
+    Name = %SF_BLENDLAYER
+    Mask = 0x8000000000000000
+}

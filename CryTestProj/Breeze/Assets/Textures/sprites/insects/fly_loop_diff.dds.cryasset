@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="8f31a8b3-45cc-ac65-f952-3b77c7e69340" source="fly_loop_diff.tif">
+ <Files>
+  <File path="fly_loop_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">256</Detail>
+  <Detail name="height">256</Detail>
+  <Detail name="mipCount">7</Detail>
+ </Details>
+</AssetMetadata>

@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="c4d970e6-f395-51b6-a0e7-5377c1321b8d" source="boat2.fbx">
+ <Files>
+  <File path="boat2.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">6</Detail>
+  <Detail name="triangleCount">208</Detail>
+  <Detail name="vertexCount">424</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./house.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

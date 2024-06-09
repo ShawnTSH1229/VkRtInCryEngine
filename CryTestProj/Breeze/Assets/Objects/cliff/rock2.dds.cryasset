@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="26c23a2a-6bee-c67f-4815-f7d4d38e403c" source="rock2.tif">
+ <Files>
+  <File path="rock2.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">2048</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

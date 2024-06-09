@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="acddc7dc-1497-f92b-c86d-358ac992e6f0" source="beach_wet.tif">
+ <Files>
+  <File path="beach_wet.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="518d1fba-fc4d-826d-9a96-917688483099" source="bush_displ.tif">
+ <Files>
+  <File path="bush_displ.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

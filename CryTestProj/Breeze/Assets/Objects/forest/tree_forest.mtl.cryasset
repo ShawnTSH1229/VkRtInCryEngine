@@ -1,0 +1,16 @@
+<AssetMetadata version="0" type="Material" guid="7457958f-de24-d6ad-38b8-262744db9056">
+ <Files>
+  <File path="tree_forest.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">3</Detail>
+  <Detail name="textureCount">5</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">%ENGINE%/EngineAssets/Textures/white.dds</Path>
+  <Path usageCount="1">%ENGINE%/EngineAssets/Textures/white_ddn.dds</Path>
+  <Path usageCount="1">./tree_forest_diff.dds</Path>
+  <Path usageCount="1">./tree_forest_ddn.dds</Path>
+  <Path usageCount="1">./tree_forest_sss.dds</Path>
+ </Dependencies>
+</AssetMetadata>

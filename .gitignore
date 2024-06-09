@@ -1,0 +1,57 @@
+# Asset files.
+*.pak
+*.caf
+
+
+# Config files
+
+#TanGram:[BEGIN]
+#/user.cfg
+#/system.cfg
+#/editor.cfg
+#TanGram:[END]
+
+/.bootstrap*.*
+
+# Temporary files.
+*.log
+*.dmp
+*.pyo
+*.pyc
+*.bak
+*.bak2
+error.jpg
+_WAF_/user_settings.options
+
+# Binary directories.
+/[Bb]in*/
+/Tools/rc/*
+
+# Temporary directories.
+/TestResults/*
+/Solutions/*
+/solutions_cmake/*
+/.depproj/*
+/project.sln
+/[Ll]og[Bb]ackups
+/[Uu]ser*/
+__pycache__/*
+
+# Might contain a license key, so don't add it to a repo.
+/Code/Tools/waf-1.7.13/recode.lic
+/recode.lic
+
+# These are handled elsewhere.
+
+/Code/SDKs/*
+!/Code/SDKs/spirv-cross
+
+#tropical_toon_island
+#TanGram
+/Code/GameSDK/cbuild/*
+/CryTestProj/Breeze/user/*
+/CryTestProj/Breeze/Breeze_package/*
+/CryTestProj/Breeze/rc_out_PC_pure/*
+CRYENGINE_v5.7.0_SDKs.zip
+/cbuild/*
+/cbuild2/*

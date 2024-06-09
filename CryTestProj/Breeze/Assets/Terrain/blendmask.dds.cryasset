@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="19f31c32-9a81-7092-d5a5-fffd1b60d6af" source="blendmask.tif">
+ <Files>
+  <File path="blendmask.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">1024</Detail>
+  <Detail name="height">1024</Detail>
+  <Detail name="mipCount">9</Detail>
+ </Details>
+</AssetMetadata>

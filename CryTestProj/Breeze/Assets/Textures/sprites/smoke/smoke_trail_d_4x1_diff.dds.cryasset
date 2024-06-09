@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="d3aa789d-be11-65dd-ee18-76ffffec9770" source="smoke_trail_d_4x1_diff.tif">
+ <Files>
+  <File path="smoke_trail_d_4x1_diff.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">512</Detail>
+  <Detail name="height">512</Detail>
+  <Detail name="mipCount">8</Detail>
+ </Details>
+</AssetMetadata>

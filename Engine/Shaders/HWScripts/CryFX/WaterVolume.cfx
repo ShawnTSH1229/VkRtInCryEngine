@@ -1,0 +1,1410 @@
+// Copyright 2012-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+#define VS_NO_SKINNING_DATA
+
+// tbd:
+//	- water tile mesh tool
+//	- water flow paint tool
+//	- tiddy up water related shaders and rename old water to ocean
+//	- generalize common bits usage for both (tessellation, bumpgen and similar)
+
+#include "Common.cfi"
+#include "ModificatorVT.cfi"
+
+float Script : STANDARDSGLOBAL
+<
+  string Script =
+           "Public;"
+           "NoPreview;"           
+           "ShaderDrawType = General;"
+           "ShaderType = Water;"
+
+#if %WATER_TESSELLATION_DX11
+			"HWTessellation;"
+#endif
+>;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// Custom shading pass structure /////////////////////////////////////
+
+struct CustomForwardShadingAttribs
+{
+};
+
+
+#include "ShadeLib.cfi"
+#include "PostEffectsLib.cfi"
+#include "WaterCommon.cfi"
+
+//////////////////////////////// Samplers ////////////////
+
+DECALMAP
+OPACITYMAP
+ENVIRONMENTCUBEMAP
+
+//////////////////////////////////////////////////////////////////////////
+
+// Tweakables /////////////////
+  
+float SoftIntersectionFactor
+<
+  register = REG_PM_PARAM_0.x;
+  string UIHelp = "Soft intersection factor";
+  string UIName = "Soft intersection factor";  
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 10.0;
+  float UIStep = 0.1;  
+> = 1.0;
+
+float Tilling
+<
+  register = REG_PM_PARAM_0.y;
+  string UIHelp = "Set bump tiling";
+  string UIName = "Tiling";  
+  string UIWidget = "slider";
+  float UIMin = 0.001;
+  float UIMax = 32.0;
+  float UIStep = 0.001;
+> = 0.1;
+
+float DetailTilling
+<
+  register = REG_PM_PARAM_0.z;
+  string UIHelp = "Set detail bump tiling";
+  string UIName = "Detail tiling";  
+  string UIWidget = "slider";
+  float UIMin = 0.001;
+  float UIMax = 32.0;
+  float UIStep = 0.001;;
+> = 2.5;
+
+float RainTilling
+<
+  register = REG_PM_PARAM_0.w;
+  string UIHelp = "Rain ripples tiling";
+  string UIName = "Rain ripples tiling";
+  string UIWidget = "slider";
+  float UIMin = 0.001;
+  float UIMax = 1.0;
+  float UIStep = 0.001;
+> = 1.0;
+
+half DetailNormalsScale
+<
+  register = REG_PM_PARAM_1.x;
+  string UIHelp = "Detail normals scale";
+  string UIName = "Detail normals scale";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.5;
+
+half NormalsScale
+<
+  register = REG_PM_PARAM_1.y;
+  string UIHelp = "Normals scale";
+  string UIName = "Normals scale";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.25;
+
+half EnvCubeScale
+<
+  register = REG_PM_PARAM_3.y;
+  string UIHelp = "Env projection scale";
+  string UIName = "Env projection scale";
+  string UIWidget = "slider";
+  float UIMin = 0.1;
+  float UIMax = 200.0;
+  float UIStep = 0.1;
+> = 20.0;
+
+half NormalsFlatten
+<
+  register = REG_PM_PARAM_3.w;
+  string UIHelp = "Normals flattening when reflecting";
+  string UIName = "Normals flattening when reflecting";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.001;
+> = 0.33333333333;
+
+half VertexWaveScale
+<
+  register = REG_PM_PARAM_5.z;
+  string UIHelp = "Strength of vertex displaced wave animation";
+  string UIName = "Vertex wave scale";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.1;
+> = 0.125;
+
+//////////////////////////////////////////////////////////////////////////
+// This is an ugly hack around a problem with the shader system that's too
+// difficult + risky to fix for C3.
+// 
+// Basically if we have a material parameter declared and has vsregister=
+// or psregister= that isn't used in that shader, it can screw up and fail
+// to set any of those values in the combined __0__1 etc vec4. 
+// 
+// So we can only have vsregister= if it's really used in VS and same for
+// PS. Since we also don't support preprocessor inside variable annotations,
+// this is the only way to do it.
+
+#if %FLOW && !%FLOW_MAP
+
+half WaterFlowSpeed
+<
+  register = REG_PM_PARAM_1.z;
+  string UIHelp = "Flow speed";
+  string UIName = "Flow speed";
+  string UIWidget = "slider";
+  float UIMin = -4.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.0;  
+
+#endif
+
+#if !%FLOW && %FLOW_MAP
+
+half WaterFlowSpeed
+<
+  register = REG_PM_PARAM_1.w;
+  string UIHelp = "Flow speed";
+  string UIName = "Flow speed";  
+  string UIWidget = "slider";
+  float UIMin = -4.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.0;  
+
+#endif
+
+#if %FLOW && %FLOW_MAP
+
+half WaterFlowSpeed
+<
+  register = REG_PM_PARAM_2.x;
+  string UIHelp = "Flow speed";
+  string UIName = "Flow speed";  
+  string UIWidget = "slider";
+  float UIMin = -4.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.0;  
+
+#endif
+
+#if %FLOW_MAP
+
+half WaterFlowMapScale
+<
+  register = REG_PM_PARAM_2.y;
+  string UIHelp = "Flow map scale";
+  string UIName = "Flow map scale"; 
+  string UIWidget = "slider";
+  float UIMin = -4.0;
+  float UIMax = 4.0;
+  float UIStep = 0.001;
+> = 0.0;  
+
+#endif
+
+#if %FLOW_MAP && %FLOW_MAP_STRENGTH
+
+half FlowOffsetTiling
+<
+  register = REG_PM_PARAM_5.w;
+  string UIHelp = "Tiling scale for flow animation offset map";
+  string UIName = "Flow offset tiling";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 4.0;
+  float UIStep = 0.01;
+> = 0.15;
+
+half FlowOffsetStrength
+<
+  register = REG_PM_PARAM_6.x;
+  string UIHelp = "Strength of flow animation offset map";
+  string UIName = "Flow offset strength";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.01;
+> = 0.15;
+
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+
+#if %SPECULAR_MAP
+// TODO: remove smoothness from water and substitute it by a seconday material layer
+// which floats on top of the water surface (albedo+normal+smoothness and water-specular override)
+
+half GlossMapTilling
+<
+  register = REG_PM_PARAM_2.z;
+  string UIHelp = "Smoothness tiling";
+  string UIName = "Smoothness tiling";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 8.0;
+  float UIStep = 0.001;
+> = 0.1;
+
+half GlossMapScale
+<
+  register = REG_PM_PARAM_2.w;
+  string UIHelp = "Smoothness scale";
+  string UIName = "Smoothness scale";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 8.0;
+  float UIStep = 0.001;
+> = 1.0;
+
+half GlossMapBias
+<
+  register = REG_PM_PARAM_3.x;
+  string UIHelp = "Smoothness bias";
+  string UIName = "Smoothness bias";
+  string UIWidget = "slider";
+  float UIMin = -1.0;
+  float UIMax = 1.0;
+  float UIStep = 0.001;
+> = 0.0;
+
+half GlossMapExponent
+<
+  register = REG_PM_PARAM_3.z;
+  string UIHelp = "Smoothness exp";
+  string UIName = "Smoothness exp";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 8.0;
+  float UIStep = 0.001;
+> = 6.0;
+
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+
+#if %SSREFL
+
+half ssrBorderSizeY
+<
+  register = REG_PM_PARAM_6.y;
+  string UIHelp = "Size of SSR border transition region in Y";
+  string UIName = "SSR border Y";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.01;
+> = 0.5;
+
+half ssrBorderSizeZ
+<
+  register = REG_PM_PARAM_6.z;
+  string UIHelp = "Size of SSR distance transition region in Z";
+  string UIName = "SSR distance Z";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.01;
+> = 1.0;
+
+half ssrBorderFadeExponent
+<
+  register = REG_PM_PARAM_6.w;
+  string UIHelp = "Exponent of SSR transition region shape";
+  string UIName = "SSR transition exp.";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 2.0;
+  float UIStep = 0.01;
+> = 1.0;
+
+half ssrDistanceAtt
+<
+  register = REG_PM_PARAM_7.x;
+  string UIHelp = "SSR max. tracing distance multiplier";
+  string UIName = "SSR distance vs. default";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 2.0;
+  float UIStep = 0.01;
+> = 1.0;
+
+half ssrSamplingAtt
+<
+  register = REG_PM_PARAM_7.y;
+  string UIHelp = "SSR max. tracing samples multiplier";
+  string UIName = "SSR samples vs. default";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 2.0;
+  float UIStep = 0.01;
+> = 1.0;
+
+half ssrBGMultiplier
+<
+  register = REG_PM_PARAM_7.z;
+  string UIHelp = "SSR max. utilization of the sky background";
+  string UIName = "SSR sky reflection";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 1.0;
+  float UIStep = 0.01;
+> = 1.0;
+
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+
+#if %FOAM
+
+half FoamSoftIntersectionFactor
+<
+  register = REG_PM_PARAM_4.x;
+  string UIHelp = "Foam soft intersection";
+  string UIName = "Foam soft intersection";  
+  string UIWidget = "slider";
+  float UIMin = 0.01;
+  float UIMax = 10.0;
+  float UIStep = 0.1;  
+> = 0.75;
+
+half FoamAmount
+<
+  register = REG_PM_PARAM_4.y;
+  string UIHelp = "Foam amount";
+  string UIName = "Foam amount";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 8.0;
+  float UIStep = 0.001;
+> = 1.0;
+
+half FoamTilling
+<
+  register = REG_PM_PARAM_4.z;
+  string UIHelp = "Foam tiling";
+  string UIName = "Foam tiling";
+  string UIWidget = "slider";
+  float UIMin = 0.0;
+  float UIMax = 32.0;
+  float UIStep = 0.001;
+> = 12.0;
+
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+
+#if %DECAL_MAP
+
+float DecalTilling
+<
+	register = REG_PM_PARAM_4.w;
+	string UIHelp = "Tiling of decal layer";
+	string UIName = "Decal tiling";
+	string UIWidget = "slider";
+	float UIMin = 0.0;
+	float UIMax = 32.0;
+	float UIStep = 0.01;
+> = 4.0;
+	
+float DecalStrength
+<
+	register = REG_PM_PARAM_5.x;
+	string UIHelp = "Decal strength";
+	string UIName = "Decal strength";
+	string UIWidget = "slider";
+	float UIMin = 0.0;
+	float UIMax = 5.0;
+	float UIStep = 0.1;
+> = 1.0;
+
+float DecalFalloff
+<
+	register = REG_PM_PARAM_5.y;
+	string UIHelp = "Decal falloff";
+	string UIName = "Decal falloff";
+	string UIWidget = "slider";
+	float UIMin = 0.0;
+	float UIMax = 5.0;
+	float UIStep = 0.1;
+> = 1.0;
+
+#endif
+
+////////////////////////////////////////////////////////////////
+
+Texture2D WaterSmoothnessTex : register(t2)
+<
+  UIName = "Smoothness Map";
+  UIDescription = "Smoothness Map";
+> = TM_Specular;
+
+TextureCube envCubeTex : register(t3) = TM_Env;
+
+Texture2D decalNormalTex : register(t1)
+< 
+  UIName = "Decal Normalmap";
+  UIDescription = "Decal normal map texture";
+> = TM_Normals;
+
+/////////////////////////////
+
+struct a2v
+{
+  float4 Position : POSITION;
+
+  float2 baseTC   : TEXCOORD;
+  float4 Color    : COLOR;
+};
+
+struct v2f
+{
+#if !%WATER_TESSELLATION_DX11 || %_RT_NO_TESSELLATION
+	float4 Position		: SV_POSITION;
+#endif
+
+	float4 baseTC	  : TEXCOORDN;
+	float4 screenProj : TEXCOORDN; 
+	half4  vView  	  : TEXCOORDN;
+
+	float4 vPosWS		: TEXCOORDN; 
+
+#if %_RT_SAMPLE4
+	float4 ripplesTC	: TEXCOORDN;
+#endif
+};
+
+struct v2f_hs
+{
+	float4 Position		: SV_POSITION; 
+	float4 baseTC	  : TEXCOORDN;
+	float4 screenProj : TEXCOORDN; 
+	half4  vView  	  : TEXCOORDN;
+
+	float4 vPosWS		: TEXCOORDN; 
+
+#if %_RT_SAMPLE4
+	float4 ripplesTC	: TEXCOORDN;
+#endif
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////// 	
+// DX11 specifics
+
+struct HS_CONSTANT_DATA_OUTPUT
+{
+	float	Edges[3]		 : SV_TessFactor;
+	float	Inside			 : SV_InsideTessFactor;
+};
+
+struct HS_CONTROL_POINT_OUTPUT
+{  
+	float4 baseTC	  : TEXCOORDN;
+	float4 screenProj : TEXCOORDN; 
+	half4  vView  	  : TEXCOORDN;
+
+	float4 vPosWS		: TEXCOORDN; 
+
+#if %_RT_SAMPLE4
+	float4 ripplesTC	: TEXCOORDN;
+#endif
+
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Apply vertex dynamic displacement - additional ocean eye candy for hispecs
+
+void ApplyVertexDisplacement( inout float4 vPos, inout v2f OUT)
+{
+	// Apply dynamic ripples displacement
+
+#if %_RT_SAMPLE4
+	SPerPassWaterParams perPassParams = GetPerPassWaterParams();
+	OUT.ripplesTC = GetWaterRipplesUvs( vPos, perPassParams );
+#endif	
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+v2f WaterVS(a2v IN)
+{
+	v2f OUT = (v2f)1; 
+	float4 vPos = IN.Position;
+	vPos.w = 1;//vPos.z; // store edge information
+
+	SWaterVolumeParams params = GetWaterVolumeParams();
+
+	float4x4 InstMatrix = cbWaterVolume.WorldMatrix;
+
+	vPos.xyz = mul( InstMatrix, float4(vPos.xyz, 1) );
+	float4 vPosOrig = vPos; 
+
+#if !%WATER_TESSELLATION_DX11 || %_RT_NO_TESSELLATION
+
+	// Apply FFT and dynamic water interaction
+	ApplyVertexDisplacement( vPos, OUT );
+
+	OUT.Position = mul(CV_ViewProjMatr, float4(vPos.xyz, 1));
+
+#endif
+
+	// Output eye/light vector
+	float3 vView = g_VS_WorldViewPos.xyz - vPos.xyz;
+
+	OUT.vView.xyz =  ( vView.xyz );
+	OUT.vView.w = sign( OUT.vView.z );
+
+	// Output projected refraction texture coordinates
+#if !%WATER_TESSELLATION_DX11 || %_RT_NO_TESSELLATION
+	// Avoid near clipping
+	if( dot(OUT.vView.xyz, OUT.vView.xyz) < params.cViewerColorToWaterPlane.y ) // this causes surface tearing near camera.
+	{
+#if %_RT_REVERSE_DEPTH
+		OUT.Position.z = ( abs(vView.z) > 0.2 ) ? OUT.Position.z : OUT.Position.w;
+#else
+		OUT.Position.z *=saturate( abs(vView.z) > 0.2 );
+#endif
+	}
+
+	OUT.screenProj.xyw = HPosToScreenTC( OUT.Position ).xyw;
+#endif
+
+	// Output refraction depth scale
+	OUT.screenProj.z = saturate( 1 - sqrt( saturate( 0.02 * OUT.screenProj.w) ) );
+
+	// Output bump layers texture coordinates
+
+	OUT.baseTC.xyzw = IN.baseTC.xyxy * float4(1, 1, 2, 2)*Tilling;
+#if %FLOW
+	OUT.baseTC += WaterFlowSpeed * g_VS_AnimGenParams.zzzz * float4(0.25, 0, 1, 0);// moves along uvs
+#endif
+
+	OUT.baseTC.zw *= DetailTilling;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////// 	
+
+	OUT.vPosWS = vPos;
+	OUT.vPosWS.w = IN.Position.z;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////// 	
+
+	return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// DX11 specifics
+
+HS_CONSTANT_DATA_OUTPUT WaterConstantsHS(InputPatch<v2f, 3> p, uint PatchID : SV_PrimitiveID )
+{
+	HS_CONSTANT_DATA_OUTPUT OUT = (HS_CONSTANT_DATA_OUTPUT)0;
+
+	// map inputs
+	float3 vWP0 = -p[0].vView.xyz+g_VS_WorldViewPos.xyz;
+	float3 vWP1 = -p[1].vView.xyz+g_VS_WorldViewPos.xyz;
+	float3 vWP2 = -p[2].vView.xyz+g_VS_WorldViewPos.xyz;
+
+	float3 vMiddle = (vWP0 + vWP1 + vWP2) / 3.0f;
+	float3 vDir = normalize(g_VS_WorldViewPos.xyz - vMiddle);
+	float3 vNormal = normalize(cross(vWP2 - vWP0, vWP1 - vWP0));
+	float fDot = dot(vNormal, vDir);
+	bool bBackFaceCull = false;//(fDot > 0.01);
+	bool bFrustumCulled = ViewFrustumCull(vWP0, vWP1, vWP2, g_VS_FrustumPlaneEquation, 5.0);
+  	
+	if (bFrustumCulled || bBackFaceCull)
+	{
+		// Set all tessellation factors to 0 if frustum cull test succeeds
+		OUT.Edges[0] = 0.0;
+		OUT.Edges[1] = 0.0;
+		OUT.Edges[2] = 0.0;
+		OUT.Inside   = 0.0;
+	}
+	else
+	{
+		// Check edges ws distance - if too big mesh needs to be pre-diced. todo: verify if we can update levels for patches
+		float fEdgeDistThreshold = 100;
+		bool bNeedsPreDicing = distance(vWP0, vWP1) > fEdgeDistThreshold || distance(vWP1, vWP2) > fEdgeDistThreshold || distance(vWP0, vWP2) > fEdgeDistThreshold;
+
+		{
+			float4 vEdgeTessellationFactors;
+
+
+			// Min and max distance should be chosen according to scene quality requirements
+			vMiddle = (p[0].vView.xyz + p[1].vView.xyz + p[2].vView.xyz) / 3.0f;
+
+
+			float fMaxFactor = 64;
+
+			float TessellationFactorEdge = 64;
+			float TessellationFactorInside = 64;
+
+			const float fMinDistance = 0;
+			const float fMaxDistance = 32;
+
+			// water volumes use higher density tessellation - require more agressive distance LOD
+			float fDistance0 = length(p[0].vView.xyz);
+			float fDistance1 = length(p[1].vView.xyz);
+			float fDistance2 = length(p[2].vView.xyz);
+			float fDistance = max(max(fDistance0, fDistance1), fDistance2);
+
+			float fTessScale = (clamp(1.0 -  (fDistance - fMinDistance)/(fMaxDistance - fMinDistance), 0.25f, 1.0f));
+			
+			float fInside = TessellationFactorInside * fTessScale;
+			float fEdge = TessellationFactorEdge * fTessScale;
+			// Tessellation level fixed by variable
+			vEdgeTessellationFactors = float4(fEdge, fEdge, fEdge, fInside);
+
+			vEdgeTessellationFactors.xyz = distance(vWP2, vWP1);
+			vEdgeTessellationFactors.x /= distance((vWP2 + vWP1) / 2, g_VS_WorldViewPos.xyz);
+			vEdgeTessellationFactors.y = distance(vWP2, vWP0);
+			vEdgeTessellationFactors.y /= distance((vWP2 + vWP0) / 2, g_VS_WorldViewPos.xyz);
+			vEdgeTessellationFactors.z = distance(vWP0, vWP1);
+			vEdgeTessellationFactors.z /= distance((vWP0 + vWP1) / 2, g_VS_WorldViewPos.xyz);
+
+			float rAvg = max( max(vEdgeTessellationFactors.x, vEdgeTessellationFactors.y),  vEdgeTessellationFactors.z) ;
+			vEdgeTessellationFactors.w = saturate(rAvg);
+			vEdgeTessellationFactors.xyz *= fEdge;
+			vEdgeTessellationFactors.w *= fInside;
+
+			// Assign tessellation levels
+			OUT.Edges[0] = clamp(vEdgeTessellationFactors.x, 1, fMaxFactor);
+			OUT.Edges[1] = clamp(vEdgeTessellationFactors.y, 1, fMaxFactor);
+			OUT.Edges[2] = clamp(vEdgeTessellationFactors.z, 1, fMaxFactor);
+			OUT.Inside   = clamp(vEdgeTessellationFactors.w, 1, fMaxFactor);
+		}
+	}
+
+	return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+[domain("tri")]
+[partitioning("fractional_odd")]
+[outputtopology("triangle_cw")]
+[outputcontrolpoints(3)]
+[patchconstantfunc("WaterConstantsHS")]
+[maxtessfactor(64)]
+HS_CONTROL_POINT_OUTPUT WaterHS(InputPatch<v2f, 3> inputPatch, uint uCPID : SV_OutputControlPointID )
+{
+  HS_CONTROL_POINT_OUTPUT OUT = (HS_CONTROL_POINT_OUTPUT)0;
+
+  // passthrough hull shader
+  OUT.baseTC = inputPatch[uCPID].baseTC;
+  OUT.screenProj = inputPatch[uCPID].screenProj;
+  OUT.vView = inputPatch[uCPID].vView;
+  OUT.vPosWS = inputPatch[uCPID].vPosWS;
+  
+#if %_RT_SAMPLE4
+  OUT.ripplesTC = inputPatch[uCPID].ripplesTC;
+#endif
+
+  return OUT;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+v2f_hs WaterCommonDS(HS_CONSTANT_DATA_OUTPUT IN,float3 BarycentricCoords,  const OutputPatch<HS_CONTROL_POINT_OUTPUT, 3> TriPatch, bool bUseDispl= true)
+{
+	v2f_hs OUT = (v2f_hs)0;
+
+	OUT.baseTC = BarycentricInterp(BarycentricCoords, TriPatch[0].baseTC, TriPatch[1].baseTC, TriPatch[2].baseTC);
+	OUT.vView = BarycentricInterp(BarycentricCoords, TriPatch[0].vView, TriPatch[1].vView, TriPatch[2].vView);
+	OUT.vPosWS = BarycentricInterp(BarycentricCoords, TriPatch[0].vPosWS, TriPatch[1].vPosWS, TriPatch[2].vPosWS);   
+
+	float4 vWorldPos = float4(-OUT.vView.xyz + g_VS_WorldViewPos.xyz, 1);
+
+	float fCamDist = length(vWorldPos.xyz - g_VS_WorldViewPos.xyz);
+	float fDisplaceAtten = saturate( fCamDist * 0.5	 );
+	fDisplaceAtten *= fDisplaceAtten;
+
+	float4 vtxDispl = 0;
+
+	// Displacement mapping for water volumes
+	if( bUseDispl )
+	{
+		vtxDispl = WaterNormalTex.SampleLevel(aniso16xWrapSState, OUT.baseTC.xy * 0.125, 0.0f).w * VertexWaveScale;
+	}
+
+#if %_RT_SAMPLE4
+	SPerPassWaterParams perPassParams = GetPerPassWaterParams();
+	OUT.ripplesTC = GetWaterRipplesUvs( vWorldPos, perPassParams );
+	float fRipplesDisp = min(0.125, GetTexture2DLod(WaterDynRipplesTex, ssMaterialTrilinearClamp, float4(OUT.ripplesTC.xy, 0, 0.5)).z);
+	vtxDispl += fRipplesDisp * OUT.ripplesTC.w ;
+#endif
+
+	vWorldPos.z += vtxDispl.z;  
+  
+	OUT.vPosWS = vWorldPos;
+
+	// Transform world position with viewprojection matrix
+	float4 HPosition = mul(CV_ViewProjMatr, float4(vWorldPos.xyz, 1));
+	OUT.Position = HPosition;
+
+	// Avoid near clipping
+	// MK: since we have soft blending with the near plane it's not needed
+	// MK: was causing completely culled triangles -> C3:DT18198
+	//if( length(OUT.vView) < 2.0 )
+	//	 OUT.Position.z *=saturate( abs(OUT.vView.z) > 0.2 );
+
+	OUT.screenProj = HPosToScreenTC(HPosition);
+	// Output refraction depth scale
+	OUT.screenProj.z = saturate( 1 - sqrt( 0.01 * OUT.screenProj.w ) );
+
+	return OUT;
+}
+
+[domain("tri")]
+v2f_hs WaterDS(HS_CONSTANT_DATA_OUTPUT IN,float3 BarycentricCoords : SV_DomainLocation, const OutputPatch<HS_CONTROL_POINT_OUTPUT, 3> TriPatch)
+{
+	return WaterCommonDS(IN, BarycentricCoords, TriPatch);
+}
+
+[domain("tri")]
+v2f_hs WaterReflDS(HS_CONSTANT_DATA_OUTPUT IN,float3 BarycentricCoords : SV_DomainLocation, const OutputPatch<HS_CONTROL_POINT_OUTPUT, 3> TriPatch)
+{
+	return WaterCommonDS(IN, BarycentricCoords, TriPatch, false);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+half3 BumpGen( in v2f_hs IN, float2 vParalaxOffset, inout half cSmoothness, inout half4 cAlbedo)
+{
+	half3 bumpNormal = half3(0, 0, 1);
+
+	float4 vFlow = 0;
+	float4 cFlowMap = 1;
+	half2 vFlowOffsets = 0;
+
+	SWaterVolumeParams params = GetWaterVolumeParams();
+
+#if %FLOW_MAP
+	float2 vLenghts = abs(params.vBBoxMax.xy - params.vBBoxMin.xy);
+	cFlowMap = GetDetailTex(flowTex, float2(params.vBBoxMin.x - IN.vPosWS.x, IN.vPosWS.y - params.vBBoxMin.y) / vLenghts).xyxy;
+	#if %FLOW_MAP_STRENGTH
+		float fFlowMapStrength = cFlowMap.b;
+	#endif
+
+	#if %FLOW_MAP_STRENGTH
+		vFlow *= fFlowMapStrength;
+		float fFlowAnimOffs = GetTexture2D(FlowOffTex, ssMaterialTrilinearWrap, IN.vPosWS.xy * FlowOffsetTiling).x * FlowOffsetStrength;
+		vFlowOffsets = frac(CV_AnimGenParams.zz * WaterFlowSpeed + float2(0.0, 0.5h) + fFlowAnimOffs);
+	#else
+		vFlowOffsets = frac(CV_AnimGenParams.zz * WaterFlowSpeed + float2(0.0, 0.5h));
+	#endif
+	vFlow = vFlow * vFlowOffsets.xxyy * WaterFlowMapScale;
+#endif
+
+	// hi frequency
+	float4 tcDetailBase = (IN.baseTC.zwzw * 0.5 / (Tilling * DetailTilling)) + vFlow.xyzw;
+	tcDetailBase *= 2.0  * Tilling * DetailTilling;
+	tcDetailBase += vParalaxOffset.xyxy;
+
+	// low frequency
+	float4 tcBase0 = (IN.baseTC.xyxy/Tilling) + vFlow.xyxy;
+	tcBase0 *= float4(0.25, 0.25, 1, 1) * Tilling;
+
+	float4 tcBase1 = (IN.baseTC.xyxy/Tilling) + vFlow.zwzw;
+	tcBase1 *= float4(0.25, 0.25, 1, 1) * Tilling;
+
+	bumpNormal.xy = WaterNormalTex.Sample(aniso16xWrapSState, tcDetailBase.xy).xy * DetailNormalsScale;
+	bumpNormal   += WaterNormalTex.Sample(aniso16xWrapSState, tcBase0.xy + vParalaxOffset.xy).xyz;
+	bumpNormal   += WaterNormalTex.Sample(aniso16xWrapSState, tcBase0.zw + vParalaxOffset.xy).xyz;
+
+#if %FLOW_MAP
+	float3 bumpNormal2 = 0;
+	
+	bumpNormal2.xy = WaterNormalTex.Sample(aniso16xWrapSState, tcDetailBase.zw).xy * DetailNormalsScale;
+	bumpNormal2   += WaterNormalTex.Sample(aniso16xWrapSState, tcBase1.xy + vParalaxOffset.xy).xyz;
+	bumpNormal2   += WaterNormalTex.Sample(aniso16xWrapSState, tcBase1.zw + vParalaxOffset.xy).xyz;
+	
+	half fLerpFlow = abs( 0.5h - vFlowOffsets.x) * 2.h;
+	bumpNormal.xyz = lerp(bumpNormal.xyz, bumpNormal2.xyz, fLerpFlow);	
+#endif
+
+	bumpNormal.xy *= NormalsScale;
+
+#if %SPECULAR_MAP
+	// important step - use gloss map to break reflection repetitive look
+	// NOTE: on water, specular map slot actually contains the smoothness map
+	cSmoothness  = GetSmoothnessTex(WaterSmoothnessTex, tcBase0.zw * GlossMapTilling  +vParalaxOffset.xy*0.05).x;
+	cSmoothness += GetSmoothnessTex(WaterSmoothnessTex, tcBase0.zw * GlossMapTilling*8+vParalaxOffset.xy*0.05).x;
+
+	#if %FLOW_MAP 
+		half cSmoothness2;
+	
+		cSmoothness2  = GetSmoothnessTex(WaterSmoothnessTex, tcBase1.zw * GlossMapTilling  +vParalaxOffset.xy*0.05).x;
+		cSmoothness2 += GetSmoothnessTex(WaterSmoothnessTex, tcBase1.zw * GlossMapTilling*8+vParalaxOffset.xy*0.05).x;
+
+		cSmoothness   = lerp(cSmoothness, cSmoothness2, fLerpFlow);
+	#endif
+	
+	cSmoothness *= 0.5f;
+	cSmoothness = 1.0f - pow(1.0f - cSmoothness, GlossMapExponent); // TODO: Remove
+	cSmoothness = saturate(cSmoothness * GlossMapScale + GlossMapBias);
+#endif
+
+	cSmoothness *= MatSpecColor.w;
+
+#if %DECAL_MAP
+	float4 tcDiff = tcBase0.zwzw * DecalTilling * half4(1,1,2,2); 
+	half3 vDecalNormal = GetNormalMap(decalNormalTex, tcDiff + bumpNormal.xy * 0.04h);
+	vDecalNormal.xy *= NormalsScale;
+
+	tcDiff.xyzw += (bumpNormal.xyxy + vDecalNormal.xyxy) * 0.1h;
+	cAlbedo  = GetDecalTex(decalTex, tcDiff.xy);  
+	cAlbedo += GetDecalTex(decalTex, tcDiff.zw);
+	
+	#if %FLOW_MAP
+		tcDiff = tcBase1.zwzw * DecalTilling * half4(1,1,2,2); 
+		tcDiff.xyzw += (bumpNormal.xyxy + vDecalNormal.xyxy) * 0.1h;
+	
+		half4 cAlbedo2;
+		cAlbedo2  = GetDecalTex(decalTex, tcDiff.xy);
+		cAlbedo2 += GetDecalTex(decalTex, tcDiff.zw);
+		cAlbedo = lerp(cAlbedo, cAlbedo2, fLerpFlow);
+	#endif
+	
+	cAlbedo *= 0.5h;
+	cAlbedo.xyz *= MatDifColor.xyz;
+
+	float fGlossVariation = saturate(dot(cSmoothness, 1.h) * 1.5h);
+	half fBlendFactor = DecalStrength * pow(cFlowMap.w * cAlbedo.w, DecalFalloff);
+	fBlendFactor *= fGlossVariation;
+	cAlbedo.w = saturate(fBlendFactor);
+
+	bumpNormal = lerp(bumpNormal, vDecalNormal, cAlbedo.w);
+#endif
+
+#if %_RT_SAMPLE4
+	// dynamic ripples
+	half2 cRipples = GetTexture2D(WaterDynRipplesTex, ssMaterialTrilinearClamp, IN.ripplesTC.xy).xy;
+	#if %WATER_TESSELLATION_DX11 && !%_RT_NO_TESSELLATION
+		bumpNormal.xy -= cRipples * IN.ripplesTC.w;// displacement outwards
+	#else
+		bumpNormal.xy += cRipples * IN.ripplesTC.w;
+	#endif
+#endif
+
+#if %_RT_OCEAN_PARTICLE
+	// Fetch rain sample - todo, remove funky 300/tilling after shipping...
+	bumpNormal.xy += GetXYNormalMap(RainRipplesTex, ssMaterialBilinear, IN.baseTC.xy * RainTilling * (400.0h / Tilling)) * 25.0h; 
+#endif
+
+	return normalize( bumpNormal );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float2 GetParalaxOffset(in v2f_hs IN, half3 vView)
+{	
+	float4 tcBaseVectorized = IN.baseTC.xyxy * float4(0.25, 0.25, 1, 1) ; //float4(0.05, 0.1, 0.5, 0.25);
+
+	const half GradientScale = 0.15;
+	const half HeightScale = 0.1;
+
+	// adds 0.8 ms ....
+	//vView.xy /= vView.z;
+
+	// Compute the height at this location
+	float4 height = WaterNormalTex.Sample(aniso16xWrapSState, tcBaseVectorized.xy);
+	height.xyz = GradientScale * height;
+	height.w = HeightScale * height.w;
+
+	// Compute the offset      
+	float2 vParalax = vView.xy  * height.w + height.xy;
+
+	// Compute the height at this location
+	height = WaterNormalTex.Sample(aniso16xWrapSState, tcBaseVectorized.zw + vParalax);
+	height.xyz = GradientScale * height;
+	height.w = HeightScale * height.w;
+
+	// Compute the offset     
+	vParalax += vView.xy * height.w+ height.xy;
+
+#if %_RT_SAMPLE4
+	// Finally add water ripples to paralax offset
+	half fSimSize = WATER_RIPPLES_SIM_GRID_SIZE;
+	half4 cRipples = GetTexture2D(WaterDynRipplesTex, ssMaterialTrilinearClamp, IN.ripplesTC.xy + vParalax / fSimSize);
+	cRipples.xy = GradientScale * cRipples - (GradientScale *0.5h);
+	cRipples.z = HeightScale * cRipples.z;
+	cRipples *= IN.ripplesTC.w;
+	vParalax +=  4 * (vView.xy * cRipples.z + cRipples.xy);
+#endif
+
+	return vParalax;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SunDiffuse(half fNdotL, inout half3 cDiffuseAcc)
+{
+	cDiffuseAcc = (g_PS_SunColor.xyz * saturate(fNdotL) + g_PS_SkyColor.xyz);
+}
+
+void SunSpecular(half fNdotL, half3 vNormal, half3 vView, half cSmoothness, inout half3 cSpecularAcc)
+{
+	half3 R = reflect(-vView, vNormal);
+	half LdotR = pow(saturate(dot(g_PS_SunLightDir.xyz, R) ), 80);
+
+	half4 GlossinessK;
+	GlossinessK.xy = half2(4.0, 0.5) * GlossToSpecExp255(MatSpecColor.w) * cSmoothness;
+	GlossinessK.zw = GlossinessK.xy * ONE_OVER_TWO_PI + ONE_OVER_PI;
+
+	// 2 spec lobes for ocean	
+	half fSpec = dot(GlossinessK.zw, half2( pow(LdotR , GlossinessK.x), pow(LdotR , GlossinessK.y))  );
+	
+	half3 cSunSpecular = fNdotL * fSpec; 
+
+	// Add sun specular term
+	cSpecularAcc.xyz += cSunSpecular.xyz;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include "TiledShading.cfi"
+
+// TODO: drop these and use the one of tiled shading instead
+Buffer<uint>                             Water_TileLightMask : register(t17);
+StructuredBuffer<STiledLightShadeInfo>   Water_TiledLightsShadeInfo : register(t18);
+//StructuredBuffer<STiledClipVolumeInfo> Water_TiledClipVolumeInfo : register(t19);
+TextureCubeArray<float4>                 Water_SpecCubeArray : register(t20);
+//TextureCubeArray<float4>               Water_DiffuseCubeArray : register(t21);
+//Texture2DArray<float4>                 Water_SpotTexArray : register(t22);
+//Texture2D<float4>                      Water_ShadowPool : register(t23);
+//Texture2D<float4>                      Water_RandomRotations : register(t24);
+//Texture2D<float4>                      Water_EnvironmentBRDF : register(t40);
+
+float3 GatherCubemapSpecular(float2 screenTC, float3 worldPos, float3 normal, float smoothness)
+{
+	uint2 numTiles = ceil(CV_ScreenSize.xy / float2(TILED_SHADING_TILE_SIZE_X, TILED_SHADING_TILE_SIZE_Y));
+	uint2 tileIdx = uint2(screenTC.x * numTiles.x, screenTC.y * numTiles.y);
+	uint bufferIdx = (tileIdx.y * numTiles.x + tileIdx.x) * 8;
+	
+	int lightIndex = -1;
+	uint maskIndex = 0;
+	uint curMask = Water_TileLightMask[bufferIdx];
+	
+	float probeWeightSum = 0;
+	float3 specularAcc = 0;
+	float3 viewVec = -normalize(worldPos);
+	float specCubeLod = TILED_SHADING_SPECPROBE_MAXMIP - smoothness * TILED_SHADING_SPECPROBE_MAXMIP;
+	
+	[loop]
+	for (;;)
+	{
+		while (maskIndex < 8)
+		{
+			lightIndex = GetNextTileLightIndex(curMask, lightIndex);
+			if (lightIndex >= 0) break;
+			else curMask = Water_TileLightMask[++maskIndex + bufferIdx];
+		}
+		
+		[branch]
+		if (lightIndex < 0)
+			break;
+			
+		if (Water_TiledLightsShadeInfo[lightIndex].lightType == LIGHT_TYPE_PROBE && probeWeightSum < 1)
+		{
+			STiledLightShadeInfo light = Water_TiledLightsShadeInfo[lightIndex];
+			
+			// Compute attenuation for box
+			float3 lightVec = light.posRad.xyz - (worldPos + GetWorldViewPos());
+			float3 tmpLightVec;
+			tmpLightVec.x = dot(light.projectorMatrix[0].xyz, lightVec);
+			tmpLightVec.y = dot(light.projectorMatrix[1].xyz, lightVec);
+			tmpLightVec.z = dot(light.projectorMatrix[2].xyz, lightVec);
+			
+			[branch] if (abs(tmpLightVec.x) < 1 && abs(tmpLightVec.y) < 1 && abs(tmpLightVec.z) < 1)  // Required for correctness and performance
+			{
+				tmpLightVec = MapCubeToSphere(tmpLightVec);
+
+				float attenuation = GetAttenuation(tmpLightVec, 1, true, light.attenuationParams.y) * light.attenuationParams.x;
+				float probeWeight = (1 - probeWeightSum) * attenuation;
+				uint4 resIndexClamps = GetResourceIndexAndMipClamps(light.resIndex);
+		
+				// Specular
+				float tmpGloss = 0;
+				float3 tmpReflVec = reflect(-viewVec, normal);
+				CubemapBoxParallaxCorrection(tmpReflVec, lightVec, light.shadowMatrix[0].xyz, light.shadowMatrix[1].xyz, tmpGloss);
+				float4 specularProbe = Water_SpecCubeArray.SampleLevel(ssMaterialTrilinearClamp, float4(tmpReflVec, resIndexClamps.x), max(resIndexClamps.z, specCubeLod) );
+				specularAcc += specularProbe.rgb * light.color.rgb * light.color.a * probeWeight;
+				
+				probeWeightSum += probeWeight;
+			}
+		}
+		else if (Water_TiledLightsShadeInfo[lightIndex].lightType > LIGHT_TYPE_PROBE)
+		{
+			break;
+		}
+	}
+
+	return specularAcc;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+pixout WaterPS(v2f_hs IN)
+{
+	IN.screenProj.xy = MapViewportToRaster(IN.screenProj.xy/IN.screenProj.w) * IN.screenProj.w;
+
+	pixout OUT = (pixout) 1;
+
+	SWaterVolumeParams params = GetWaterVolumeParams();
+	SVolumetricFogParams volFogParams = GetVolumetricFogParams();
+	VolumetricFogSampling vfs = GetVolumetricFogSampling();
+
+#if %DEBUG_FLOW_MAP
+	float2 vLenghts = abs(params.vBBoxMax.xy - params.vBBoxMin.xy);
+	OUT.Color= GetDetailTex( flowTex, float2(params.vBBoxMin.x - IN.vPosWS.x, IN.vPosWS.y - params.vBBoxMin.y) / vLenghts );
+	return OUT;
+#endif
+   
+#if %_RT_DEBUG0 || %_RT_DEBUG1 || %_RT_DEBUG2 || %_RT_DEBUG3
+	DebugOutput(OUT.Color, IN.baseTC);
+	return OUT;
+#endif
+
+	half3 vView = normalize(IN.vView.xyz);
+	
+#if 1
+	// Generate normal map from 4 normal map layers + paralax
+	float2 vParalaxOffset = GetParalaxOffset( IN, vView );  
+	half  cSmoothness = (half)  1;
+	half4 cAlbedo = (half4) 1;
+	half3 cReflectance = MatSpecColor.rgb; // H2O Water: float3(0.020197,0.020419,0.020828)
+	half3 vNormal = BumpGen( IN, vParalaxOffset, cSmoothness, cAlbedo);
+#else
+	half  cSmoothness = MatSpecColor.w;
+	half4 cAlbedo = (half4) 1;
+	half3 cReflectance = half3(0.020197,0.020419,0.020828);
+	half3 vNormal = half3(0, 0, 1);
+#endif
+
+	half fNdotE =  (dot( vView.xyz, vNormal ) ) * IN.vView.w; // Get ( fNdotE )*sign(vView.z) - we want internal reflections as well - 
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Water edge softness
+
+	float2 screenTC = IN.screenProj.xy / IN.screenProj.w;
+
+ 	float sceneDepth = wvGetLinearDepthScaled(screenTC.xy);
+ 	half softIntersect = saturate( SoftIntersectionFactor * (sceneDepth - IN.screenProj.w) );	
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Get refraction and apply refraction masking
+	const half RefractionBumpScale = NormalsFlatten;
+
+	float fFogDepth = sceneDepth;
+	float2 refrNewst = screenTC.xy;
+
+	float2 refrTC = GetScaledScreenTC(vNormal.xy * RefractionBumpScale * softIntersect * IN.screenProj.z);
+
+	#if %WATER_TESSELLATION_DX11 && !%_RT_NO_TESSELLATION
+		float3 depthRefr = float3( // Fake a bit of chromatic abberation (wave-length shift based on angle of refraction)
+			wvGetLinearDepthScaled(refrNewst + refrTC.xy*1.025),
+			wvGetLinearDepthScaled(refrNewst + refrTC.xy*1.000),
+			wvGetLinearDepthScaled(refrNewst + refrTC.xy*0.985)
+		);
+	#else
+		float3 depthRefr = float3(
+			wvGetLinearDepthScaled(refrNewst + refrTC.xy).xxx
+		);
+
+		// TODO_VR
+		//float3 depthRefr = float3( GetLinearDepthScaled( sceneDepthSampler, NVMultiRes_MapLinearToMultiRes(refrNewst + refrTC.xy) * MultiResUVScaleBias.xy + MultiResUVScaleBias.zw).xxx);
+	#endif
+
+	// Apply refraction mask to bump offsets
+	half3 fRefractionMask =  (IN.screenProj.www <depthRefr.xyz );
+	//refrNewst += refrTC * fRefractionMask;
+
+	// remove for more accurate fog depth computation (adds 0.3ms) on ocean
+	fFogDepth = lerp(sceneDepth, depthRefr, fRefractionMask);
+
+	#if %WATER_TESSELLATION_DX11 && !%_RT_NO_TESSELLATION
+		half3 // Fake a bit of chromatic abberation (wave-length shift based on angle of refraction)
+		refractColor   = DecodeHDRBuffer( GetTexture2D(refractionTex, ssMaterialTrilinearClamp, refrNewst + refrTC * fRefractionMask.x *1.025) ).xyz;
+		refractColor.y = DecodeHDRBuffer( GetTexture2D(refractionTex, ssMaterialTrilinearClamp, refrNewst + refrTC * fRefractionMask.y *1.000) ).y;
+		refractColor.z = DecodeHDRBuffer( GetTexture2D(refractionTex, ssMaterialTrilinearClamp, refrNewst + refrTC * fRefractionMask.z *0.985) ).z;	
+	#else
+		half3
+		refractColor   = DecodeHDRBuffer( GetTexture2D(refractionTex, ssMaterialTrilinearClamp, refrNewst + refrTC * fRefractionMask.x) ).xyz;
+	#endif
+	refractColor /= PS_HDR_RANGE_ADAPT_MAX;
+
+#if %_RT_FOG && %_RT_VOLUMETRIC_FOG
+	half3 fogColor = 0;
+	float len = length(IN.vView.xyz);
+	VolumetricFogTexcoord vtc = GetVolumetricFogTexcoordParamByScreenProj(volFogParams, IN.screenProj, false, len);
+	float4 vf = GetVolumetricFogValueJittered(volFogParams, vfs, vtc).xyzw;
+	half4 globalFogColor = GetVolumetricFogAnalyticalColor( volFogParams, vfs, -IN.vView.xyz, len );
+	ApplyVolumetricFog(volFogParams, vf, globalFogColor, vtc, fogColor.xyz);
+
+	// subtract fog color from refract color.
+	half3 refractColorWithFog = refractColor;
+	refractColor -= fogColor;
+#endif
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////    
+	// Get reflection color
+	const half ReflectionBumpScale = NormalsFlatten;
+	
+	half3 vDir = g_VS_WorldViewPos - IN.vPosWS.xyz;
+	half3 vReflN = lerp(half3(0,0,1), vNormal, ReflectionBumpScale);
+	half3 vRefl = reflect(vDir, vReflN );
+	half3 vReflNorm = normalize( vRefl );
+	
+#if %SSREFL && %PBR
+	float2 reflNewst = screenTC.xy;
+	float2 reflTC = (vNormal.xy) * ReflectionBumpScale * softIntersect * IN.screenProj.z;
+	float depthRefl = wvGetLinearDepthScaled(reflNewst + reflTC.xy).x;
+	// TODO_VR
+	//float depthRefl = GetLinearDepthScaled( sceneDepthSampler, NVMultiRes_MapLinearToMultiRes(reflNewst + GetScaledScreenTC(reflTC.xy)) * MultiResUVScaleBias.xy + MultiResUVScaleBias.zw).x;
+
+	// TODO: maybe m_CurDownscaleFactor isn't needed any more. Can I remove this? 
+	reflTC *= float2(CV_HPosScale.x, 1);
+	reflTC.y = 1.0 - (1.0 - reflTC.y)*CV_HPosScale.y;
+
+	// Apply ssrefl mask to bump offsets
+	half fReflectionMask =  (IN.screenProj.w <depthRefl );
+
+	float4 rayStart = mul( CV_ViewProjMatr, float4( IN.vPosWS.xyz, 1 ) ); 
+	rayStart /= rayStart.w;
+	float4 rayEnd = mul( CV_ViewProjMatr, float4( IN.vPosWS.xyz + vRefl, 1 ) );
+	rayEnd /= rayEnd.w;
+
+	rayStart.xy = GetScaledScreenTC(normalize(rayEnd.xy - rayStart.xy));
+		
+	// number of mip-levels in reflection texture, don't pick the very lowest level though
+	half fGlossLimit = floor(log2(float(CV_ScreenSize.y)));
+	half fGlossParams = clamp(fGlossLimit - 1.5f, 0.0f, fGlossLimit);
+	// the longer the ray the more blur it down (fakes super-sampling)
+	half fGlossDiffusion = 1.0f;// + 0.5f * 0.125f * log2(1.0f + length(rayStart.xy));
+	// The reflection texture is not GGX integrated, but instead regularly mipmapped, try to fake a bit of GGX correctness
+	half fGlossStrength = pow(cSmoothness, 4.0f);
+
+	half fGlossinessLOD = (1.0f - (fGlossStrength / fGlossDiffusion)) * fGlossParams;
+
+//	half3 cSpecularAcc = reflectionTex.SampleGrad(aniso16xClampSState, reflNewst + reflTC * fReflectionMask, rayStart.xy * fGlossinessLOD * CV_ScreenSize.w * 64, float2(0,0));
+	half3 cSpecularAcc = reflectionTex.SampleLevel(aniso16xClampSState, reflNewst + reflTC * fReflectionMask, fGlossinessLOD);
+	// TODO_VR
+	//half3 cSpecularAcc = tex2Dgrad(ReflSampler, NVMultiRes_MapLinearToMultiRes(reflNewst + reflTC * fReflectionMask) * MultiResUVScaleBias.xy + MultiResUVScaleBias.zw, rayStart.xy * fGlossinessLOD * PS_ScreenSize.w * 64, float2(0,0));
+#elif %SSREFL
+	// Add screenspace reflections
+	half fGlossParams = log2( CV_ScreenSize.y * 0.5 ) - 4.0;
+	half fGlossinessLod = (fGlossParams -  cSmoothness * MatSpecColor.w * fGlossParams);
+
+	float2 reflNewst = screenTC.xy;
+	float2 reflTC = (vNormal.xy) * ReflectionBumpScale * 0.5* softIntersect * IN.screenProj.z;
+	float depthRefl = wvGetLinearDepthScaled(reflNewst + GetScaledScreenTC(reflTC.xy)).x;
+	// TODO_VR
+	//float depthRefl = GetLinearDepthScaled( sceneDepthSampler, NVMultiRes_MapLinearToMultiRes(reflNewst + GetScaledScreenTC(reflTC.xy)) * MultiResUVScaleBias.xy + MultiResUVScaleBias.zw).x;
+
+	// TODO: maybe m_CurDownscaleFactor isn't needed any more. Can I remove this? 
+	reflTC *= float2(CV_HPosScale.x, 1);
+	reflTC.y = 1.0 - (1.0 - reflTC.y)*CV_HPosScale.y;
+
+	// Apply ssrefl mask to bump offsets
+	half fReflMask =  (IN.screenProj.w <depthRefl );
+
+	float4 rayStart = mul( CV_ViewProjMatr, float4( IN.vPosWS.xyz, 1 ) ); 
+	rayStart /= rayStart.w;
+	float4 rayEnd = mul( CV_ViewProjMatr, float4( IN.vPosWS.xyz + vReflNorm, 1 ) );
+	rayEnd /= rayEnd.w;
+
+	rayStart.xy = GetScaledScreenTC(normalize(rayEnd.xy - rayStart.xy));
+
+	half3 cSpecularAcc = reflectionTex.SampleGrad(aniso16xClampSState, reflNewst + reflTC * fReflMask, rayStart.xy * fGlossinessLod * CV_ScreenSize.w * 32, float2(0,0)).rgb;
+	// TODO_VR
+	//half3 cSpecularAcc = tex2Dgrad(ReflSampler, NVMultiRes_MapLinearToMultiRes(reflNewst + reflTC * fReflMask) * MultiResUVScaleBias.xy + MultiResUVScaleBias.zw, rayStart.xy * fGlossinessLod * PS_ScreenSize.w * 64, float2(0,0)).rgb;
+
+	cSpecularAcc /= PS_HDR_RANGE_ADAPT_MAX;
+#else
+	half3 cSpecularAcc = GatherCubemapSpecular(screenTC, IN.vPosWS.xyz - GetWorldViewPos(), vNormal, cSmoothness);
+#endif
+
+#if %PBR
+	// Apply Fresnel (NOTE: prevent smoothness texture to affect the fresnel curve, as this attenuates flat angle reflectivity)
+	cSmoothness = MatSpecColor.w;
+#endif
+
+#if 0
+	// Fresnel for rough materials, it's not really working for water
+	float2 envBRDF = Water_EnvironmentBRDF.SampleLevel(ssMaterialTrilinear, float2(fNdotE, cSmoothness), 0).xy;
+	float3 envFresnel = lerp(envBRDF.xxx, envBRDF.yyy, cReflectance);
+#elif %PBR
+	float3 envFresnel = GetEnvmapFresnel(cReflectance, cSmoothness, fNdotE);
+#else
+	float  envFresnel = GetFresnel(fNdotE, 0.05, 5.0);
+#endif
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Analytical Sun
+
+	half fNdotL = (dot(vNormal.xyz, g_PS_SunLightDir.xyz) );
+	
+	// TODO: support lights with TiledForward+ instead of just the sun
+	half3 cSunDiffuse = 0.0f;
+	half3 cSunSpecular = 0.0f;
+	
+#if %SUN_SPECULAR && %PBR
+	{
+		float3 lightVec = g_PS_SunLightDir.xyz;
+		float3 lightVecAreaSpec = g_PS_SunLightDir.xyz * g_PS_SunLightDir.w;
+		
+		float3 specTerm = AreaLightGGX( vNormal, -normalize(IN.vPosWS.xyz - GetWorldViewPos()), lightVecAreaSpec, cSmoothness, cReflectance, (float4x4)0, AREA_LIGHT_SPHERE);
+		
+		cSunSpecular = g_PS_SunColor.a * specTerm * fNdotL * g_PS_SunColor.rgb;
+	}
+#elif %SUN_SPECULAR
+	SunSpecular(saturate(fNdotL), vNormal, vView, cSmoothness, cSunSpecular);
+#endif
+	
+	SunDiffuse(fNdotL, cSunDiffuse);
+
+	cSpecularAcc += cSunSpecular;
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Compute ocean fog
+
+	float volumeDepth = max( fFogDepth  - dot( IN.vView.xyz, CV_CameraFrontVector.xyz ), 0 );  
+	half waterVolumeFog = exp2( -params.cFogColorDensity.w * volumeDepth / dot( vView.xyz, CV_CameraFrontVector.xyz ) );  
+	refractColor = lerp(params.cFogColorDensity.xyz, refractColor, saturate(waterVolumeFog) );  
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Final compose refraction/reflection/specular based on fresnel plus fog blend
+
+	// Set world soft intersection * camera soft intersection (looks nice but disabled, since costs 0.2 ms)
+	half fCameraSoftIsec = saturate((IN.screenProj.w - 0.33) );
+	half fA = softIntersect * fCameraSoftIsec;
+	
+#if !%PBR
+	half3 cFinal = lerp(refractColor, cSpecularAcc, envFresnel * fA );
+#else
+	half3 cFinal = refractColor;
+#endif
+
+#if %FOAM 
+	half  cFoamThreshold = cSmoothness * 2 - 1;  // reuse gloss for masking edges
+	half3 cFoam = FoamTex.Sample(ssMaterialTrilinear, IN.baseTC.xy * FoamTilling + vNormal.xy * 0.1f).x;
+
+	half fFoamSoftIntersect = saturate( FoamSoftIntersectionFactor * (sceneDepth - IN.screenProj.w) ); // -0.25 => to avoid foam on first person arms, looks ugly
+
+	// Blend out edges in interesting way
+	cFoam = cFoam * saturate( -fFoamSoftIntersect*(1+cFoamThreshold)+cFoam );	
+	cFoam = cFoam * saturate(fFoamSoftIntersect -  fFoamSoftIntersect* fFoamSoftIntersect );
+	cFoam *= saturate(FoamAmount);
+
+#if !%PBR
+	cFoam *= cSunDiffuse;
+#endif
+	
+#if %DECAL_MAP
+	// Apply blended color to foam for consistency.
+	cFoam *= cAlbedo.xyz;
+#endif
+
+	cFinal += cFoam;
+#endif
+
+#if %DECAL_MAP
+#if !%PBR
+	cAlbedo.xyz = (cAlbedo.xyz * cSunDiffuse + cSpecularAcc) * MatDifColor;
+#endif
+	
+	// light diffuse and apply.
+	cFinal.xyz = lerp(cFinal, cAlbedo, cAlbedo.w * softIntersect);
+#endif
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// BRDF
+
+#if %PBR
+	// Apply albedo
+	float3 surfAlbedo = cFinal.rgb;
+	surfAlbedo *= saturate( 1 - GetLuminance( cReflectance ) );  // Simple energy conservation between specular and diffuse
+	
+	float3 finalCol = cSunDiffuse * surfAlbedo + cSpecularAcc * envFresnel;
+	finalCol = lerp(refractColor, finalCol, fA);
+#else
+	float3 finalCol = cFinal;
+#endif
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	// Compute above-ocean/air fog
+#if %_RT_FOG
+#if !%_RT_VOLUMETRIC_FOG
+	SFogParams fogParams = GetFogParams();
+	#if %_RT_SAMPLE5
+		// Read volumetric shadows and apply to the global fog.
+		SVolumetricFogShadowParams volFogShadow = GetVolumetricFogShadowParams();
+		const float volFogShadowContrib = volFogShadowTex.Sample(ssMaterialTrilinear, screenTC).g;
+		const float2 volFogShadowContribSunAmb = saturate(volFogShadowContrib * volFogShadow.volFogShadowDarkeningSunAmb.xz + volFogShadow.volFogShadowDarkeningSunAmb.yw);
+		half4 localFogColor = GetVolumetricFogColor(fogParams, IN.vPosWS.xyz, -IN.vView, volFogShadowContribSunAmb.x, volFogShadowContribSunAmb.y);
+		localFogColor.rgb = lerp(localFogColor.rgb * volFogShadow.volFogShadowDarkening.x, localFogColor.rgb, volFogShadowContrib);
+	#else
+		half4 localFogColor = GetVolumetricFogColor( fogParams, IN.vPosWS.xyz );
+	#endif
+
+	finalCol = lerp( localFogColor.xyz , finalCol, saturate( localFogColor.w ) );
+#else
+	ApplyVolumetricFog(volFogParams, vf, globalFogColor, vtc, finalCol);
+#endif
+#endif
+
+	OUT.Color.xyz = finalCol * PS_HDR_RANGE_ADAPT_MAX;
+
+	return OUT;
+}
+
+//////////////////////////////// technique ////////////////
+
+technique General
+<
+	string Script = 
+#if %SSREFL
+	"TechniqueWaterRefl=WaterReflPass;"
+#endif
+	"TechniqueWaterCaustic=WaterCausticPass;"
+>
+{
+	pass p0
+	{
+		ZEnable = true;
+		ZFunc = LEqual;
+		CullMode = None; 
+		ZWriteEnable = false;
+		IgnoreMaterialState = true;
+
+		VertexShader = WaterVS() WaterSurfaceVS;
+
+#if %WATER_TESSELLATION_DX11
+		HullShader   = WaterHS() WaterSurfaceHS;
+		DomainShader = WaterDS() WaterSurfaceDS;
+#endif
+
+		GeometryShader = $AutoGS_MultiRes();
+		PixelShader = WaterPS() WaterSurfacePS;  
+	}
+}
+
+// Consider merging these two to a global file, something like "WaterPreprocess.cfi"
+#include "WaterReflectionsPass.cfi"
+#include "WaterCausticsPass.cfi"
+
+
+/////////////////////// eof ///

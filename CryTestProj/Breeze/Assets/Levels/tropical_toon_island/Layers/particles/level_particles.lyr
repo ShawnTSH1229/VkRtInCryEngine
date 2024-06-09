@@ -1,0 +1,1688 @@
+<ObjectLayer>
+ <Layer Name="level_particles" FullName="particles/level_particles" GUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Hidden="0" Frozen="0" Expanded="0" Type="0" Exportable="1" ExportLayerPak="1" DefaultLoaded="0" HavePhysics="1" IsDefaultColor="1" Color="4671303" Timestamp="1633617072">
+  <LayerObjects>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="012a6578-1bba-27e6-d757-7b2c7cf843b1" Name="PFX_FallingLeavesPalm-08" Pos="988.08734,1076.1978,50.451778" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="d6d9acf4-b0ab-891a-139f-befea79bda28" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="804ea201-08dd-39f3-6fac-46859d3896eb" Name="PFX_FallingLeavesPalm-05" Pos="1087.7357,1058.4681,57.328514" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="43bb88af-6e21-6973-22fe-d2ba62c59dae" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="e7fbb2c1-bfc9-7032-88d8-5d27667de784" Name="PFX_FallingLeavesPalm-07" Pos="999.92859,1048.3612,50.451778" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="3530db6d-acc4-280b-17e1-13c6cc5bbc85" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="18f287e2-1435-0aa9-d4a3-b026606bd497" Name="PFX_WindLines-02" Pos="1011.245,1139.6925,44.350414" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="f3441c53-7f20-9509-a134-7debd95cf228" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="a57cde2c-395d-13da-c68b-aff2343ed66a" Name="PFX_SeagullCircleGroup-05" Pos="1244.821,966.80383,119.18452" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="47f6b376-672a-fd2b-3b19-8d88ab77af45" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/birds/seagull_group_distance_circle.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="95a4df6c-6e48-5377-a671-05fa954e86bc" Name="PFX_SeagullCircleGroup-04" Pos="1244.821,1110.127,119.18452" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="afb46213-97d0-bece-f7d9-aaf06df8db63" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/birds/seagull_group_distance_circle.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="a9cc989d-b1b0-7432-ca7b-7a2c21cf2f22" Name="PFX_Flies-02" Pos="968.4989,1022.3303,39.316273" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="1ba0a3e7-0db1-f544-fddb-a687fb56e65f" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/flies_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="7555ecfc-1f24-7af7-48b4-8c50b7367de1" Name="PFX_FireflyGroup-03" Pos="1087.7582,1150.5786,46.659039" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="1d6f5df5-ae7a-377a-4847-64cae1e692e8" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/firefly_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="df6a7d9e-2c08-1f87-ccee-37cc79a82bda" Name="PFX_FallingLeavesPalm-19" Pos="1057.1583,1178.6057,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="760a64a1-563e-4237-786c-6f405cc1223b" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="2150ada3-a6cc-3180-a8cd-84ce05dcaa54" Name="PFX_FallingLeavesPalm-24" Pos="1054.3435,1150.1799,54.708813" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="5a4bb115-deb1-6657-0237-c85e2e337fd7" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_trees.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="d900b8d0-dba4-6e81-97cb-ed8f624e3b00" Name="PFX_WindLines-09" Pos="1160.4653,1173.5571,43.21891" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="6621f0f9-61ef-dda7-1d39-a4dcf821c67b" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="e962cb1a-8243-d7cc-cffb-84215fe8fc26" Name="PFX_FallingLeavesPalm-02" Pos="1082.0239,1120.3868,57.328514" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="a9eea969-ea36-fdab-3c03-85aca483dee4" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="4dd052e4-7b5a-dd50-d3a2-ebaf9ee331fd" Name="PFX_FallingLeavesPalm-26" Pos="1076.1714,1128.3646,61.462341" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="4a81ab7b-00a8-3306-0345-883227f86222" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_trees.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="eaaa88b4-b58c-f0fe-099c-1616cc794208" Name="PFX_WindLines-08" Pos="1117.6693,1134.6943,49.801941" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="14ab4ec7-c19a-eddf-e823-a89ecd8897a8" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="7b85222b-feb3-7c35-0e92-ec5ba31aa86a" Name="PFX_DrgnFlySingle-01" Pos="994.52417,1062.6737,38.380878" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="18dd1b1f-438d-8c93-fe32-a79613c318d5" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="81de010b-0c58-5263-ab52-cccf8be92c5b" Name="PFX_DrgnFlySingle-02" Pos="985.85931,1127.3926,38.719547" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="b373c793-527d-9d50-48a5-5957224cf37c" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="59ffaf4a-cc93-e840-1a4f-95f4d15aef6f" Name="PFX_DrgnFlySingle-03" Pos="1054.1075,1118.4586,42.912037" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="9451f468-cb12-bbc1-b5b4-f3ba5ccc63cf" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="8fc8ad7a-aa25-983b-6a4c-424df986a11a" Name="PFX_FireflyGroup-01" Pos="968.3233,1034.0164,37.871464" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="da75d0c1-d653-ce09-242d-9b2ffe83e639" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/firefly_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="6c8590ee-10d2-463b-e994-c929c4fc4f65" Name="PFX_FallingLeavesPalm-20" Pos="1062.05,1209.5306,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="9d13a0d3-21ac-cd2b-4b0c-9f32d353ad01" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="aa21a1ac-4863-3836-0859-ed9a5068b57d" Name="PFX_DrgnFlySingle-04" Pos="1101.2605,1178.6074,41.487461" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="9f32d388-c3d5-dc48-7618-9462d6fd8bd1" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="ecde8b1c-8ea3-63a1-9343-bcc8daefa700" Name="PFX_DrgnFlySingle-05" Pos="1074.2029,1062.0425,50.130539" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="fe31ca79-e275-b526-6153-471554acc58b" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="fb6f9a3f-a3aa-3c6a-9ebc-719df4918d1a" Name="PFX_DrgnFlySingle-06" Pos="1029.8096,1013.1204,38.936333" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="ce2e4da1-4cc9-4343-050f-3a896b66aba2" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="634ff00c-b4bb-fcb6-3c62-3ed40401b966" Name="PFX_DrgnFlySingle-07" Pos="945.93616,1016.1664,38.594173" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="0d224a3b-295a-fa7b-3395-57da4e4fc36c" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/dragonfly_single.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="46835a96-a521-1967-91fc-56b0f41e3587" Name="PFX_Flies-01" Pos="941.42743,1009.3173,38.475452" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="c8c6ad9c-4fb9-5d91-77f7-cec7fd20ca71" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/flies_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="4d517e4f-df42-4d27-38fb-61a582810eb1" Name="PFX_Flies-03" Pos="1012.3901,1082.8865,40.281902" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="a411a5ee-2524-5381-474a-072c4443be70" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/flies_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="850f38a1-9fa0-2491-0c1f-83a60be6e745" Name="PFX_FallingLeavesPalm-21" Pos="1063.5017,1193.91,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="915f91be-919f-3963-98ae-84413677db3a" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="9f28750c-818e-d66c-8543-619f3f571687" Name="PFX_Flies-04" Pos="980.00366,1125.979,37.095459" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="17db1344-b1ce-4525-132a-b555be15248c" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/flies_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="0786ac4d-0863-8775-5041-021a9fe70073" Name="PFX_Flies-05" Pos="1060.5667,1131.4988,46.659039" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="87bbce1a-cba1-d73c-62f5-842b84895385" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/firefly_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="88273c8c-a4d0-1c49-6676-e308e1ae298a" Name="PFX_FallingLeavesPalm-01" Pos="1062.6365,1143.5026,57.328514" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="f815fde5-9803-1c28-9455-6c52c1ae7db3" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="7f302d77-139a-a018-f5ad-96b8c483ac1c" Name="PFX_FallingLeavesPalm-03" Pos="1077.9556,1140.7368,57.328514" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="6edd51a8-09f2-781d-e4a2-64f0e4c5426c" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="06123b3e-2315-d840-e758-0d6e72d61932" Name="PFX_FallingLeavesPalm-14" Pos="1054.22,1095.7792,57.328514" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="164fc739-99a8-8a95-162f-af39406bf079" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="620f9cc3-40ce-9a3e-efe9-aa26ec2dda11" Name="PFX_FallingLeavesPalm-06" Pos="1016.4186,1024.9718,50.451778" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="96996050-24c2-9076-305b-0a196366f1b4" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="45fdde00-a9ad-5aa1-26a3-8a4077b5a5c8" Name="PFX_FallingLeavesPalm-09" Pos="975.30969,1159.2775,53.94875" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="da47eb9d-5b5f-cf63-2765-1c2227c95d1a" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="55f3985c-3099-3af7-335e-facbf5a0623c" Name="PFX_FallingLeavesPalm-10" Pos="993.18719,1165.8164,53.94875" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="6d743bf5-f9f0-9493-e907-367dd7fb0bbe" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="e4a809df-c31a-d17d-08fd-8f706b9c5553" Name="PFX_FallingLeavesPalm-12" Pos="952.4942,1174.6522,53.94875" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="79934b46-4d26-113b-a502-00e27488c42d" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="84931f3e-4924-a4d4-ccea-678ea4e8e96a" Name="PFX_FallingLeavesPalm-11" Pos="944.61139,1186.4667,53.94875" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="a5dd3384-676b-354a-0737-fad5a56f3e15" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="b9aa8518-83aa-28a1-93d6-0498145e6deb" Name="PFX_FallingLeavesPalm-13" Pos="935.39819,1170.4843,53.94875" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="4cae1a70-b7e0-50b2-41cd-008f1261ba37" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="ef621f5c-b2d4-a93d-c5ee-02e8b0f3fd08" Name="PFX_FallingLeavesPalm-15" Pos="926.7619,1179.6842,48.307365" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="a70d8956-7bdc-215a-06a9-f4fcaadb09c8" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="8562ad04-bccb-f144-c1d3-b227a7f8ceb0" Name="PFX_FallingLeavesPalm-16" Pos="921.87054,1154.1678,53.554325" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="9e74b4d6-19f4-5195-165e-b8fddc3ce288" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="eaa46e1f-8151-45ac-b301-9dc5ebe23ee4" Name="PFX_WindSandGround-01" Pos="986.16064,1055.843,40.261112" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="71e84fba-49d8-798a-c920-68381e941ef2" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_sand_ground.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="700e0d54-b494-9124-2794-dfde049264fb" Name="PFX_FallingLeavesPalm-17" Pos="1021.026,1164.1044,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="f01bfab8-9e0a-d528-5e43-ede76275c46f" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="5cdaad83-484d-830d-9c77-aa47d8cebb7d" Name="PFX_FallingLeavesPalm-18" Pos="1031.4619,1165.4058,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="e7384190-ee64-6821-fe00-4e22f1c20645" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="490f8bff-0c7a-77f9-8a08-35b19b9fd79d" Name="PFX_FallingLeavesPalm-22" Pos="1067.1932,1224.358,52.034874" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="8bc803dc-fc63-86ef-bef0-bd046a745911" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_palm.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="5496927e-bbf6-a032-8cf5-5ef7b1d0158c" Name="PFX_FallingLeavesPalm-23" Pos="1057.0154,1129.0966,54.708813" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="3bcb4e8d-49b3-9336-7dc0-e9a7272236b3" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_trees.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="471f2d18-2ac1-2b19-2186-b0a4306f8b21" Name="PFX_FallingLeavesPalm-25" Pos="1075.5549,1114.0251,61.462341" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="46cc3863-38e8-041e-218b-9c1cf53fef4f" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_trees.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="c747d1b6-8bb7-1bb5-804a-8d611ca35305" Name="PFX_FallingLeavesPalm-27" Pos="1087.6298,1074.1251,66.57415" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="048a3826-22e2-4bf4-ed70-c426815a0b78" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/leaves_falling_trees.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="8f02f7c0-cc22-baec-e349-67779edcc1d1" Name="PFX_WindLines-01" Pos="988.2262,1090.3154,39.51107" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="6ae2732a-4b67-befe-d08f-47d0ea7b76fd" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="e54f1668-7949-6504-1999-5984c17aa052" Name="PFX_WindLines-03" Pos="1008.7504,984.20026,39.51107" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="9f3ecde0-e12c-8da2-e2a9-678c22248a03" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="88fb4d02-6636-49a8-e672-608e0c7bfd39" Name="PFX_WindLines-04" Pos="1086.8025,1049.5798,39.51107" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="19bfb1d7-a3e8-b1c9-8d7a-59e59a8d0af3" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="2b4fbee5-7260-e0c7-232f-aef0b3478d25" Name="PFX_WindSandGround-02" Pos="1012.8932,1133.7253,42.728722" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="50f0c7c3-72fe-174e-b455-6e319a83dd89" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_sand_ground.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="c47c5d1e-c5df-c9ee-9300-8b4b73f947fc" Name="PFX_WindSandGround-03" Pos="1034.3969,1085.723,41.987602" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="af258f4a-028e-8cf4-56e8-84a1032486d8" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_sand_ground.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="53473379-daba-0b8d-bc76-f1f4b941d70f" Name="PFX_SeagullCircleGroup-01" Pos="1040.5175,1143.1969,133.02869" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="99390677-55cc-5e43-2218-0813fee564d4" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/birds/seagull_group_distance_circle.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="32d639cc-0c6f-a00a-acbc-42f705d483e5" Name="PFX_SeagullCircleGroup-02" Pos="1052.0554,1114.8667,193.33867" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="1690a562-4c0b-962f-e0d7-0bc386f1e3b7" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/birds/seagull_group_distance.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="b0978f29-918b-9d87-07de-bf6987b446fd" Name="PFX_SeagullCircleGroup-03" Pos="956.16016,1037.0563,110.03287" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="11370891-1d93-b327-a050-16d088bfbbf4" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/birds/seagull_group_distance_circle.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="8ff0539e-9863-c869-7f4b-ec24ccc6f8a0" Name="PFX_WindLines-05" Pos="941.18787,1090.3154,39.51107" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="8849225c-4c45-afda-da21-62640ca7988f" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="ad951d05-2b07-064b-444c-02fc75aa9b44" Name="PFX_WindLines-06" Pos="941.18787,1060.1152,39.51107" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="bc4b7374-688f-cfd9-a48d-6c816973bcd3" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="cfff163a-7844-549d-3e9b-798eb4ea36c2" Name="PFX_FireflyGroup-02" Pos="1067.549,1150.5786,46.659039" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="8aa5794d-8ded-ba60-39f1-0ba8145e2579" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/insects/firefly_group.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+   <Object Type="EntityWithParticleComponent" Layer="level_particles" LayerGUID="d2a398e2-24dd-f6a9-f8d7-079f4760b7e5" Id="17f3a8ee-9f7a-c13b-71f7-a0cbb8b7466c" Name="PFX_WindLines-07" Pos="1096.7682,1173.361,51.958488" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="Entity" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component CryXmlVersion="2" TypeGUID="7925bc64-521f-4a2a-9068-c9c9a1d3499e" TypeName="Cry::DefaultComponents::CParticleComponent" GUID="86bdd29f-0d03-db62-50d3-1cbd6093012b" Name="" UserAdded="true">
+      <Transform>
+       <translation>
+        <position>
+         <element element="0"/>
+         <element element="0"/>
+         <element element="0"/>
+        </position>
+       </translation>
+       <rotation x="0" y="-0" z="0"/>
+       <scale>
+        <element element="1"/>
+        <element element="1"/>
+        <element element="1"/>
+       </scale>
+      </Transform>
+      <properties Enabled="true" FilePath="particles/environment/wind_lines.pfx">
+       <Attributes>
+        <Attributes />
+       </Attributes>
+       <Features />
+       <SpawnParams prime="false" scale="1" countScale="1" speedScale="1" timeScale="1" spec="Default" ignoreVvisAreas="false" ignoreTerrainBlend="true" ignoreDecalBlend="true" seed="-1"/>
+      </properties>
+     </Component>
+    </Components>
+   </Object>
+  </LayerObjects>
+ </Layer>
+</ObjectLayer>

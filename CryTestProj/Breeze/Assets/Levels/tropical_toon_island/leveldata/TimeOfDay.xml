@@ -1,0 +1,7 @@
+<TimeOfDay Time="12" TimeStart="12" TimeEnd="12" TimeAnimSpeed="0">
+ <Presets>
+  <Preset Name="libs/environmentpresets/levels/tropical_toon_island_day.env"/>
+  <Preset Name="libs/environmentpresets/levels/tropical_toon_island_morning.env" Default="1"/>
+  <Preset Name="libs/environmentpresets/levels/tropical_toon_island_night.env"/>
+ </Presets>
+</TimeOfDay>

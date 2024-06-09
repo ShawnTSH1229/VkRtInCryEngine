@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="7d7dc60d-a2ab-741b-aa5d-10bf665de9e7" source="Cube.fbx">
+ <Files>
+  <File path="Cube.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">12</Detail>
+  <Detail name="vertexCount">24</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./Cube.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

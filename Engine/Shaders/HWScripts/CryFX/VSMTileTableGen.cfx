@@ -1,0 +1,50 @@
+
+RWBuffer<uint>              p2_vsmTileFlags     : register(u0);//todo: use buffer type instead of rwbuffer type
+RWStructuredBuffer<int>     p2_vsmTileTable     : register(u1);
+RWByteAddressBuffer 		p2_validTileCount	: register(u2);
+
+cbuffer cbTileTableGen : register(b0)
+{
+	struct 
+	{
+        int4 vsmVirtualTileNum;
+        int4 vsmPhyTileSizeWH;
+	} c_tileTableGenConstants;
+};
+
+[numthreads(16, 16, 1)]
+void VSMTileTableGenCS(uint2 DispatchThreadID :SV_DispatchThreadID)
+{
+    if(DispatchThreadID.x == 0 && DispatchThreadID.y == 0)
+    {
+        p2_validTileCount.Store(0,uint(0));
+    }
+
+    if( c_tileTableGenConstants.vsmVirtualTileNum.x < DispatchThreadID.x || c_tileTableGenConstants.vsmVirtualTileNum.y < DispatchThreadID.y)
+    {
+        return;
+    }
+
+    uint tileIndex = 0xffffffff;
+    uint bufferIndex = DispatchThreadID.y * c_tileTableGenConstants.vsmVirtualTileNum.x + DispatchThreadID.x;
+
+    p2_vsmTileTable[bufferIndex] = -1;
+
+    if(p2_vsmTileFlags[bufferIndex] == 1)
+    {
+        p2_validTileCount.InterlockedAdd(0,uint(1),tileIndex);
+    }
+
+    if(tileIndex < (c_tileTableGenConstants.vsmPhyTileSizeWH.x * c_tileTableGenConstants.vsmPhyTileSizeWH.y))
+    {
+        p2_vsmTileTable[bufferIndex] = tileIndex;
+    }
+}
+
+technique VSMTileTableGen
+{
+	pass p0
+	{
+		ComputeShader = VSMTileTableGenCS();
+	}
+};

@@ -1,0 +1,11 @@
+<Material MtlFlags="524544" vertModifType="0">
+ <SubMaterials>
+  <Material Name="sky1" MtlFlags="524448" Shader="Distanceclouds" GenMask="2" StringGenMask="" SurfaceType="" MatTemplate="" Diffuse="1,1,1" Specular="0.046662088,0.046662088,0.046662088" Opacity="1" Shininess="255" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./sky2.dds"/>
+   </Textures>
+   <PublicParams Opacity="1" Exposure="2"/>
+  </Material>
+ </SubMaterials>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

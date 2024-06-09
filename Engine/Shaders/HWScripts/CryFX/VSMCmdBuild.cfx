@@ -1,0 +1,147 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/// vsm shadow cmd build technique /////////////////////////////////////////////////////////////
+
+struct SvsmDrawCmd
+{
+    uint        m_shaderGroupIndex;
+
+    uint64_t    addressPerObj;
+    uint64_t    addressPerVSMView;
+
+    //ib
+    uint64_t    ib_bufferAddress;
+    uint        ib_size;
+    uint        ib_type;
+
+    uint64_t    vb_bufferAddress;
+    uint        vb_size;
+    uint        vb_stride;
+
+    uint    indexCount;
+    uint    instanceCount;
+    uint    firstIndex;
+    int     vertexOffset;
+    uint    firstInstance;
+};
+
+struct SrhiGpuCullingStruct
+{
+    float4x4 gWorld;//row_major float4x4 gWorld;
+    
+    float3 boundingBoxCenter;//BoundingBox in World  Space
+    float padding_0;
+
+    float3 boundingBoxExtent;
+    float padding_1;
+};
+
+//https://github.com/microsoft/DirectXShaderCompiler/blob/main/docs/SPIR-V.rst#appendstructuredbuffer-and-consumestructuredbuffer
+StructuredBuffer<SvsmDrawCmd>           inputCommands       : register(t0);
+StructuredBuffer<SrhiGpuCullingStruct>  rhiGpuCullingData   : register(t1);
+StructuredBuffer<int>                   p3_vsmTileTable     : register(t2);
+StructuredBuffer<uint64_t>              frustumMatrixAddress: register(t3);
+
+RWStructuredBuffer<SvsmDrawCmd>        outputCommands       : register(u0);
+RWByteAddressBuffer 		            p3_vsmCmdCount	    : register(u1);
+
+cbuffer cbVSMCmdBuild : register(b0)
+{
+	struct 
+	{
+        float4x4 lightViewProj;
+        int4 cmdBuildPara;//x:cmd count y:virtual tile num width z:max draw size
+	} c_VSMCmdBuildConstants;
+};
+
+static float4 BoundingBoxOffset[8] = 
+{
+ float4(    -1.0f,  -1.0f,  1.0f,   0.0f     ),
+ float4(    1.0f,   -1.0f,  1.0f,   0.0f     ),
+ float4(    1.0f,   1.0f,   1.0f,   0.0f     ),
+ float4(    -1.0f,  1.0f,   1.0f,   0.0f     ), 
+ float4(    -1.0f,  -1.0f,  -1.0f,  0.0f     ), 
+ float4(    1.0f,   -1.0f,  -1.0f,  0.0f     ),
+ float4(    1.0f,   1.0f,   -1.0f,  0.0f     ),  
+ float4(    -1.0f,  1.0f,   -1.0f,  0.0f     ),
+};
+
+#define ThreadBlockSize 128
+[numthreads(ThreadBlockSize, 1, 1)]
+void VSMCmdBuild(uint3 dispatchThreadID : SV_DispatchThreadID)
+{
+    uint index = dispatchThreadID.x;
+
+    if(index == 0)
+    {
+        p3_vsmCmdCount.Store(0,uint(0));
+    }
+
+
+
+    if(index >= uint(c_VSMCmdBuildConstants.cmdBuildPara.x))
+    return;
+
+    float4 corner[8];
+    [unroll]
+    for(uint i = 0; i < 8 ; i++)
+    {
+        corner[i] = float4(rhiGpuCullingData[index].boundingBoxCenter ,0)  + float4(rhiGpuCullingData[index].boundingBoxExtent,0) * BoundingBoxOffset[i];
+    }
+
+    float2 uvMin = float2(1.1,1.1);
+    float2 uvMax = float2(-0.1,-0.1);
+
+    [unroll]
+    for(uint j = 0; j < 8 ; j++)
+    {
+        float4 screenPosition = mul(float4(corner[j].xyz,1.0f),c_VSMCmdBuildConstants.lightViewProj);
+        screenPosition.xyz/=screenPosition.w;
+
+        float2 screenUV = screenPosition.xy;
+        screenUV.y*=-1.0;
+        screenUV = screenUV* 0.5 + 0.5f;
+
+        uvMin = min(uvMin,screenUV);
+        uvMax = max(uvMax,screenUV);
+    }
+
+    uint2 tileIndexMin = uint2(uvMin * c_VSMCmdBuildConstants.cmdBuildPara.y);
+    uint2 tileIndexMax = uint2(uvMax * c_VSMCmdBuildConstants.cmdBuildPara.y);
+
+    for(uint indexX = tileIndexMin.x ; indexX <= tileIndexMax.x ; indexX++)
+    {
+        for(uint indexY = tileIndexMin.y ; indexY <= tileIndexMax.y ; indexY++)
+        {
+            if( indexX < c_VSMCmdBuildConstants.cmdBuildPara.y && indexX >0 && 
+                indexY < c_VSMCmdBuildConstants.cmdBuildPara.y && indexY >0)
+            {
+                uint tableIndex = indexY * c_VSMCmdBuildConstants.cmdBuildPara.y + indexX;
+                int Masked = p3_vsmTileTable[tableIndex];
+                if(Masked >= 0)
+                {
+                    uint cmdIndex = 0;
+                    p3_vsmCmdCount.InterlockedAdd(0,uint(1),cmdIndex);
+                    
+                    {
+                        SvsmDrawCmd cmd = (SvsmDrawCmd)0;
+                        if(cmdIndex < c_VSMCmdBuildConstants.cmdBuildPara.z)
+                        {
+                            cmd.addressPerVSMView = frustumMatrixAddress[indexY * tileIndexMax.x + indexX];
+                            outputCommands[cmdIndex] = cmd;
+                            return;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+technique VSMCmdBuild
+{
+	pass p0
+	{
+		ComputeShader = VSMCmdBuild();
+	}
+};

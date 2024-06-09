@@ -1,0 +1,19 @@
+<AssetMetadata version="0" type="Material" guid="8a4c4678-6f54-145f-4c52-d319ca34fd2e" timestamp="1625567862">
+ <Files>
+  <File path="plattforms.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">7</Detail>
+  <Detail name="textureCount">8</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="2">./white.dds</Path>
+  <Path usageCount="1">Objects/ground/grass1.dds</Path>
+  <Path usageCount="1">Objects/ground/grass1_ddn.dds</Path>
+  <Path usageCount="1">terrain/soil3.dds</Path>
+  <Path usageCount="1">terrain/soil_ddn.dds</Path>
+  <Path usageCount="1">terrain/soil_displ.dds</Path>
+  <Path usageCount="1">terrain/cliff.dds</Path>
+  <Path usageCount="1">terrain/cliff_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

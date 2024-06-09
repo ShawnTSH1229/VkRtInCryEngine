@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="71de4b06-fa8d-23a4-b5e5-a8e38f692609">
+ <Files>
+  <File path="house.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">2</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">Objects/house/house.dds</Path>
+  <Path usageCount="1">Objects/house/house_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

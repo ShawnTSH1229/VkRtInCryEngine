@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="12214988-3857-1eb3-29e4-6817051e3228">
+ <Files>
+  <File path="soil.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./beach.dds</Path>
+  <Path usageCount="1">./soil_ddn.dds</Path>
+  <Path usageCount="1">./soil_displ.dds</Path>
+ </Dependencies>
+</AssetMetadata>

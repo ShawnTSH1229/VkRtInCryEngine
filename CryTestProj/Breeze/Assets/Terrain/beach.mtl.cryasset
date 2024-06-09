@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="3e959592-02a6-512a-7934-a19c2b646b41">
+ <Files>
+  <File path="beach.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./beach.dds</Path>
+  <Path usageCount="1">./beach_ddn.dds</Path>
+  <Path usageCount="1">./beach_displ.dds</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,94 @@
+cbuffer PER_BATCH:register(b0)
+{
+  float4 visualizeBufferSize;
+};
+struct pixout
+{
+  half4 Color:SV_Target0;
+};
+cbuffer CBPerViewGlobal:register(b6)
+{
+  float4x4 CV_ViewProjZeroMatr;
+  float4 CV_AnimGenParams;
+  float4x4 CV_ViewProjMatr;
+  float4x4 CV_ViewProjNearestMatr;
+  float4x4 CV_InvViewProj;
+  float4x4 CV_PrevViewProjMatr;
+  float4x4 CV_PrevViewProjNearestMatr;
+  float3x4 CV_ScreenToWorldBasis;
+  float4 CV_TessInfo;
+  float4 CV_WorldViewPosition;
+  float4 CV_CameraRightVector;
+  float4 CV_CameraFrontVector;
+  float4 CV_CameraUpVector;
+  float4 CV_ScreenSize;
+  float4 CV_HPosScale;
+  float4 CV_ProjRatio;
+  float4 CV_NearestScaled;
+  float4 CV_NearFarClipDist;
+  float4 CV_SunLightDir;
+  float4 CV_SunColor;
+  float4 CV_SkyColor;
+  float4 CV_FogColor;
+  float4 CV_TerrainInfo;
+  float4 CV_DecalZFightingRemedy;
+  float4x4 CV_FrustumPlaneEquation;
+  float4 CV_WindGridOffset;
+  float4x4 CV_ViewMatr;
+  float4x4 CV_InvViewMatr;
+  float4x4 CV_ProjMatr;
+  float4x4 CV_ProjMatrUnjittered;
+};
+cbuffer CBPerPassShadowGen:register(b5)
+{
+  float4 CP_ShadowGen_LightPos;
+  float4 CP_ShadowGen_ViewPos;
+  float4 CP_ShadowGen_DepthTestBias;
+  float4 CP_ShadowGen_FrustumInfo;
+  float4 CP_ShadowGen_VegetationAlphaClamp;
+};
+cbuffer CBPerPassCustom:register(b5)
+{
+  float4 CP_Custom_ViewMode;
+};
+cbuffer CB_SkinQuat_Cur:register(b2)
+{
+  float2x4 _g_SkinQuat_Cur[768];
+};
+cbuffer CB_SkinQuat_Prev:register(b3)
+{
+  float2x4 _g_SkinQuat_Prev[768];
+};
+cbuffer cbTileFlagGen:register(b0)
+{
+  struct
+  {
+    float4x4 invViewProj;
+    float4x4 lightViewProj;
+    float4 deviceZTexSize;
+    int4 vsmVirtualTileNum;
+  }
+  c_tileFlagGenConstants;
+};
+cbuffer cbTileTableGen:register(b0)
+{
+  struct
+  {
+    int4 vsmVirtualTileNum;
+    int4 vsmPhyTileSizeWH;
+  }
+  c_tileTableGenConstants;
+};
+struct vtxOut
+{
+  float4 WPos:SV_POSITION;
+  float4 baseTC:TEXCOORD0;
+};
+RWStructuredBuffer<int>visualizeBuffer:register(u0);
+pixout VisualizeBufferPS(vtxOut IN)
+{
+  pixout OUT;
+  uint2 uvCoord=IN.baseTC.xy*visualizeBufferSize.xy;
+  OUT.Color=float4(visualizeBuffer[uvCoord.y*visualizeBufferSize.x+uvCoord.x],0.0,0.0,1.0);
+  return OUT;
+}

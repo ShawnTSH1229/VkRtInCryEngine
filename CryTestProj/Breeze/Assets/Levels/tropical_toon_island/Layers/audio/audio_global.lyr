@@ -1,0 +1,460 @@
+<ObjectLayer>
+ <Layer Name="audio_global" FullName="audio/audio_global" GUID="ebd908b0-befc-789f-36d6-3aff531f2071" Hidden="0" Frozen="0" Expanded="0" Type="0" Exportable="1" ExportLayerPak="1" DefaultLoaded="0" HavePhysics="1" IsDefaultColor="1" Color="4671303" Timestamp="1633605879">
+  <LayerObjects>
+   <Object Type="Shape" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="bcd6c5cd-3f1f-a301-7c1f-21abe3314ef1" Name="AS_Ambience_Water_03" Pos="1265.5088,1029.2679,33.018288" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16763904" UseCustomLevelLayerColor="0" MinSpec="0" Width="0" Height="4" InnerFadeDistance="0" AreaId="0" GroupId="2" Priority="10" Closed="1" DisplayFilled="1" DisplaySoundInfo="0" Agent_height="0" Agent_width="0" Render_voxel_grid="0" voxel_offset_x="0" voxel_offset_y="0" EntityClass="AreaShape" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="cbd3c4f7-cab2-0dd7-5fbb-84f2e4b82f4b">
+      <Area Id="0" Group="2" Proximity="0" Priority="10" InnerFadeDistance="0" Height="4">
+       <Points>
+        <Point Pos="0,0,0" ObstructSound="0"/>
+        <Point Pos="47.542236,19.324463,-0.3679657" ObstructSound="0"/>
+        <Point Pos="46.271484,-13.544434,0.74821091" ObstructSound="0"/>
+        <Point Pos="40.816772,-55.332397,0.91096115" ObstructSound="0"/>
+        <Point Pos="29.88855,-95.724976,1.3888855" ObstructSound="0"/>
+        <Point Pos="82.617081,-86.764709,3.0979195" ObstructSound="0"/>
+        <Point Pos="69.105713,26.984131,0.1468277" ObstructSound="0"/>
+        <Point Pos="10.53479,50.222168,0.86125565" ObstructSound="0"/>
+       </Points>
+       <Roof ObstructSound="0"/>
+       <Floor ObstructSound="0"/>
+       <Entities>
+        <Entity GUID="7a4a29ae-73d8-0ead-afa7-5c6b8bf8dd5a"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Points>
+     <Point Pos="0,0,0"/>
+     <Point Pos="47.542236,19.324463,-0.3679657"/>
+     <Point Pos="46.271484,-13.544434,0.74821091"/>
+     <Point Pos="40.816772,-55.332397,0.91096115"/>
+     <Point Pos="29.88855,-95.724976,1.3888855"/>
+     <Point Pos="82.617081,-86.764709,3.0979195"/>
+     <Point Pos="69.105713,26.984131,0.1468277"/>
+     <Point Pos="10.53479,50.222168,0.86125565"/>
+    </Points>
+    <Entities>
+     <Entity Id="7a4a29ae-73d8-0ead-afa7-5c6b8bf8dd5a"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0" Side7="0" Side8="0" Roof="0" Floor="0"/>
+   </Object>
+   <Object Type="AreaBox" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="e3add925-e378-27d4-b6fb-741c9ec3a8cc" Name="AB_Global_Ocean_c" Pos="1337.8179,1270.7009,20.001266" Rotate="0.42593974,0,0,0.90475154" Scale="1,1,1" ColorRGB="16711680" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" InnerFadeDistance="0" AreaId="-1" FadeInZone="0" Width="200" Length="4" Height="100" GroupId="0" Priority="0" DisplayFilled="0" DisplaySoundInfo="0" EntityClass="AreaBox" HasEntity="1" BoxMin="-100,-2,0" BoxMax="100,2,100">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="204cd4f4-46f0-dd39-cbfb-07e07a4536fc">
+      <Area Id="-1" Group="0" Proximity="0" Priority="0" InnerFadeDistance="0" BoxMin="-100,-2,0" BoxMax="100,2,100">
+       <SoundData>
+        <Side1 ObstructSound="0"/>
+        <Side2 ObstructSound="0"/>
+        <Side3 ObstructSound="0"/>
+        <Side4 ObstructSound="0"/>
+        <Side5 ObstructSound="0"/>
+        <Side6 ObstructSound="0"/>
+       </SoundData>
+       <Entities>
+        <Entity GUID="498bf822-43ec-00a6-9269-3925854630c9"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Entities>
+     <Entity Id="498bf822-43ec-00a6-9269-3925854630c9"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0"/>
+   </Object>
+   <Object Type="Shape" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="3d4b4daf-fa2f-ed08-dc09-73ec8e776909" Name="AS_Ambience_Water_02" Pos="1217.7595,1019.0115,32.353699" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16763904" UseCustomLevelLayerColor="0" MinSpec="0" Width="0" Height="5" InnerFadeDistance="0" AreaId="0" GroupId="2" Priority="10" Closed="1" DisplayFilled="1" DisplaySoundInfo="0" Agent_height="0" Agent_width="0" Render_voxel_grid="0" voxel_offset_x="0" voxel_offset_y="0" EntityClass="AreaShape" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="4b63c060-8b5b-1843-0fc4-cd3f8bc8d27b">
+      <Area Id="0" Group="2" Proximity="0" Priority="10" InnerFadeDistance="0" Height="5">
+       <Points>
+        <Point Pos="0,0,0" ObstructSound="0"/>
+        <Point Pos="-18.699829,18.229675,0.86370087" ObstructSound="0"/>
+        <Point Pos="-31.991699,52.275696,1.2220802" ObstructSound="0"/>
+        <Point Pos="11.994019,46.893372,-0.5538826" ObstructSound="0"/>
+       </Points>
+       <Roof ObstructSound="0"/>
+       <Floor ObstructSound="0"/>
+       <Entities>
+        <Entity GUID="1777294a-78ee-74ab-ca70-c90d21261e31"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Points>
+     <Point Pos="0,0,0"/>
+     <Point Pos="-18.699829,18.229675,0.86370087"/>
+     <Point Pos="-31.991699,52.275696,1.2220802"/>
+     <Point Pos="11.994019,46.893372,-0.5538826"/>
+    </Points>
+    <Entities>
+     <Entity Id="1777294a-78ee-74ab-ca70-c90d21261e31"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Roof="0" Floor="0"/>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="1777294a-78ee-74ab-ca70-c90d21261e31" Name="AAA_Ambience_Water_02" Pos="1192.9648,1031.8733,38.67765" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="21f0406b-51ae-5843-163a-3d7a170c8d07" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_water_c" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="40" Environment="" EnvironmentDistance="40" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AreaBox" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="7278788e-3290-ff60-694b-f8f44799ec5b" Name="AB_Global_Ocean_d" Pos="1379.285,819.77924,36.437836" Rotate="0.34202021,0,0,-0.93969262" Scale="1,1,1" ColorRGB="16711680" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" InnerFadeDistance="0" AreaId="-1" FadeInZone="0" Width="200" Length="4" Height="100" GroupId="0" Priority="0" DisplayFilled="0" DisplaySoundInfo="0" EntityClass="AreaBox" HasEntity="1" BoxMin="-100,-2,0" BoxMax="100,2,100">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="204cd4f4-46f0-dd39-cbfb-07e07a4536fc">
+      <Area Id="-1" Group="0" Proximity="0" Priority="0" InnerFadeDistance="0" BoxMin="-100,-2,0" BoxMax="100,2,100">
+       <SoundData>
+        <Side1 ObstructSound="0"/>
+        <Side2 ObstructSound="0"/>
+        <Side3 ObstructSound="0"/>
+        <Side4 ObstructSound="0"/>
+        <Side5 ObstructSound="0"/>
+        <Side6 ObstructSound="0"/>
+       </SoundData>
+       <Entities>
+        <Entity GUID="6de2ab6e-ab59-f48a-bbed-100063ae4428"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Entities>
+     <Entity Id="6de2ab6e-ab59-f48a-bbed-100063ae4428"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0"/>
+   </Object>
+   <Object Type="AreaBox" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="54bb9358-dbd5-59c3-20f4-9071e7f5093b" Name="AB_Ambience_Global" Pos="1137.0792,1057.5504,21.815481" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16711680" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" InnerFadeDistance="0" AreaId="-1" FadeInZone="0" Width="500" Length="500" Height="120" GroupId="1" Priority="5" DisplayFilled="0" DisplaySoundInfo="0" EntityClass="AreaBox" HasEntity="1" BoxMin="-250,-250,0" BoxMax="250,250,120">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="32687d74-46e1-01aa-3248-dba1ffd2256b">
+      <Area Id="-1" Group="1" Proximity="0" Priority="5" InnerFadeDistance="0" BoxMin="-250,-250,0" BoxMax="250,250,120">
+       <SoundData>
+        <Side1 ObstructSound="0"/>
+        <Side2 ObstructSound="0"/>
+        <Side3 ObstructSound="0"/>
+        <Side4 ObstructSound="0"/>
+        <Side5 ObstructSound="0"/>
+        <Side6 ObstructSound="0"/>
+       </SoundData>
+       <Entities>
+        <Entity GUID="06e93504-5aca-5e18-81f5-b7d347c5783a"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Entities>
+     <Entity Id="06e93504-5aca-5e18-81f5-b7d347c5783a"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0"/>
+   </Object>
+   <Object Type="Shape" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="7dc3f052-cad3-a0fc-fcf2-7b84de08c8da" Name="AS_Ambience_Water_01" Pos="1033.5826,970.63629,23.090982" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16763904" UseCustomLevelLayerColor="0" MinSpec="0" Width="0" Height="15" InnerFadeDistance="0" AreaId="0" GroupId="2" Priority="10" Closed="1" DisplayFilled="1" DisplaySoundInfo="0" Agent_height="0" Agent_width="0" Render_voxel_grid="0" voxel_offset_x="0" voxel_offset_y="0" EntityClass="AreaShape" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="f3e59e06-16a3-c7a0-767b-3b0800fa7681">
+      <Area Id="0" Group="2" Proximity="0" Priority="10" InnerFadeDistance="0" Height="15">
+       <Points>
+        <Point Pos="0,0,0" ObstructSound="0"/>
+        <Point Pos="1.9946289,11.473694,0.0050382614" ObstructSound="0"/>
+        <Point Pos="0.97583008,21.42926,-0.21065664" ObstructSound="0"/>
+        <Point Pos="-6.5915527,22.659363,-0.044346571" ObstructSound="0"/>
+        <Point Pos="-9.6377563,24.091675,-0.45303321" ObstructSound="0"/>
+        <Point Pos="-21.794983,33.41864,0.92559075" ObstructSound="0"/>
+        <Point Pos="-36.922058,40.875427,0.61301446" ObstructSound="0"/>
+        <Point Pos="-43.311768,42.44928,0.94853234" ObstructSound="0"/>
+        <Point Pos="-60.607605,31.3302,0.34030938" ObstructSound="0"/>
+        <Point Pos="-77.745422,20.88385,-0.73592353" ObstructSound="0"/>
+        <Point Pos="-104.54071,25.501526,-0.62490058" ObstructSound="0"/>
+        <Point Pos="-110.5744,38.109314,-0.51291776" ObstructSound="0"/>
+        <Point Pos="-110.46429,43.436218,-0.64408517" ObstructSound="0"/>
+        <Point Pos="-105.91083,48.283081,-0.57176948" ObstructSound="0"/>
+        <Point Pos="-98.8172,61.662537,-0.5225637" ObstructSound="0"/>
+        <Point Pos="-92.246643,64.745056,-0.50915885" ObstructSound="0"/>
+        <Point Pos="-74.95813,77.496155,-0.91743517" ObstructSound="0"/>
+        <Point Pos="-69.527405,83.616394,-0.7780726" ObstructSound="0"/>
+        <Point Pos="-65.352356,89.323914,-0.97254372" ObstructSound="0"/>
+        <Point Pos="-60.617615,104.69293,-0.73111606" ObstructSound="0"/>
+        <Point Pos="-56.335999,122.83026,-0.29388213" ObstructSound="0"/>
+        <Point Pos="-59.181702,136.90106,0.27549958" ObstructSound="0"/>
+        <Point Pos="-71.474182,145.48737,0.079193354" ObstructSound="0"/>
+        <Point Pos="-95.404846,153.63092,-0.29341865" ObstructSound="0"/>
+        <Point Pos="-122.65845,166.62689,-0.53761649" ObstructSound="0"/>
+        <Point Pos="-126.09174,181.10773,-1.1206748" ObstructSound="0"/>
+        <Point Pos="-128.91791,212.43463,0.71104074" ObstructSound="0"/>
+        <Point Pos="-103.43854,214.7298,-0.61890292" ObstructSound="0"/>
+        <Point Pos="-88.94458,235.91168,0.32554388" ObstructSound="0"/>
+        <Point Pos="-72.701355,234.32208,0.92371774" ObstructSound="0"/>
+        <Point Pos="-55.969238,212.3067,0.029069185" ObstructSound="0"/>
+        <Point Pos="-34.28363,213.0799,0.38533807" ObstructSound="0"/>
+        <Point Pos="-24.630432,207.33112,0.370857" ObstructSound="0"/>
+        <Point Pos="-2.4046631,215.64227,0.36535048" ObstructSound="0"/>
+        <Point Pos="14.039307,233.84406,0.32802558" ObstructSound="0"/>
+        <Point Pos="14.527832,248.01556,-0.1125257" ObstructSound="0"/>
+        <Point Pos="22.176758,268.97467,-0.082357645" ObstructSound="0"/>
+        <Point Pos="15.52417,299.76837,0.18654919" ObstructSound="0"/>
+        <Point Pos="21.435181,302.30585,0.27724481" ObstructSound="0"/>
+        <Point Pos="35.499512,282.76105,-0.41221213" ObstructSound="0"/>
+        <Point Pos="51.543335,267.28046,-0.98137641" ObstructSound="0"/>
+        <Point Pos="51.115112,258.02277,-0.3585093" ObstructSound="0"/>
+        <Point Pos="59.421753,255.78571,-0.45102167" ObstructSound="0"/>
+        <Point Pos="62.128174,266.11139,-1.3022306" ObstructSound="0"/>
+        <Point Pos="66.782471,275.72662,-0.98345733" ObstructSound="0"/>
+        <Point Pos="106.65906,270.82343,-0.88584399" ObstructSound="0"/>
+        <Point Pos="147.09424,249.83575,-1.2233598" ObstructSound="0"/>
+        <Point Pos="144.99683,234.37201,-0.74027228" ObstructSound="0"/>
+        <Point Pos="109.03589,207.29974,-0.50266623" ObstructSound="0"/>
+        <Point Pos="102.65247,210.86859,0.058453798" ObstructSound="0"/>
+        <Point Pos="93.633667,193.59735,-0.063077688" ObstructSound="0"/>
+        <Point Pos="96.001831,172.79877,0.067655802" ObstructSound="0"/>
+        <Point Pos="90.206177,154.91913,0.064938307" ObstructSound="0"/>
+        <Point Pos="173.54761,203.68658,-1.3142393" ObstructSound="0"/>
+        <Point Pos="177.26147,266.03583,-1.4543912" ObstructSound="0"/>
+        <Point Pos="171.76099,345.82172,-1.7643087" ObstructSound="0"/>
+        <Point Pos="-131.52655,300.06134,-1.466646" ObstructSound="0"/>
+        <Point Pos="-145.57172,208.95343,-2.059099" ObstructSound="0"/>
+        <Point Pos="-127.11719,7.0080566,0.56195235" ObstructSound="0"/>
+        <Point Pos="-19.900024,-20.629761,-1.0513074" ObstructSound="0"/>
+       </Points>
+       <Roof ObstructSound="0"/>
+       <Floor ObstructSound="0"/>
+       <Entities>
+        <Entity GUID="df95ac0b-3192-4597-81c0-9d9754162f78"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Points>
+     <Point Pos="0,0,0"/>
+     <Point Pos="1.9946289,11.473694,0.0050382614"/>
+     <Point Pos="0.97583008,21.42926,-0.21065664"/>
+     <Point Pos="-6.5915527,22.659363,-0.044346571"/>
+     <Point Pos="-9.6377563,24.091675,-0.45303321"/>
+     <Point Pos="-21.794983,33.41864,0.92559075"/>
+     <Point Pos="-36.922058,40.875427,0.61301446"/>
+     <Point Pos="-43.311768,42.44928,0.94853234"/>
+     <Point Pos="-60.607605,31.3302,0.34030938"/>
+     <Point Pos="-77.745422,20.88385,-0.73592353"/>
+     <Point Pos="-104.54071,25.501526,-0.62490058"/>
+     <Point Pos="-110.5744,38.109314,-0.51291776"/>
+     <Point Pos="-110.46429,43.436218,-0.64408517"/>
+     <Point Pos="-105.91083,48.283081,-0.57176948"/>
+     <Point Pos="-98.8172,61.662537,-0.5225637"/>
+     <Point Pos="-92.246643,64.745056,-0.50915885"/>
+     <Point Pos="-74.95813,77.496155,-0.91743517"/>
+     <Point Pos="-69.527405,83.616394,-0.7780726"/>
+     <Point Pos="-65.352356,89.323914,-0.97254372"/>
+     <Point Pos="-60.617615,104.69293,-0.73111606"/>
+     <Point Pos="-56.335999,122.83026,-0.29388213"/>
+     <Point Pos="-59.181702,136.90106,0.27549958"/>
+     <Point Pos="-71.474182,145.48737,0.079193354"/>
+     <Point Pos="-95.404846,153.63092,-0.29341865"/>
+     <Point Pos="-122.65845,166.62689,-0.53761649"/>
+     <Point Pos="-126.09174,181.10773,-1.1206748"/>
+     <Point Pos="-128.91791,212.43463,0.71104074"/>
+     <Point Pos="-103.43854,214.7298,-0.61890292"/>
+     <Point Pos="-88.94458,235.91168,0.32554388"/>
+     <Point Pos="-72.701355,234.32208,0.92371774"/>
+     <Point Pos="-55.969238,212.3067,0.029069185"/>
+     <Point Pos="-34.28363,213.0799,0.38533807"/>
+     <Point Pos="-24.630432,207.33112,0.370857"/>
+     <Point Pos="-2.4046631,215.64227,0.36535048"/>
+     <Point Pos="14.039307,233.84406,0.32802558"/>
+     <Point Pos="14.527832,248.01556,-0.1125257"/>
+     <Point Pos="22.176758,268.97467,-0.082357645"/>
+     <Point Pos="15.52417,299.76837,0.18654919"/>
+     <Point Pos="21.435181,302.30585,0.27724481"/>
+     <Point Pos="35.499512,282.76105,-0.41221213"/>
+     <Point Pos="51.543335,267.28046,-0.98137641"/>
+     <Point Pos="51.115112,258.02277,-0.3585093"/>
+     <Point Pos="59.421753,255.78571,-0.45102167"/>
+     <Point Pos="62.128174,266.11139,-1.3022306"/>
+     <Point Pos="66.782471,275.72662,-0.98345733"/>
+     <Point Pos="106.65906,270.82343,-0.88584399"/>
+     <Point Pos="147.09424,249.83575,-1.2233598"/>
+     <Point Pos="144.99683,234.37201,-0.74027228"/>
+     <Point Pos="109.03589,207.29974,-0.50266623"/>
+     <Point Pos="102.65247,210.86859,0.058453798"/>
+     <Point Pos="93.633667,193.59735,-0.063077688"/>
+     <Point Pos="96.001831,172.79877,0.067655802"/>
+     <Point Pos="90.206177,154.91913,0.064938307"/>
+     <Point Pos="173.54761,203.68658,-1.3142393"/>
+     <Point Pos="177.26147,266.03583,-1.4543912"/>
+     <Point Pos="171.76099,345.82172,-1.7643087"/>
+     <Point Pos="-131.52655,300.06134,-1.466646"/>
+     <Point Pos="-145.57172,208.95343,-2.059099"/>
+     <Point Pos="-127.11719,7.0080566,0.56195235"/>
+     <Point Pos="-19.900024,-20.629761,-1.0513074"/>
+    </Points>
+    <Entities>
+     <Entity Id="df95ac0b-3192-4597-81c0-9d9754162f78"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0" Side7="0" Side8="0" Side9="0" Side10="0" Side11="0" Side12="0" Side13="0" Side14="0" Side15="0" Side16="0" Side17="0" Side18="0" Side19="0" Side20="0" Side21="0" Side22="0" Side23="0" Side24="0" Side25="0" Side26="0" Side27="0" Side28="0" Side29="0" Side30="0" Side31="0" Side32="0" Side33="0" Side34="0" Side35="0" Side36="0" Side37="0" Side38="0" Side39="0" Side40="0" Side41="0" Side42="0" Side43="0" Side44="0" Side45="0" Side46="0" Side47="0" Side48="0" Side49="0" Side50="0" Side51="0" Side52="0" Side53="0" Side54="0" Side55="0" Side56="0" Side57="0" Side58="0" Side59="0" Side60="0" Roof="0" Floor="0"/>
+   </Object>
+   <Object Type="Shape" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="9bee8540-c99a-f0ce-cb36-4069fe6cee76" Name="AS_Ambience_Water_04" Pos="1276.4113,915.53003,32.850567" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="16763904" UseCustomLevelLayerColor="0" MinSpec="0" Width="0" Height="5" InnerFadeDistance="40" AreaId="0" GroupId="2" Priority="10" Closed="1" DisplayFilled="1" DisplaySoundInfo="0" Agent_height="0" Agent_width="0" Render_voxel_grid="0" voxel_offset_x="0" voxel_offset_y="0" EntityClass="AreaShape" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="4f5691f5-b037-c206-8993-dcb07bf89a2c">
+      <Area Id="0" Group="2" Proximity="0" Priority="10" InnerFadeDistance="40" Height="5">
+       <Points>
+        <Point Pos="0,0,0" ObstructSound="0"/>
+        <Point Pos="-23.053833,1.3376465,0.20468903" ObstructSound="0"/>
+        <Point Pos="-40.544434,7.7469482,-0.86796904" ObstructSound="0"/>
+        <Point Pos="-57.310425,7.0623779,-0.61049271" ObstructSound="0"/>
+        <Point Pos="-63.893188,-1.5074463,-1.0314403" ObstructSound="0"/>
+        <Point Pos="-70.410767,-21.278809,-0.082996368" ObstructSound="0"/>
+        <Point Pos="-90.414063,-4.5026855,-0.11386776" ObstructSound="0"/>
+        <Point Pos="-109.50452,-7.8059692,-0.1460104" ObstructSound="0"/>
+        <Point Pos="-111.47034,-28.894348,0.13675022" ObstructSound="0"/>
+        <Point Pos="-130.50061,-46.14679,-0.4263258" ObstructSound="0"/>
+        <Point Pos="-145.98743,-50.424011,-0.234272" ObstructSound="0"/>
+        <Point Pos="-164.91455,-54.406189,-1.0253081" ObstructSound="0"/>
+        <Point Pos="-189.35583,-59.274292,-0.39290905" ObstructSound="0"/>
+        <Point Pos="-210.87036,-54.014587,-0.42380095" ObstructSound="0"/>
+        <Point Pos="-224.92419,-52.140076,-0.31594944" ObstructSound="0"/>
+        <Point Pos="-235.70557,-42.943726,-0.35400438" ObstructSound="0"/>
+        <Point Pos="-217.42371,-38.828369,-0.22528315" ObstructSound="0"/>
+        <Point Pos="-203.81726,-18.272461,-0.16758728" ObstructSound="0"/>
+        <Point Pos="-203.37317,5.1033936,-0.34915352" ObstructSound="0"/>
+        <Point Pos="-215.48022,15.852356,0.12861538" ObstructSound="0"/>
+        <Point Pos="-238.23926,17.271484,0.069126606" ObstructSound="0"/>
+        <Point Pos="-250.93848,-66.882751,-1.2691383" ObstructSound="0"/>
+        <Point Pos="-144.78809,-85.844299,-1.500458" ObstructSound="0"/>
+        <Point Pos="-39.388611,-47.433838,-0.64202309" ObstructSound="0"/>
+       </Points>
+       <Roof ObstructSound="0"/>
+       <Floor ObstructSound="0"/>
+       <Entities>
+        <Entity GUID="a3386236-0f5f-5df2-1042-6ed68e55f725"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Points>
+     <Point Pos="0,0,0"/>
+     <Point Pos="-23.053833,1.3376465,0.20468903"/>
+     <Point Pos="-40.544434,7.7469482,-0.86796904"/>
+     <Point Pos="-57.310425,7.0623779,-0.61049271"/>
+     <Point Pos="-63.893188,-1.5074463,-1.0314403"/>
+     <Point Pos="-70.410767,-21.278809,-0.082996368"/>
+     <Point Pos="-90.414063,-4.5026855,-0.11386776"/>
+     <Point Pos="-109.50452,-7.8059692,-0.1460104"/>
+     <Point Pos="-111.47034,-28.894348,0.13675022"/>
+     <Point Pos="-130.50061,-46.14679,-0.4263258"/>
+     <Point Pos="-145.98743,-50.424011,-0.234272"/>
+     <Point Pos="-164.91455,-54.406189,-1.0253081"/>
+     <Point Pos="-189.35583,-59.274292,-0.39290905"/>
+     <Point Pos="-210.87036,-54.014587,-0.42380095"/>
+     <Point Pos="-224.92419,-52.140076,-0.31594944"/>
+     <Point Pos="-235.70557,-42.943726,-0.35400438"/>
+     <Point Pos="-217.42371,-38.828369,-0.22528315"/>
+     <Point Pos="-203.81726,-18.272461,-0.16758728"/>
+     <Point Pos="-203.37317,5.1033936,-0.34915352"/>
+     <Point Pos="-215.48022,15.852356,0.12861538"/>
+     <Point Pos="-238.23926,17.271484,0.069126606"/>
+     <Point Pos="-250.93848,-66.882751,-1.2691383"/>
+     <Point Pos="-144.78809,-85.844299,-1.500458"/>
+     <Point Pos="-39.388611,-47.433838,-0.64202309"/>
+    </Points>
+    <Entities>
+     <Entity Id="a3386236-0f5f-5df2-1042-6ed68e55f725"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0" Side7="0" Side8="0" Side9="0" Side10="0" Side11="0" Side12="0" Side13="0" Side14="0" Side15="0" Side16="0" Side17="0" Side18="0" Side19="0" Side20="0" Side21="0" Side22="0" Side23="0" Side24="0" Roof="0" Floor="0"/>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="a3386236-0f5f-5df2-1042-6ed68e55f725" Name="AAA_Ambience_Water_04" Pos="1074.241,930.00525,41.973747" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="1ffcc4f0-1cf0-4674-ca2d-ca3ee137cb68" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_water_b" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="40" Environment="" EnvironmentDistance="40" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="df95ac0b-3192-4597-81c0-9d9754162f78" Name="AAA_Ambience_Water_01" Pos="1018.5216,1010.0654,38.48201" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="eb66f3c1-8d56-1492-d034-bba8e59b756d" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_water_a" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="40" Environment="" EnvironmentDistance="40" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="7a4a29ae-73d8-0ead-afa7-5c6b8bf8dd5a" Name="AAA_Ambience_Water_03" Pos="1303.3879,1032.1398,42.696434" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="51a26488-609a-0c66-b61e-959915e805db" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_water_a" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="40" Environment="" EnvironmentDistance="40" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="06e93504-5aca-5e18-81f5-b7d347c5783a" Name="AAA_Ambience_Global" Pos="1226.4861,957.10266,97.574051" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="a080933e-c063-303e-8a18-3f715769aa9f" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="5" Environment="" EnvironmentDistance="5" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AreaBox" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="6fabdc3a-4d83-e3b5-0bcd-543bece583cc" Name="AB_Global_Ocean_a" Pos="904.40747,832.04645,20.001301" Rotate="0.9450925,0,0,-0.326803" Scale="1,1,1" ColorRGB="16711680" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" InnerFadeDistance="0" AreaId="-1" FadeInZone="0" Width="200" Length="4" Height="100" GroupId="0" Priority="0" DisplayFilled="0" DisplaySoundInfo="0" EntityClass="AreaBox" HasEntity="1" BoxMin="-100,-2,0" BoxMax="100,2,100">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="204cd4f4-46f0-dd39-cbfb-07e07a4536fc">
+      <Area Id="-1" Group="0" Proximity="0" Priority="0" InnerFadeDistance="0" BoxMin="-100,-2,0" BoxMax="100,2,100">
+       <SoundData>
+        <Side1 ObstructSound="0"/>
+        <Side2 ObstructSound="0"/>
+        <Side3 ObstructSound="0"/>
+        <Side4 ObstructSound="0"/>
+        <Side5 ObstructSound="0"/>
+        <Side6 ObstructSound="0"/>
+       </SoundData>
+       <Entities>
+        <Entity GUID="560c2153-687c-667f-7c77-ec0a3d4121a5"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Entities>
+     <Entity Id="560c2153-687c-667f-7c77-ec0a3d4121a5"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0"/>
+   </Object>
+   <Object Type="AreaBox" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="f0ceaf08-bb81-77be-e231-a1884fca1d39" Name="AB_Global_Ocean_b" Pos="874.83698,1317.0856,20.001308" Rotate="0.86479771,0,0,0.50212044" Scale="1,1,1" ColorRGB="16711680" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" InnerFadeDistance="0" AreaId="-1" FadeInZone="0" Width="200" Length="4" Height="100" GroupId="0" Priority="0" DisplayFilled="0" DisplaySoundInfo="0" EntityClass="AreaBox" HasEntity="1" BoxMin="-100,-2,0" BoxMax="100,2,100">
+    <Properties />
+    <Components>
+     <Component typeId="feb82854-291c-4aba-9652-ddd7f403f24a" guid="204cd4f4-46f0-dd39-cbfb-07e07a4536fc">
+      <Area Id="-1" Group="0" Proximity="0" Priority="0" InnerFadeDistance="0" BoxMin="-100,-2,0" BoxMax="100,2,100">
+       <SoundData>
+        <Side1 ObstructSound="0"/>
+        <Side2 ObstructSound="0"/>
+        <Side3 ObstructSound="0"/>
+        <Side4 ObstructSound="0"/>
+        <Side5 ObstructSound="0"/>
+        <Side6 ObstructSound="0"/>
+       </SoundData>
+       <Entities>
+        <Entity GUID="575ed8a1-3f1e-3235-0d19-74eda3a58de6"/>
+       </Entities>
+      </Area>
+     </Component>
+    </Components>
+    <Entities>
+     <Entity Id="575ed8a1-3f1e-3235-0d19-74eda3a58de6"/>
+    </Entities>
+    <SoundData Side1="0" Side2="0" Side3="0" Side4="0" Side5="0" Side6="0"/>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="560c2153-687c-667f-7c77-ec0a3d4121a5" Name="AAA_Global_Ocean_a" Pos="896.85046,851.52679,52.163033" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="dd1c89ed-6fd9-9178-84f7-9378b411752c" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_ocean_a" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="150" Environment="" EnvironmentDistance="150" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="575ed8a1-3f1e-3235-0d19-74eda3a58de6" Name="AAA_Global_Ocean_b" Pos="886.0426,1302.6727,52.670784" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="16e89e96-d811-bceb-6780-fad07bfb275e" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_ocean_b" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="150" Environment="" EnvironmentDistance="150" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="498bf822-43ec-00a6-9269-3925854630c9" Name="AAA_Global_Ocean_c" Pos="1329.5603,1259.7866,55.808067" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="4f8b356e-e250-3d5a-6811-6deb519fc64e" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_ocean_c" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="150" Environment="" EnvironmentDistance="150" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+   <Object Type="AudioAreaAmbience" Layer="audio_global" LayerGUID="ebd908b0-befc-789f-36d6-3aff531f2071" Id="6de2ab6e-ab59-f48a-bbed-100063ae4428" Name="AAA_Global_Ocean_d" Pos="1380.7379,833.42767,34.507801" Rotate="1,0,0,0" Scale="1,1,1" ColorRGB="65535" UseCustomLevelLayerColor="0" MinSpec="0" MatLayersMask="0" OutdoorOnly="0" CastShadow="1" CastShadowMinspec="1" DynamicDistanceShadows="0" GIMode="0" LodRatio="100" ViewDistRatio="100" HiddenInGame="0" RecvWind="0" RenderNearest="0" NoStaticDecals="0" EntityClass="AudioAreaAmbience" HasEntity="1">
+    <Properties />
+    <Components>
+     <Component typeId="66f9fdba-753b-4a3c-9772-30560c65881b" guid="1ea7a87b-ff5d-d117-88a8-67c317244416" CryXmlVersion="2" Enabled="true" PlayTrigger="l_amb_global_ocean_d" StopTrigger="" TriggerAreasOnMove="false" Rtpc="area_fade_distance" GlobalRtpc="" RtpcDistance="150" Environment="" EnvironmentDistance="150" OcclusionType="ignore_state_name"/>
+    </Components>
+   </Object>
+  </LayerObjects>
+ </Layer>
+</ObjectLayer>

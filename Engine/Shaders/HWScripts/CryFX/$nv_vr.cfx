@@ -1,0 +1,7 @@
+// Copyright 2016-2021 Crytek GmbH / Crytek Group. All rights reserved.
+
+// This file is used to automatically generate geometry shaders for nvidia multires shading
+
+#include "nv_vr.cfi"
+#include "nv_vr_geometry_shader.cfi"
+

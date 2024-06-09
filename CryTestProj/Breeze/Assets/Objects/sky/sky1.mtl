@@ -1,0 +1,8 @@
+<Material MtlFlags="524288" Shader="Skyhdr" GenMask="0" StringGenMask="" SurfaceType="mat_default" MatTemplate="" Diffuse="1,1,1" Specular="0.027320892,0.027320892,0.027320892" Opacity="1" Shininess="255" CloakAmount="0" vertModifType="0" LayerAct="1">
+ <Textures>
+  <Texture Map="Diffuse" File="./skyhdr.dds">
+   <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+  </Texture>
+ </Textures>
+ <PublicParams SkyboxAngle="0"/>
+</Material>

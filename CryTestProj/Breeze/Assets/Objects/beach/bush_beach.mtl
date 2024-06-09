@@ -1,0 +1,19 @@
+<Material MtlFlags="524544" vertModifType="0">
+ <SubMaterials>
+  <Material Name="bush_beach" MtlFlags="524416" Shader="Vegetation" GenMask="2400800000" StringGenMask="%LEAVES%TEMP_VEGETATION%VERTCOLORS" SurfaceType="mat_default" MatTemplate="" Diffuse="1,1,1" Specular="0,0,0" Opacity="1" Shininess="10" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures>
+    <Texture Map="Diffuse" File="./beach_bush1.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+    <Texture Map="Opacity" File="./beach_bush1_sss.dds">
+     <TexMod TexMod_RotateType="0" TexMod_TexGenType="0" TexMod_bTexGenProjected="0"/>
+    </Texture>
+   </Textures>
+   <PublicParams bendDetailLeafAmplitude="0.2" bendDetailFrequency="1" bendDetailBranchAmplitude="-0.5" VertexAlphaBlendFactor="1" NormalViewDependency="0.5" TransmittanceColor="1,1,0.60000002" CapOpacityFalloff="1" BackDiffuseMultiplier="1"/>
+  </Material>
+  <Material Name="proxy" MtlFlags="525440" Shader="Nodraw" GenMask="0" StringGenMask="" SurfaceType="mat_default" MatTemplate="" Diffuse="1,0,0" Specular="0,0,0" Opacity="0.5" CloakAmount="0" vertModifType="0" LayerAct="1">
+   <Textures />
+  </Material>
+ </SubMaterials>
+ <PublicParams EmittanceMapGamma="1" SSSIndex="0"/>
+</Material>

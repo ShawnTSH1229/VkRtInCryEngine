@@ -1,0 +1,13 @@
+<AssetMetadata version="0" type="Material" guid="95a8380d-e5f5-8c11-d9e3-a24378fbd00c" source="" timestamp="1597251230">
+ <Files>
+  <File path="dirt_a.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">2</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">Textures/sprites/dirt/dirt_patch_a_diff.dds</Path>
+  <Path usageCount="1">Textures/sprites/dirt/dirt_patch_a_ddn.dds</Path>
+ </Dependencies>
+</AssetMetadata>

@@ -1,0 +1,10 @@
+<AssetMetadata version="0" type="Texture" guid="717ec431-a306-d26a-83ee-bd642bbad46f" source="skyhdr.tif">
+ <Files>
+  <File path="skyhdr.dds"/>
+ </Files>
+ <Details>
+  <Detail name="width">8192</Detail>
+  <Detail name="height">4096</Detail>
+  <Detail name="mipCount">11</Detail>
+ </Details>
+</AssetMetadata>

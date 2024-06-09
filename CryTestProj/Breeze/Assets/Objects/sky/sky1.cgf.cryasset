@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="5e9bc138-84ac-96e6-94b4-d094c22a81a1" source="sky1.fbx">
+ <Files>
+  <File path="sky1.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">2</Detail>
+  <Detail name="triangleCount">924</Detail>
+  <Detail name="vertexCount">540</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./sky1.mtl</Path>
+ </Dependencies>
+</AssetMetadata>

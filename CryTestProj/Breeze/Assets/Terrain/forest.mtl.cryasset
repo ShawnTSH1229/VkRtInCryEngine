@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Material" guid="1c7ab4fe-3cc4-c4b8-cf9a-46973707affb">
+ <Files>
+  <File path="forest.mtl"/>
+ </Files>
+ <Details>
+  <Detail name="subMaterialCount">0</Detail>
+  <Detail name="textureCount">3</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">./forest.dds</Path>
+  <Path usageCount="1">./forest_ddn.dds</Path>
+  <Path usageCount="1">./forest_displ.dds</Path>
+ </Dependencies>
+</AssetMetadata>

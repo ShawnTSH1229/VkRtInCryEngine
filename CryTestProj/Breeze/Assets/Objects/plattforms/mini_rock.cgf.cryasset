@@ -1,0 +1,14 @@
+<AssetMetadata version="0" type="Mesh" guid="4057085c-9719-6ba8-07e7-c8f5c68e7c3f">
+ <Files>
+  <File path="mini_rock.cgf"/>
+ </Files>
+ <Details>
+  <Detail name="materialCount">1</Detail>
+  <Detail name="triangleCount">128</Detail>
+  <Detail name="vertexCount">256</Detail>
+  <Detail name="16BitPrecision">false</Detail>
+ </Details>
+ <Dependencies>
+  <Path usageCount="1">%ENGINE%/EngineAssets/TextureMsg/DefaultSolids.mtl</Path>
+ </Dependencies>
+</AssetMetadata>
