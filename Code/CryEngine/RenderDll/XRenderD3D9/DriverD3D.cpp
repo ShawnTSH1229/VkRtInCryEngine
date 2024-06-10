@@ -5460,6 +5460,7 @@ void CD3D9Renderer::EndRenderDocCapture()
 //TanGram:GIBaker:LightMapGBuffer:BEGIN
 void CD3D9Renderer::BeginNSightCapture()
 {
+	return;
 	typedef NGFX_Injection_Result(*pNGFX_Injection_ExecuteActivityCommand)();
 	static pNGFX_Injection_ExecuteActivityCommand ngfx_Injection_ExecuteActivityCommand = nullptr;
 

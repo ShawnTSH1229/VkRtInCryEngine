@@ -2604,7 +2604,7 @@ bool CSystem::Initialize(SSystemInitParams& startupParams)
 {
 	MEMSTAT_CONTEXT(EMemStatContextType::Other, "CSystem: Init");
 
-	NSightSetup();
+	//NSightSetup();
 
 	// Fix to improve wait() time within third-party APIs
 #if CRY_PLATFORM_WINDOWS
