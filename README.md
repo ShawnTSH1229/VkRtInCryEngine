@@ -10,7 +10,7 @@ CryEngine GPU Tracing GI Baker(W.I.P)
 
 # Getting Started
 
-1.See Official [<u>**Cry Engine Documetation**</u>](https://github.com/CRYTEK/CRYENGINE_Source)
+1.Build and Compile the project. See Official [<u>**Cry Engine Documetation**</u>](https://github.com/CRYTEK/CRYENGINE_Source)
 
 2.Add Command Line "-VK" and Run
 
