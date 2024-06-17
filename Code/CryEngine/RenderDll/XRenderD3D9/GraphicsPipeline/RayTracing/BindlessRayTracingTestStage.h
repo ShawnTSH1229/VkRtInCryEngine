@@ -75,7 +75,7 @@ public:
 	void Execute(CTexture* RayTracingResultTexture);
 	bool IsStageActive(EShaderRenderingFlags flags) const final
 	{
-		return true;
+		return CRendererCVars::CV_r_VkBinlessRt == 1;
 	}
 
 private:

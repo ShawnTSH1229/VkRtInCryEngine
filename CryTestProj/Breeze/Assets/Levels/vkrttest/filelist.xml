@@ -1,0 +1,6 @@
+<download name="vkrttest" type="Map">
+ <index src="filelist.xml" dest="filelist.xml"/>
+ <files>
+  <file src="level.pak" dest="level.pak" size="3974" md5="28c2153268e66f0fca11bbfccfa90cba"/>
+ </files>
+</download>

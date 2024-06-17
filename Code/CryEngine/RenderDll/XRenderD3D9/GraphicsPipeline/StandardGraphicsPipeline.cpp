@@ -541,6 +541,11 @@ void CStandardGraphicsPipeline::Execute()
 #endif
 	}
 
+	if (GetStage<CBindlessRayTracingTestStage>()->IsStageActive(m_renderingFlags))
+	{
+		m_HDRToFramePass->Execute(m_pipelineResources.m_pTexRayTracingResult, pRenderView->GetRenderOutput()->GetColorTarget());
+	}
+
 	if (GetStage<COmniCameraStage>()->IsStageActive(m_renderingFlags))
 		GetStage<COmniCameraStage>()->Execute();
 

@@ -190,6 +190,7 @@ int CRendererCVars::CV_r_HDRVignetting;
 int CRendererCVars::CV_r_HDRTexFormat;
 int CRendererCVars::CV_r_HDRTiledBloom;//TanGram:TiledBloom
 int CRendererCVars::CV_r_VirtualShadowMap;//TanGram:TiledBloom
+int CRendererCVars::CV_r_VkBinlessRt;//TanGram:VkRt
 AllocateConstIntCVar(CRendererCVars, CV_r_HDRRangeAdapt);
 
 float CRendererCVars::CV_r_HDRRangeAdaptMax;
@@ -1193,6 +1194,12 @@ void CRendererCVars::InitCVars()
 		"Usage: r_VirtualShadowMap [0/1]\n");
 	//TanGram:TiledBloom:[END]
 	
+	REGISTER_CVAR3("r_VkBindlessRt", CV_r_VkBinlessRt, 0, VF_NULL,
+		"Enables bindless vulkan ray tracing examle.\n"
+		"Usage: CV_r_VkBinlessRt [0/1]\n");
+	//TanGram:TiledBloom:[END]
+	
+
 	REGISTER_CVAR3("r_HDRVignetting", CV_r_HDRVignetting, 1, VF_DUMPTODISK,
 	               "HDR viggneting\n"
 	               "Usage: r_HDRVignetting [Value]\n"

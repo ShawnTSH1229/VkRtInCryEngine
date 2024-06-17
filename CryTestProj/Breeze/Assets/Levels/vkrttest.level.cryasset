@@ -1,0 +1,51 @@
+<AssetMetadata version="0" type="Level" guid="0f707ffd-1f06-583f-3b5c-848b36f5bf53" source="" timestamp="1718379236">
+ <Files>
+  <File path="vkrttest/vkrttest.level"/>
+ </Files>
+ <Dependencies>
+  <Path usageCount="1">%ENGINE%/EngineAssets/Shading/default.env</Path>
+  <Path>%editor%/crydesigner_timeofday.xml</Path>
+  <Path>%editor%/leveltemplates.xml</Path>
+  <Path>%editor%/mapscreenshotsettings.xml</Path>
+  <Path>%editor%/mbttemplates.xml</Path>
+  <Path>%editor%/modellingpanel.xml</Path>
+  <Path>%editor%/objecttemplates.xml</Path>
+  <Path>%editor%/propertyenumerations.xml</Path>
+  <Path>%editor%/soundtemplates.xml</Path>
+  <Path>%editor%/toolbox.xml</Path>
+  <Path>%editor%/usertools.xml</Path>
+  <Path>%engine%/engineassets/icons/averagememoryusage.dds</Path>
+  <Path>%engine%/engineassets/icons/highmemoryusage.dds</Path>
+  <Path>%engine%/engineassets/icons/livepreview.dds</Path>
+  <Path>%engine%/engineassets/icons/lowmemoryusage.dds</Path>
+  <Path>%engine%/engineassets/materials/fog/fogvolumebox.mtl</Path>
+  <Path>%engine%/engineassets/materials/fog/fogvolumeellipsoid.mtl</Path>
+  <Path>%engine%/engineassets/materials/fog/oceaninto.mtl</Path>
+  <Path>%engine%/engineassets/materials/fog/oceanintolowspec.mtl</Path>
+  <Path>%engine%/engineassets/materials/fog/oceanoutof.mtl</Path>
+  <Path>%engine%/engineassets/materials/fog/oceanoutoflowspec.mtl</Path>
+  <Path>%engine%/engineassets/materials/material_terrain_default.mtl</Path>
+  <Path>%engine%/engineassets/materials/water/ocean_default.mtl</Path>
+  <Path>%engine%/engineassets/materials/water/wateroceanbottom.mtl</Path>
+  <Path>%engine%/engineassets/objects/editorprimitive.mtl</Path>
+  <Path>%engine%/engineassets/objects/primitive_sphere.cgf</Path>
+  <Path>%engine%/engineassets/texturemsg/defaultnouvs.dds</Path>
+  <Path>%engine%/engineassets/textures/grey.dds</Path>
+  <Path>%engine%/engineassets/textures/skys/night/half_moon.dds</Path>
+  <Path>objects/beach/rock_beach.dds</Path>
+  <Path>objects/beach/rock_beach.mtl</Path>
+  <Path>objects/beach/rock_beach_ddn.dds</Path>
+  <Path>objects/beach/rock_beach_l.cgf</Path>
+  <Path>objects/ground/grass1.dds</Path>
+  <Path>objects/ground/grass1_1.cgf</Path>
+  <Path>objects/ground/grass1_2.cgf</Path>
+  <Path>objects/ground/grass1_ddn.dds</Path>
+  <Path>objects/ground/grass2_1.cgf</Path>
+  <Path>objects/ground/grass2_2.cgf</Path>
+  <Path>objects/ground/ground1.mtl</Path>
+  <Path>objects/ground/plants1_1.cgf</Path>
+  <Path>objects/ground/plants1_2.cgf</Path>
+  <Path>objects/ground/plants2_1.cgf</Path>
+  <Path>objects/ground/plants2_2.cgf</Path>
+ </Dependencies>
+</AssetMetadata>
