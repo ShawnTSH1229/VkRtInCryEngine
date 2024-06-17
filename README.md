@@ -1,7 +1,7 @@
 # VkRtInCryEngine
 Bindless Vulkan Ray Tracing Implementation In Cry Engine.
 
-**A simplest demo for vulkan ray tracing learning.**
+**I wrote this demo for Vulkan ray tracing learning and analyse the CryEngine source code by the way.**
 
 <p align="center">
     <img src="/Resources/icon.png" width="60%" height="60%">
