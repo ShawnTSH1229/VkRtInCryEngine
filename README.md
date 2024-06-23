@@ -27,3 +27,8 @@ CryEngine GPU Tracing GI Baker(W.I.P)
 <p align="center">
     <img src="/Resources/enable.png" width="50%" height="50%">
 </p>
+
+5.Result
+<p align="center">
+    <img src="/Resources/result.png" width="90%" height="90%">
+</p>

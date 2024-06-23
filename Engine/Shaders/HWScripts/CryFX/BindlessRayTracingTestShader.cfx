@@ -136,7 +136,7 @@ void ClostHitMain(inout SHitPayload payload, in SRayTracingIntersectionAttribute
   if(dot(worldNrm,normalizeL) > 0.0f)
   {
       RayDesc ray;
-	    ray.Origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent() + worldNrm * 0.01f;
+	    ray.Origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent();
 	    ray.Direction = normalizeL;
 	    ray.TMin = 0.001f;
 	    ray.TMax = 10000.0;
